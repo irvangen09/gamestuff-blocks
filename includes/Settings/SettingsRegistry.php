@@ -66,11 +66,44 @@ final class SettingsRegistry {
 		self::register(
 			'primary_color',
 			array(
-				'label'   => __( 'Primary Color', 'gamestuff-blocks' ),
-				'type'    => 'color',
-				'default' => '#2563eb',
-				'targets' => array(),
-				'group'   => 'appearance',
+				'label'       => __( 'Primary Color', 'gamestuff-blocks' ),
+				'type'        => 'color',
+				/*
+				 * Confirmed against the old plugin (v1.7.0), not a
+				 * placeholder: this matches $gs-brand-accent in its
+				 * src/shared/_tokens.scss, the one accent color
+				 * already used consistently in production across
+				 * Character Infobox, Timeline, and now TOC.
+				 */
+				'default'     => '#fe6f22',
+				'targets'     => array(
+					array(
+						'selector' => '.gs-toc',
+						'property' => '--gs-accent',
+					),
+				),
+				'group'       => 'appearance',
+				'description' => __( 'Accent color used across every GameStuff block.', 'gamestuff-blocks' ),
+			)
+		);
+
+		self::register(
+			'dark_mode_selector',
+			array(
+				'label'       => __( 'Dark Mode Selector', 'gamestuff-blocks' ),
+				'type'        => 'css_selector',
+				/*
+				 * Deliberately empty by default, not the old plugin's
+				 * ".site-s-dark" — this plugin is public and used
+				 * with many different themes, so it must not assume
+				 * any one theme's dark-mode class. Left empty, dark
+				 * styling instead follows the visitor's own OS/browser
+				 * preference; see Services/DarkMode.php.
+				 */
+				'default'     => '',
+				'targets'     => array(),
+				'group'       => 'appearance',
+				'description' => __( 'CSS selector your theme applies when its own dark mode is active, e.g. ".site-s-dark" or "[data-theme=\'dark\']". Leave empty to follow the visitor\'s OS/browser preference instead.', 'gamestuff-blocks' ),
 			)
 		);
 	}
@@ -89,22 +122,25 @@ final class SettingsRegistry {
 	 *     Setting configuration.
 	 *
 	 *     @type string $label        Human-readable label for the admin page.
-	 *     @type string $type         Field type: 'color', 'text', 'select', etc.
-	 *                                 Interpreted by SettingsPage's field renderer.
+	 *     @type string $type         Field type interpreted by SettingsPage's
+	 *                                field renderer: 'color', 'css_selector',
+	 *                                or 'text' (default).
 	 *     @type string $default      Value used whenever nothing has been
-	 *                                 saved yet, or the saved value is empty.
+	 *                                saved yet, or the saved value is empty.
 	 *     @type array  $targets      List of { selector, property } pairs
-	 *                                 where this setting's value should be
-	 *                                 written as a CSS custom property
-	 *                                 override, e.g.:
-	 *                                 [ [ 'selector' => '.gs-character',
-	 *                                     'property' => '--gs-accent' ] ]
-	 *                                 A block adds its own selector here
-	 *                                 when it's built, rather than this
-	 *                                 file needing to know about every
-	 *                                 block that exists.
+	 *                                where this setting's value should be
+	 *                                written as a CSS custom property
+	 *                                override, e.g.:
+	 *                                [ [ 'selector' => '.gs-character',
+	 *                                    'property' => '--gs-accent' ] ]
+	 *                                A block adds its own selector here
+	 *                                when it's built, rather than this
+	 *                                file needing to know about every
+	 *                                block that exists.
 	 *     @type string $group        Section grouping on the admin page,
-	 *                                 e.g. 'appearance'.
+	 *                                e.g. 'appearance'.
+	 *     @type string $description  Short help text shown under the field
+	 *                                on the admin page.
 	 * }
 	 * @return void
 	 */
@@ -113,11 +149,12 @@ final class SettingsRegistry {
 		self::$registry[ $id ] = wp_parse_args(
 			$args,
 			array(
-				'label'   => '',
-				'type'    => 'text',
-				'default' => '',
-				'targets' => array(),
-				'group'   => 'general',
+				'label'       => '',
+				'type'        => 'text',
+				'default'     => '',
+				'targets'     => array(),
+				'group'       => 'general',
+				'description' => '',
 			)
 		);
 	}

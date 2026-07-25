@@ -53,7 +53,9 @@ final class BlockRegistry {
 	private function __construct() {}
 
 	/**
-	 * Register every active block on `init`.
+	 * Register every active block on `init`, and register the
+	 * "gamestuff" block category every block in this plugin groups
+	 * under via its own block.json.
 	 *
 	 * @since 1.0.0
 	 *
@@ -62,6 +64,36 @@ final class BlockRegistry {
 	public static function boot(): void {
 
 		add_action( 'init', array( self::class, 'register' ) );
+		add_filter( 'block_categories_all', array( self::class, 'register_category' ) );
+	}
+
+	/**
+	 * Add the "gamestuff" block category, so blocks declaring
+	 * `"category": "gamestuff"` in block.json get their own grouping
+	 * in the inserter instead of falling back to an unrecognized
+	 * category.
+	 *
+	 * Deliberately generic (not naming individual blocks), so this
+	 * doesn't need updating every time a new block is added — any
+	 * block declaring `category: gamestuff` is covered.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $categories Existing block categories.
+	 * @return array Block categories with "gamestuff" prepended.
+	 */
+	public static function register_category( array $categories ): array {
+
+		return array_merge(
+			array(
+				array(
+					'slug'  => 'gamestuff',
+					'title' => __( 'GameStuff', 'gamestuff-blocks' ),
+					'icon'  => 'games',
+				),
+			),
+			$categories
+		);
 	}
 
 	/**

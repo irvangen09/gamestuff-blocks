@@ -36,6 +36,10 @@ Yes. Every block can be turned on or off independently. A disabled block is remo
 
 No. Blocks are built with modern, dependency-free JavaScript where scripting is needed at all.
 
+= How does dark mode work? =
+
+By default, blocks follow the visitor's own OS/browser dark mode preference. If your theme has its own dark mode toggle, enter the CSS selector it uses under Settings > GameStuff Blocks > Dark Mode Selector (e.g. `.dark-mode`), and blocks will switch together with the rest of your theme instead.
+
 == Changelog ==
 
 = 1.0.0 =

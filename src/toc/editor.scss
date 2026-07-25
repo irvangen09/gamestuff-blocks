@@ -1,0 +1,45 @@
+/**
+ * Block Editor-only styling for TOC — the placeholder shown in the
+ * editor canvas (see edit.js for why there's no real live preview).
+ */
+
+.gs-toc {
+	padding: 14px 18px;
+
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+}
+
+.gs-toc__header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.gs-toc__icon {
+	display: flex;
+	flex-shrink: 0;
+	color: var(--gs-accent, #fe6f22);
+}
+
+.gs-toc__title {
+	flex: 1;
+	width: auto;
+
+	border: none;
+	background: transparent;
+	padding: 0;
+
+	font-size: 1rem;
+	font-weight: 600;
+	color: #1e1e1e;
+}
+
+.gs-toc__placeholder-note {
+	margin: 10px 0 0;
+
+	font-size: 0.85rem;
+	font-style: italic;
+	color: #6b6b6b;
+}

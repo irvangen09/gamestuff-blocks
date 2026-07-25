@@ -148,12 +148,21 @@ final class Plugin {
 	}
 
 	/**
-	 * Initialize shared services (settings registry, settings CSS
-	 * output, and — only in wp-admin — the settings page).
+	 * Initialize shared services: the settings registry and CSS
+	 * output, the dark mode CSS service, the settings page (wp-admin
+	 * only), and each block's own bootstrap (beyond plain block.json
+	 * registration, handled separately by BlockRegistry).
 	 *
 	 * Runs before register_blocks() so that any setting a block
 	 * relies on (e.g. Primary Color) is already registered by the
 	 * time blocks are registered.
+	 *
+	 * Per-block bootstraps like Toc::boot() are called here rather
+	 * than from register_blocks(), because what they set up (hooks
+	 * that run on every front-end request, dark-mode rules, etc.)
+	 * isn't tied to whether that block's own block.json registration
+	 * succeeds or to render order — it needs to run regardless of
+	 * whether the block itself is present on the current page.
 	 *
 	 * @since 1.0.0
 	 *
@@ -163,6 +172,9 @@ final class Plugin {
 
 		\GameStuff\Settings\SettingsRegistry::boot();
 		\GameStuff\Settings\SettingsCss::boot();
+		\GameStuff\Services\DarkMode::boot();
+
+		\GameStuff\Blocks\Toc\Toc::boot();
 
 		if ( is_admin() ) {
 			\GameStuff\Settings\SettingsPage::boot();

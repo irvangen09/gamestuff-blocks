@@ -1,0 +1,103 @@
+/**
+ * Frontend styling for GameStuff TOC.
+ *
+ * Visuals match the block's previous production styling exactly.
+ * One change from that version, required by locked project decisions
+ * rather than a style preference: the accent color is read from the
+ * `--gs-accent` custom property instead of a fixed SCSS value, so it
+ * participates in the plugin-wide Primary Color setting (see
+ * includes/Settings/SettingsRegistry.php). The value declared here is
+ * only the fallback used before any setting CSS loads (and matches
+ * that setting's own default), not a second source of truth for the
+ * color itself.
+ *
+ * Dark mode styling for this block is NOT here — it's generated
+ * dynamically by includes/Services/DarkMode.php from rules registered
+ * in includes/Blocks/Toc/Toc.php, since whether it's scoped under the
+ * site's own theme toggle or under `prefers-color-scheme` is a
+ * site-wide decision this file has no way to know at build time.
+ */
+
+.gs-toc {
+	--gs-accent: #fe6f22;
+
+	margin: 1.5em 0;
+
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+}
+
+.gs-toc__summary {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	padding: 14px 18px;
+	cursor: pointer;
+	list-style: none;
+
+	font-size: 1rem;
+	font-weight: 600;
+	color: #1e1e1e;
+
+	&::-webkit-details-marker {
+		display: none;
+	}
+
+	&::after {
+		content: "+";
+		margin-left: auto;
+		color: var(--gs-accent);
+		font-family: monospace;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--gs-accent);
+		outline-offset: 2px;
+	}
+}
+
+.gs-toc[ open ] > .gs-toc__summary::after {
+	content: "\2212";
+}
+
+.gs-toc__icon {
+	display: flex;
+	flex-shrink: 0;
+	color: var(--gs-accent);
+}
+
+.gs-toc__nav {
+	padding: 4px 18px 18px;
+	border-top: 1px solid #dcdcde;
+}
+
+.gs-toc__list {
+	margin: 12px 0 0;
+	padding-left: 1.2em;
+	font-size: 0.92rem;
+
+	.gs-toc__list {
+		margin-top: 6px;
+	}
+}
+
+.gs-toc__item {
+	margin-bottom: 6px;
+
+	a {
+		color: #1e1e1e;
+		text-decoration: none;
+
+		&:hover {
+			color: var(--gs-accent);
+			text-decoration: underline;
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--gs-accent);
+			outline-offset: 2px;
+		}
+	}
+}
