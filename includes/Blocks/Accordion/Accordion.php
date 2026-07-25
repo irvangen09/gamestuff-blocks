@@ -52,11 +52,6 @@ final class Accordion {
 	 * service rather than baked into style.scss under a fixed theme
 	 * selector — see Services/DarkMode.php for why.
 	 *
-	 * Uses generic dark colors rather than reusing any single
-	 * theme's own custom properties, since this plugin is public and
-	 * ships to many different themes that can't be assumed to
-	 * declare the same tokens.
-	 *
 	 * @since 1.0.0
 	 *
 	 * @return array<int, array{selector:string, css:string}>
@@ -64,25 +59,26 @@ final class Accordion {
 	private static function dark_mode_rules(): array {
 
 		return array(
+			/*
+			 * Transparent rather than a guessed dark hex: the item
+			 * has no surface of its own, so it blends into whatever
+			 * background the theme's own dark mode already applies
+			 * to the article body — the same "no background" look
+			 * this block has always had in light mode, just carried
+			 * through to dark mode instead of assuming a fixed color
+			 * that would only match one particular theme.
+			 */
 			array(
-				'selector' => '.gs-accordion-item',
-				'css'      => 'background:#1e1e1e;',
+				'selector' => '.gs-accordion-item, .gs-accordion-item__content',
+				'css'      => 'background:transparent;',
 			),
 			array(
 				'selector' => '.gs-accordion-item__trigger, .gs-accordion-item__trigger:hover, .gs-accordion-item__trigger:active, .gs-accordion-item__trigger:focus',
-				'css'      => 'background:transparent;border-bottom-color:#3c3c3c;color:#f0f0f1;',
-			),
-			array(
-				'selector' => '.gs-accordion-item__title',
-				'css'      => 'color:#f0f0f1;',
+				'css'      => 'border-bottom-color:#3c3c3c;',
 			),
 			array(
 				'selector' => '.gs-accordion-item__chevron',
 				'css'      => 'color:#a7aaad;',
-			),
-			array(
-				'selector' => '.gs-accordion-item__content',
-				'css'      => 'background:#1e1e1e;color:#c3c4c7;',
 			),
 			array(
 				'selector' => '.gs-accordion-item__content table, .gs-accordion-item__content th, .gs-accordion-item__content td',
