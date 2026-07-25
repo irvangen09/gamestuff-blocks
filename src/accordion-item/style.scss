@@ -59,6 +59,10 @@ $gs-mobile-breakpoint: 781px;
 
 	appearance: none;
 	-webkit-appearance: none;
+
+	// Prevents the mobile browser's default gray tap-highlight
+	// overlay from lingering visibly over the title after a tap.
+	-webkit-tap-highlight-color: transparent;
 }
 
 .gs-accordion-item__trigger:focus-visible {
