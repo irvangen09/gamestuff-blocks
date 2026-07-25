@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<ruleset name="GameStuff Blocks">
+	<description>Coding standard ruleset for the GameStuff Blocks plugin.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/build/*</exclude-pattern>
+	<exclude-pattern>/languages/*</exclude-pattern>
+
+	<arg value="sp"/>
+	<arg name="basepath" value="."/>
+	<arg name="colors"/>
+	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="8"/>
+
+	<rule ref="WordPress-Extra">
+		<!--
+		Class files follow PSR-4 (e.g. includes/Core/Plugin.php for
+		GameStuff\Core\Plugin), not WordPress's own file-naming
+		convention (class-plugin.php) — a deliberate choice made in
+		PLUGIN_BLUEPRINT.md's namespace mapping, not an oversight.
+		-->
+		<exclude name="WordPress.Files.FileName"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="gamestuff-blocks"/>
+			</property>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="gamestuff_blocks"/>
+				<element value="GameStuff"/>
+				<element value="GAMESTUFF_BLOCKS"/>
+			</property>
+		</properties>
+	</rule>
+
+	<config name="minimum_supported_wp_version" value="6.9"/>
+
+	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="8.0-"/>
+</ruleset>
