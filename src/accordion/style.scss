@@ -1,0 +1,21 @@
+/**
+ * Frontend styling for GameStuff Accordion.
+ *
+ * Visuals match the block's previous production styling exactly.
+ */
+
+.gs-accordion {
+	display: flex;
+	flex-direction: column;
+
+	// Falls back to inherit whenever no Typography setting has been
+	// saved, so it follows the theme's own typography by default.
+	// Cascades down to every Accordion Item automatically.
+	font-family: var(--gs-font-family, inherit);
+}
+
+// Tighten the gap between this accordion and whatever sits above it,
+// without affecting the spacing between accordion items themselves.
+.gs-accordion-item:first-child .gs-accordion-item__trigger {
+	padding-top: 4px;
+}

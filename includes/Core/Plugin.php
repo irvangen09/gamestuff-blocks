@@ -175,6 +175,7 @@ final class Plugin {
 		\GameStuff\Services\DarkMode::boot();
 
 		\GameStuff\Blocks\Toc\Toc::boot();
+		\GameStuff\Blocks\Accordion\Accordion::boot();
 
 		if ( is_admin() ) {
 			\GameStuff\Settings\SettingsPage::boot();

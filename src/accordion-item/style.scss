@@ -1,0 +1,247 @@
+/**
+ * Frontend styling for Accordion Item.
+ *
+ * Visuals match the block's previous production styling exactly.
+ * Dark mode styling for this block is NOT here — it's generated
+ * dynamically by includes/Services/DarkMode.php from rules registered
+ * in includes/Blocks/Accordion/Accordion.php, since whether it's
+ * scoped under the site's own theme toggle or under
+ * `prefers-color-scheme` is a site-wide decision this file has no way
+ * to know at build time.
+ */
+
+// Only used by the mobile breakpoint below. Kept local rather than in
+// a shared module until a second block actually needs the same
+// value.
+$gs-mobile-breakpoint: 781px;
+
+.gs-accordion-item {
+	background: #fff;
+	overflow: hidden;
+}
+
+.gs-accordion-item__heading {
+	margin: 0;
+}
+
+// Reset scoped to this block's own wrapper class with !important so
+// it wins over a theme's more specific heading selectors (e.g.
+// `.post-content h2`), without touching the theme or any other
+// heading on the site.
+.wp-block-gamestuff-accordion-item .gs-accordion-item__heading {
+	margin: 0 !important;
+}
+
+.gs-accordion-item__trigger,
+.gs-accordion-item__trigger:hover,
+.gs-accordion-item__trigger:active,
+.gs-accordion-item__trigger:focus {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+
+	width: 100%;
+
+	padding: 18px 0 14px;
+
+	margin: 0;
+	border: 0;
+	border-bottom: 1px solid #dcdcde;
+
+	background: transparent;
+
+	font: inherit;
+	text-align: left;
+	text-decoration: none;
+	color: inherit;
+
+	cursor: default;
+
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.gs-accordion-item__trigger:focus-visible {
+	outline: 2px solid #ff5a1f;
+	outline-offset: -2px;
+}
+
+.gs-accordion-item__icon {
+	flex: 0 0 16px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 16px;
+	height: 16px;
+
+	margin-top: 1px;
+
+	font-size: 18px;
+	line-height: 1;
+
+	color: #ff5a1f;
+}
+
+// When the Icon field is left empty, the icon box has no
+// dashicons-xxx modifier to paint a glyph, so it collapses itself and
+// the title shifts flush left automatically, with no placeholder box
+// and no JS/JSX change required.
+.gs-accordion-item__icon:not([class*="dashicons-"]) {
+	display: none;
+}
+
+.gs-accordion-item__title {
+	flex: 1;
+
+	margin: 0;
+
+	font-weight: 700;
+	line-height: 1.4;
+
+	color: inherit;
+}
+
+// The title renders as a real h2-h6 (see headingLevel), so it
+// inherits the active theme's own heading typography, which may force
+// e.g. uppercase text. This preserves the exact casing typed in the
+// editor instead, scoped strictly to this block's own wrapper class.
+.wp-block-gamestuff-accordion-item .gs-accordion-item__title {
+	text-transform: none !important;
+}
+
+.gs-accordion-item__heading h2 {
+	font-size: 1.5em;
+}
+
+.gs-accordion-item__heading h3 {
+	font-size: 1.285em;
+}
+
+.gs-accordion-item__heading h4 {
+	font-size: 1.21em;
+}
+
+.gs-accordion-item__heading h5 {
+	font-size: 1.21em;
+}
+
+.gs-accordion-item__heading h6 {
+	font-size: 1.07em;
+}
+
+.gs-accordion-item__heading h2,
+.gs-accordion-item__heading h3,
+.gs-accordion-item__heading h4,
+.gs-accordion-item__heading h5,
+.gs-accordion-item__heading h6 {
+	margin: 0;
+	line-height: 1.4;
+	font-weight: 700;
+}
+
+.gs-accordion-item__chevron {
+	display: none;
+
+	flex-shrink: 0;
+
+	margin-left: auto;
+
+	font-size: 13px;
+	line-height: 1;
+
+	color: #666;
+}
+
+.gs-accordion-item__content {
+	padding: 16px 0 20px;
+
+	background: #fff;
+	color: inherit;
+}
+
+// ---------------------------------
+// Content Spacing
+// ---------------------------------
+
+.gs-accordion-item__content > *:first-child {
+	margin-top: 0;
+}
+
+.gs-accordion-item__content > *:last-child {
+	margin-bottom: 0;
+}
+
+.gs-accordion-item__content p,
+.gs-accordion-item__content ul,
+.gs-accordion-item__content ol,
+.gs-accordion-item__content table,
+.gs-accordion-item__content figure,
+.gs-accordion-item__content .wp-block-image,
+.gs-accordion-item__content .wp-block-table,
+.gs-accordion-item__content .wp-block-columns {
+	margin-bottom: 1.5rem;
+}
+
+.gs-accordion-item__content img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.gs-accordion-item__content table {
+	width: 100%;
+}
+
+// ------------------------------
+// Mobile
+// ------------------------------
+
+@media (max-width: $gs-mobile-breakpoint) {
+
+	.gs-accordion-item__trigger,
+	.gs-accordion-item__trigger:hover,
+	.gs-accordion-item__trigger:active,
+	.gs-accordion-item__trigger:focus {
+		cursor: pointer;
+
+		gap: 10px;
+
+		padding: 12px 0 10px;
+	}
+
+	.gs-accordion-item__chevron {
+		display: block;
+	}
+
+	// Progressive enhancement: collapsing content on mobile is only
+	// safe once the `js` class confirms the toggle script is
+	// actually running — added synchronously in <head> before first
+	// paint (see includes/Blocks/Accordion/Accordion.php). If JS
+	// fails to load or is disabled, this class is never added, these
+	// rules never apply, and content simply stays visible on mobile,
+	// the same baseline as desktop.
+	.js .gs-accordion-item__content {
+		max-height: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+
+		opacity: 0;
+		visibility: hidden;
+		overflow: hidden;
+	}
+
+	.js .gs-accordion-item.is-open .gs-accordion-item__content {
+		max-height: none;
+		padding-top: 10px;
+		padding-bottom: 14px;
+
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.js .gs-accordion-item.is-open .gs-accordion-item__chevron {
+		transform: rotate(180deg);
+	}
+}
