@@ -1,0 +1,63 @@
+.wp-block-gamestuff-content-scroll-item.gs-cs-item-edit {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	padding: 8px;
+
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+
+	background: #fff;
+}
+
+.gs-cs-item-edit__thumb {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	overflow: hidden;
+
+	width: 100%;
+	margin-inline: auto;
+
+	background: #f0f0f1;
+	border-radius: 4px;
+
+	cursor: pointer;
+}
+
+.gs-cs-item-edit__thumb img {
+	display: block;
+
+	width: 100%;
+	height: 100%;
+
+	object-position: center;
+}
+
+.gs-cs-item-edit__thumb .dashicons {
+	width: 24px;
+	height: 24px;
+	font-size: 24px;
+
+	color: #757575;
+}
+
+.gs-cs-item-edit__remove-image {
+	align-self: flex-start;
+}
+
+.gs-cs-item-edit__title {
+	font-weight: 600;
+	text-align: center;
+}
+
+.gs-cs-custom-ratio {
+	display: flex;
+	gap: 8px;
+}
+
+.gs-cs-custom-ratio > * {
+	flex: 1;
+}
