@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,12 @@ Every block is built with a clear purpose, clean semantic HTML, accessibility in
 
 Each block can be individually enabled or disabled from the plugin's settings page. A disabled block is not registered, and loads no styles or scripts on the front end.
 
-This release establishes the plugin's foundation: bootstrap, block registry, and the global settings page. Individual content blocks are introduced in subsequent releases.
+Blocks currently available:
+
+* TOC — an automatic table of contents built from the article's headings.
+* Accordion — displays content as a set of collapsible panels.
+
+More content blocks are introduced in subsequent releases.
 
 == Installation ==
 
@@ -42,10 +47,23 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 
 == Changelog ==
 
+= 1.2.0 =
+* Added the Accordion and Accordion Item blocks.
+
+= 1.1.0 =
+* Added the TOC block.
+* Added the Dark Mode Selector setting.
+
 = 1.0.0 =
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Adds the Accordion and Accordion Item blocks.
+
+= 1.1.0 =
+Adds the TOC block and the Dark Mode Selector setting.
 
 = 1.0.0 =
 Initial release.
