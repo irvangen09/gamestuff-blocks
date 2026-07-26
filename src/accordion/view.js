@@ -5,10 +5,7 @@
  * viewports only. On desktop every item stays open and this script
  * has no visible effect.
  */
-
-const MOBILE_BREAKPOINT = 781;
-
-const isMobileViewport = () => window.innerWidth <= MOBILE_BREAKPOINT;
+import { isMobileViewport, watchMobileBreakpoint } from '../shared/breakpoint';
 
 document.addEventListener( 'DOMContentLoaded', () => {
 	const items = document.querySelectorAll( '.gs-accordion-item' );
@@ -35,23 +32,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// Only reset items when the viewport actually crosses the
 	// mobile/desktop boundary, not on every resize event some mobile
 	// browsers fire for unrelated reasons (e.g. the address bar
-	// hiding or showing).
-	let wasMobile = isMobileViewport();
-
-	window.addEventListener(
-		'resize',
-		() => {
-			const mobile = isMobileViewport();
-
-			if ( mobile === wasMobile ) {
-				return;
-			}
-
-			wasMobile = mobile;
-			updateState();
-		},
-		{ passive: true }
-	);
+	// hiding or showing). Now shared via src/shared/breakpoint.js
+	// instead of being duplicated in this file.
+	watchMobileBreakpoint( updateState );
 
 	items.forEach( ( item ) => {
 		const trigger = item.querySelector( '.gs-accordion-item__trigger' );
