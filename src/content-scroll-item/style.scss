@@ -1,0 +1,135 @@
+@use "../shared/tokens" as *;
+
+/* ======================================================
+   Content Scroll Item — Frontend Styles
+   ------------------------------------------------------
+   Root element is always <li> (list semantics — see
+   content-scroll/save.js). When the parent's "Entire Card Clickable"
+   is on, the whole card's clickable area is an inner
+   <a class="gs-cs-item__link">; otherwise only the title renders as
+   its own <a> — see save.js.
+
+   Dark mode styling for this block is NOT here — it's generated
+   dynamically by includes/Services/DarkMode.php from rules
+   registered in includes/Blocks/ContentScroll/ContentScroll.php,
+   since whether it's scoped under the site's own theme toggle or
+   under `prefers-color-scheme` is a site-wide decision this file
+   has no way to know at build time.
+====================================================== */
+
+.gs-cs-item {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	overflow: hidden;
+
+	border-radius: var(--gs-cs-radius, 8px);
+
+	color: inherit;
+	text-decoration: none;
+}
+
+/*
+ * Whole-card-link scenario (see save.js): .gs-cs-item is always the
+ * <li> (for list semantics), so the actual <a> that needs the
+ * layout/color/decoration treatment is this inner element instead.
+ * Duplicated here deliberately rather than relied on inheriting from
+ * .gs-cs-item, so the reset applies directly to the element that
+ * actually carries the link's default browser styling.
+ */
+.gs-cs-item__link {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	color: inherit;
+	text-decoration: none;
+}
+
+.gs-cs-item__link:focus-visible {
+	outline: 2px solid #6c4bd6;
+	outline-offset: 2px;
+}
+
+.gs-cs-thumb {
+	display: block;
+
+	overflow: hidden;
+
+	background: rgba(0, 0, 0, 0.04);
+	border-radius: var(--gs-cs-radius, 8px);
+}
+
+.gs-cs-thumb img {
+	display: block;
+
+	width: 100%;
+	height: 100%;
+
+	object-position: center;
+}
+
+.gs-cs-title {
+	display: block;
+
+	font-weight: 600;
+	line-height: 1.4;
+	text-align: center;
+
+	color: inherit;
+	text-decoration: none;
+}
+
+/*
+ * When a title is a link — either as its own <a class="gs-cs-title">
+ * (Entire Card Clickable off), or as a plain <div> living inside the
+ * card's own <a> wrapper (Entire Card Clickable on) — the active
+ * theme's own `a` color rules can cascade in and override the
+ * plugin's `color: inherit`, the same class of specificity issue
+ * already fixed for Accordion Item. Scoping to the block's own
+ * wrapper class with !important guarantees GameStuff's brand color
+ * wins regardless of the theme, in both markup variants, without
+ * touching any other link on the site. Titles that are NOT links (no
+ * URL set) are untouched — they never match either selector below, so
+ * they keep `color: inherit`.
+ */
+.gs-cs-item__link .gs-cs-title,
+a.gs-cs-title {
+	color: #b86c3a !important;
+}
+
+a.gs-cs-title:hover,
+.gs-cs-item:hover .gs-cs-title {
+	text-decoration: underline;
+}
+
+.gs-cs-item__link:hover .gs-cs-title,
+a.gs-cs-title:hover {
+	color: #9c5c31 !important;
+}
+
+a.gs-cs-title:focus-visible {
+	outline: 2px solid #6c4bd6;
+	outline-offset: 2px;
+}
+
+/* ------------------------------
+   Mobile — card width
+   ------------------------------
+   Card takes ~46% of the track's width so images render smaller,
+   more cards are visible per screen, and horizontal scrolling feels
+   less cramped. Still leaves the next card peeking at the edge (see
+   content-scroll/view.js for the "there's more" arrow). Aspect Ratio
+   is untouched — the image still scales to whatever width this
+   gives it.
+------------------------------ */
+
+@media (max-width: $gs-mobile-breakpoint) {
+
+	.gs-cs-item {
+		flex: 0 0 46%;
+
+		scroll-snap-align: start;
+	}
+}
