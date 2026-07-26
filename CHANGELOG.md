@@ -5,6 +5,20 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] - 2026-07-27
+
+### Added
+
+- **Content Scroll** and **Content Scroll Item** blocks: a navigation
+  grid on desktop that becomes a native horizontal scroll on mobile,
+  with an overflow-aware "more content" hint.
+- Dark mode styling for these blocks is generated through the shared
+  `DarkMode` service, the same pattern used by TOC and Accordion.
+- `src/shared/breakpoint.js` and `src/shared/tokens.scss`: the mobile
+  breakpoint used by Accordion Item, Content Scroll, and Content
+  Scroll Item is now defined in one place instead of being duplicated
+  per block.
+
 ## [1.2.0] - 2026-07-26
 
 ### Added

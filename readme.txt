@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,7 @@ Blocks currently available:
 
 * TOC — an automatic table of contents built from the article's headings.
 * Accordion — displays content as a set of collapsible panels.
+* Content Scroll — a navigation grid on desktop that becomes a horizontal scroll on mobile.
 
 More content blocks are introduced in subsequent releases.
 
@@ -47,6 +48,9 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 
 == Changelog ==
 
+= 1.3.0 =
+* Added the Content Scroll and Content Scroll Item blocks.
+
 = 1.2.0 =
 * Added the Accordion and Accordion Item blocks.
 
@@ -58,6 +62,9 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Adds the Content Scroll and Content Scroll Item blocks.
 
 = 1.2.0 =
 Adds the Accordion and Accordion Item blocks.
