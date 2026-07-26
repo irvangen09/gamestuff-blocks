@@ -1,0 +1,60 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/content-scroll",
+
+	"version": "1.0.0",
+
+	"title": "GameStuff Scroll",
+
+	"category": "gamestuff",
+
+	"icon": "grid-view",
+
+	"description": "Displays a list of content as a navigation grid on desktop, automatically becoming a horizontal scroll on mobile.",
+
+	"keywords": [ "scroll", "grid", "navigation", "gamestuff" ],
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"desktopColumns": {
+			"type": "number",
+			"default": 3
+		},
+		"gap": {
+			"type": "number",
+			"default": 24
+		},
+		"borderRadius": {
+			"type": "number",
+			"default": 8
+		},
+		"showImage": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"cardClickable": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+
+	"editorScript": "file:./index.js",
+
+	"editorStyle": "file:./index.css",
+
+	"style": "file:./style-index.css",
+
+	"viewScript": "file:./view.js"
+}
