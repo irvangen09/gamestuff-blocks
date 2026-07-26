@@ -1,0 +1,76 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/content-scroll-item",
+
+	"version": "1.0.0",
+
+	"title": "Content Scroll Item",
+
+	"category": "gamestuff",
+
+	"parent": [ "gamestuff/content-scroll" ],
+
+	"icon": "format-image",
+
+	"description": "One card (image, title, URL) inside a GameStuff Content Scroll.",
+
+	"keywords": [ "scroll", "card", "gamestuff" ],
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"imageId": {
+			"type": "number",
+			"default": 0
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"url": {
+			"type": "string",
+			"default": ""
+		},
+		"aspectRatio": {
+			"type": "string",
+			"default": "4/3"
+		},
+		"scale": {
+			"type": "string",
+			"default": "cover"
+		},
+		"customRatioWidth": {
+			"type": "number",
+			"default": 4
+		},
+		"customRatioHeight": {
+			"type": "number",
+			"default": 3
+		},
+		"cardClickable": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+
+	"editorScript": "file:./index.js",
+
+	"editorStyle": "file:./index.css",
+
+	"style": "file:./style-index.css"
+}
