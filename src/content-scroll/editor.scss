@@ -1,0 +1,32 @@
+.wp-block-gamestuff-content-scroll.gs-content-scroll {
+	padding: 12px;
+
+	border: 1px dashed #dcdcde;
+	border-radius: 6px;
+}
+
+.wp-block-gamestuff-content-scroll .gs-cs-track {
+	min-height: 60px;
+}
+
+/*
+ * .gs-cs-track is the InnerBlocks wrapper itself (via
+ * useInnerBlocksProps() in edit.js), so each card — and the "+ Add"
+ * appender below — is already a direct child of .gs-cs-track. No
+ * extra wrapper-unwrapping CSS is needed here; the grid rules in
+ * style.scss apply directly, exactly as they do on the frontend.
+ */
+.wp-block-gamestuff-content-scroll .block-list-appender {
+	grid-column: 1 / -1;
+	margin-top: 8px;
+}
+
+/*
+ * The arrow is a frontend-only "more content" hint for the mobile
+ * scroll behavior (view.js decides when it's visible there). Inside
+ * the editor canvas it would just be static visual noise while
+ * authoring items, so it's hidden here regardless of canvas width.
+ */
+.wp-block-gamestuff-content-scroll .gs-cs-arrow {
+	display: none;
+}
