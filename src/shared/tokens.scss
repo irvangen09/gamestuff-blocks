@@ -1,0 +1,19 @@
+/**
+ * Shared design tokens for GameStuff Blocks SCSS.
+ *
+ * Single source of truth for values that would otherwise be hardcoded
+ * independently in more than one file. Only tokens actually shared by
+ * more than one block are added here — see ARCHITECTURE.md and
+ * ENGINEERING_PRINCIPLES.md on avoiding premature abstraction.
+ *
+ * SCSS can't share a literal value with JS directly, so this is the
+ * canonical SCSS-side value for the mobile breakpoint, kept manually
+ * in sync with shared/breakpoint.js (MOBILE_BREAKPOINT).
+ */
+
+/**
+ * Viewport width, in pixels, at and below which GameStuff blocks
+ * (Accordion Item, Content Scroll, Content Scroll Item) switch to
+ * their mobile layout.
+ */
+$gs-mobile-breakpoint: 781px;
