@@ -1,0 +1,136 @@
+@use "../shared/tokens" as *;
+
+/* ======================================================
+   GameStuff Content Scroll — Frontend Styles
+   ------------------------------------------------------
+   Desktop : CSS grid. Columns/gap/radius come from CSS
+             custom properties written inline by save.js
+             (--gs-cs-cols, --gs-cs-gap, --gs-cs-radius).
+   Mobile  : the same items become one continuous native
+             horizontal scroll container — no slider
+             library, no JS-built markup.
+
+   Structure:
+   .gs-content-scroll
+     ul.gs-cs-track        (grid on desktop / scroll on mobile)
+       li.gs-cs-item       (×N — styled in content-scroll-item)
+     .gs-cs-arrow          (mobile-only "more content" hint)
+
+   Item-level styles (.gs-cs-item, .gs-cs-thumb, .gs-cs-title)
+   live in content-scroll-item/style.scss, since that block is
+   what actually renders them.
+
+   Dark mode styling for this block is NOT here — it's generated
+   dynamically by includes/Services/DarkMode.php from rules
+   registered in includes/Blocks/ContentScroll/ContentScroll.php,
+   since whether it's scoped under the site's own theme toggle or
+   under `prefers-color-scheme` is a site-wide decision this file
+   has no way to know at build time.
+====================================================== */
+
+.gs-content-scroll {
+
+	--gs-cs-cols: 3;
+	--gs-cs-gap: 24px;
+	--gs-cs-radius: 8px;
+
+	position: relative;
+
+	margin: 16px 0;
+
+	/*
+	 * Empty/unset by default (--gs-font-family is never declared
+	 * unless the Typography setting has an actual value saved), so
+	 * `inherit` is what actually applies out of the box: following
+	 * whatever the theme's own typography sets. Cascades down to
+	 * every Content Scroll Item automatically -- no need to repeat
+	 * this in content-scroll-item/style.scss.
+	 */
+	font-family: var(--gs-font-family, inherit);
+}
+
+.gs-cs-track {
+	display: grid;
+	grid-template-columns: repeat(var(--gs-cs-cols), minmax(0, 1fr));
+	gap: var(--gs-cs-gap);
+
+	/*
+	 * .gs-cs-track is a <ul> for proper list semantics for screen
+	 * readers (see save.js), so the browser's default list
+	 * margin/padding/bullet need resetting to keep the exact same
+	 * visual output it would have as a plain <div>.
+	 */
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.gs-content-scroll--hide-image .gs-cs-thumb {
+	display: none;
+}
+
+.gs-content-scroll--hide-title .gs-cs-title {
+	display: none;
+}
+
+.gs-cs-arrow {
+	display: none;
+
+	position: absolute;
+	top: 50%;
+	right: 6px;
+
+	width: 28px;
+	height: 28px;
+
+	transform: translateY(-50%);
+
+	border-radius: 50%;
+
+	background: #b86c3a;
+	color: #fff;
+
+	font-size: 16px;
+	line-height: 28px;
+	text-align: center;
+
+	opacity: 1;
+	transition: opacity 0.2s ease;
+}
+
+.gs-cs-arrow.is-hidden {
+	opacity: 0;
+}
+
+/* ------------------------------
+   Mobile — horizontal scroll
+------------------------------ */
+
+@media (max-width: $gs-mobile-breakpoint) {
+
+	.gs-cs-track {
+		display: flex;
+
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+		scroll-snap-type: x proximity;
+
+		/* Room for the last card's peek + the arrow hint
+		   (scaled down to match the smaller mobile card width). */
+		padding-right: 6%;
+
+		/* Hide scrollbar (Firefox + legacy Edge). */
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	/* Hide scrollbar (WebKit/Chromium). */
+	.gs-cs-track::-webkit-scrollbar {
+		display: none;
+	}
+
+	.gs-cs-arrow {
+		display: block;
+	}
+}
