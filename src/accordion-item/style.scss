@@ -10,10 +10,7 @@
  * to know at build time.
  */
 
-// Only used by the mobile breakpoint below. Kept local rather than in
-// a shared module until a second block actually needs the same
-// value.
-$gs-mobile-breakpoint: 781px;
+@use "../shared/tokens" as *;
 
 .gs-accordion-item {
 	background: #fff;
