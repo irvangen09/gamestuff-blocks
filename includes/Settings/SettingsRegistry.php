@@ -73,7 +73,7 @@ final class SettingsRegistry {
 				 * placeholder: this matches $gs-brand-accent in its
 				 * src/shared/_tokens.scss, the one accent color
 				 * already used consistently in production across
-				 * Character Infobox, Timeline, and now TOC.
+				 * Character Infobox, Timeline, and TOC.
 				 */
 				'default'     => '#fe6f22',
 				'targets'     => array(
@@ -84,6 +84,10 @@ final class SettingsRegistry {
 					array(
 						'selector' => '.gs-timeline',
 						'property' => '--gs-timeline-accent',
+					),
+					array(
+						'selector' => '.gs-character',
+						'property' => '--gs-accent',
 					),
 				),
 				'group'       => 'appearance',
