@@ -1,0 +1,61 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/character-infobox",
+
+	"version": "1.0.0",
+
+	"title": "GameStuff Infobox",
+
+	"category": "gamestuff",
+
+	"icon": "id",
+
+	"description": "Displays a character information card for GameStuff.",
+
+	"keywords": [ "character", "infobox", "villager", "gamestuff" ],
+
+	"example": {},
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"characterName": {
+			"type": "string",
+			"default": ""
+		},
+
+		"headingLevel": {
+			"type": "string",
+			"default": "h2"
+		},
+
+		"portraitId": {
+			"type": "number",
+			"default": 0
+		},
+
+		"portraitUrl": {
+			"type": "string",
+			"default": ""
+		},
+
+		"portraitAlt": {
+			"type": "string",
+			"default": ""
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"multiple": true,
+		"reusable": false
+	},
+
+	"editorScript": "file:./index.js",
+
+	"editorStyle": "file:./index.css",
+
+	"style": "file:./style-index.css"
+}
