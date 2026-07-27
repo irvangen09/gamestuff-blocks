@@ -1,0 +1,244 @@
+@use "./mixins" as *;
+
+/* ======================================================
+   Character Infobox — Editor Styles
+   Mirrors style.scss structure so the wp-admin preview
+   closely matches the front-end.
+====================================================== */
+
+.gs-character {
+	margin: 0;
+
+	--gs-accent: #fe6f22;
+	--gs-accent-soft: rgba(254, 111, 34, 0.08);
+	--gs-accent-softer: rgba(254, 111, 34, 0.05);
+}
+
+.gs-character-card {
+
+	display: grid;
+	// Kept as a literal (not a shared token) -- see constants.js for
+	// why the portrait size is local to this block, not src/shared/.
+	grid-template-columns: 270px minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+
+	padding: 20px;
+
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 16px;
+
+}
+
+/* ------------------------------------------------------
+   Portrait
+------------------------------------------------------ */
+
+.gs-portrait-clickzone {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 270px;
+	height: 360px;
+
+	background: var(--gs-accent-softer);
+	border: 1px solid #dcdcde;
+	border-radius: 12px;
+
+	overflow: hidden;
+	cursor: pointer;
+
+}
+
+.gs-portrait-clickzone img {
+
+	width: 100%;
+	height: 100%;
+
+	object-fit: contain;
+	object-position: center;
+
+	display: block;
+
+}
+
+.gs-portrait-placeholder {
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+
+	color: #8c8f94;
+	font-size: 14px;
+	font-weight: 600;
+
+}
+
+.gs-portrait-placeholder .dashicons {
+
+	width: 32px;
+	height: 32px;
+	font-size: 32px;
+
+	opacity: 0.5;
+
+}
+
+.gs-upload-buttons {
+
+	margin-top: 14px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+
+}
+
+/* ------------------------------------------------------
+   Panel
+------------------------------------------------------ */
+
+.gs-character-panel {
+
+	border: 1px solid var(--gs-accent, #fe6f22);
+	border-color: rgba(254, 111, 34, 0.25);
+	border-radius: 12px;
+
+	overflow: hidden;
+
+}
+
+.gs-character-summary {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+
+	padding: 10px 16px;
+
+	background: var(--gs-accent-soft);
+	border-bottom: 1px solid rgba(254, 111, 34, 0.18);
+
+}
+
+.gs-character-summary .gs-character-name {
+
+	@extend %gs-heading-reset;
+
+	flex: 1 !important;
+	padding: 6px 0 !important;
+	text-align: center !important;
+
+	font-size: 20px !important;
+
+	outline: none;
+
+}
+
+/* ------------------------------------------------------
+   Rows
+------------------------------------------------------ */
+
+.gs-character-rows {
+	display: flex;
+	flex-direction: column;
+}
+
+.gs-row {
+
+	display: grid;
+	grid-template-columns: 180px minmax(0, 1fr);
+
+	border-top: 1px solid #e6e6e6;
+
+}
+
+.gs-row-label {
+
+	padding: 12px 16px;
+
+	font-size: 13px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+
+	color: #50575e;
+
+	background: rgba(254, 111, 34, 0.03);
+	border-right: 1px solid #e6e6e6;
+
+	display: flex;
+	align-items: center;
+
+}
+
+.gs-row-value {
+
+	padding: 8px 16px;
+
+	display: flex;
+	align-items: center;
+
+}
+
+.gs-row-value .block-editor-rich-text__editable {
+
+	width: 100%;
+
+	min-height: 32px;
+	padding: 6px 0;
+
+	outline: none;
+
+}
+
+.gs-row-value .block-editor-rich-text__editable p {
+	margin: 0;
+}
+
+.gs-row-value a {
+	color: var(--gs-accent);
+	text-decoration: none;
+}
+
+.gs-row-value a:hover {
+	text-decoration: underline;
+}
+
+/* ------------------------------------------------------
+   Responsive (admin sidebar collapsed / narrow viewport)
+   ------------------------------------------------------
+   782px is WordPress core's own admin responsive breakpoint,
+   unrelated to $gs-mobile-breakpoint (781px) -- kept as a literal,
+   not a shared token.
+------------------------------------------------------ */
+
+@media (max-width: 782px) {
+
+	.gs-character-card {
+		grid-template-columns: 1fr;
+	}
+
+	.gs-portrait-clickzone {
+		width: 100%;
+		max-width: 270px;
+		margin: 0 auto;
+	}
+
+	.gs-row {
+		grid-template-columns: 1fr;
+	}
+
+	.gs-row-label {
+		border-right: 0;
+		border-bottom: 1px solid #e6e6e6;
+	}
+
+}
