@@ -1,0 +1,46 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/character-infobox-field",
+
+	"version": "1.0.0",
+
+	"title": "Infobox Field",
+
+	"category": "gamestuff",
+
+	"parent": [ "gamestuff/character-infobox" ],
+
+	"icon": "list-view",
+
+	"description": "One icon/label/value row inside a GameStuff Infobox.",
+
+	"keywords": [ "character", "infobox", "row", "gamestuff" ],
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+
+		"value": {
+			"type": "string",
+			"default": ""
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+
+	"editorScript": "file:./index.js"
+}
