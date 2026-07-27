@@ -1,0 +1,426 @@
+@use "./mixins" as *;
+
+/* ======================================================
+   Character Infobox — Frontend Styles
+   ------------------------------------------------------
+   Visuals match the block's previous production styling exactly.
+   One change from that version, required by locked project decisions
+   rather than a style preference: the accent color is read from the
+   `--gs-accent` custom property instead of a fixed SCSS value, so it
+   participates in the plugin-wide Primary Color setting (see
+   includes/Settings/SettingsRegistry.php). The value declared here is
+   only the fallback used before any setting CSS loads (and matches
+   that setting's own default), not a second source of truth for the
+   color itself.
+
+   Structure:
+   .gs-character
+     .gs-character-card
+       .gs-character-portrait-wrap > img.gs-character-portrait
+       .gs-character-panel
+         .gs-character-summary   (shows the character NAME,
+                                   not a generic label, so it
+                                   never duplicates the post title)
+         .gs-character-rows
+           .gs-row > .gs-row-label + .gs-row-value (× N)
+
+   The panel is always fully visible — no accordion/collapse.
+
+   Dependency note: Character Infobox Field (infobox-field) has no
+   style.scss/editor.scss of its own — it can only ever be inserted
+   inside this block (see its block.json "parent" restriction), and
+   its markup (.gs-row, .gs-row-label, .gs-row-value, .gs-richtext)
+   is styled entirely from THIS file. This is intentional, not a
+   missing file — if this stylesheet ever fails to load, infobox-field
+   has no fallback styling of its own.
+
+   Dark mode styling for this block is NOT here — it's generated
+   dynamically by includes/Services/DarkMode.php from rules registered
+   in includes/Blocks/Infobox/Infobox.php, since whether it's scoped
+   under the site's own theme toggle or under `prefers-color-scheme`
+   is a site-wide decision this file has no way to know at build time.
+====================================================== */
+
+.gs-character {
+
+	--gs-accent: #fe6f22;
+	--gs-accent-soft: rgba(254, 111, 34, 0.08);
+	--gs-accent-softer: rgba(254, 111, 34, 0.05);
+	--gs-card-bg: #fff;
+	--gs-card-border: rgba(254, 111, 34, 0.16);
+	--gs-row-border: rgba(20, 20, 23, 0.08);
+	--gs-text: #1d2327;
+	--gs-text-muted: #595e63;
+	--gs-shadow: 0 1px 2px rgba(20, 20, 23, 0.04);
+
+	margin: 16px 0;
+
+	/*
+	 * Empty/unset by default (--gs-font-family is never declared
+	 * unless the Typography setting has an actual value saved — see
+	 * includes/Settings/SettingsCss.php), so `inherit` is what
+	 * actually applies out of the box: same as today, following
+	 * whatever the theme's own typography sets.
+	 */
+	font-family: var(--gs-font-family, inherit);
+
+}
+
+/* ======================================================
+   Card
+====================================================== */
+
+.gs-character-card {
+
+	display: grid;
+	// Kept as a literal (not a shared token) -- see constants.js for
+	// why the portrait size is local to this block, not src/shared/.
+	grid-template-columns: 270px minmax(0, 1fr);
+	gap: 24px;
+	align-items: start;
+
+	padding: 20px;
+
+	background: var(--gs-card-bg);
+	border: 1px solid var(--gs-card-border);
+	border-radius: 16px;
+	box-shadow: var(--gs-shadow);
+
+}
+
+/* ======================================================
+   Portrait
+====================================================== */
+
+.gs-character-portrait-wrap {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	position: relative;
+
+	// Kept as a literal ratio (not the portrait width/height
+	// constants) -- those are declared in pixels for width/height
+	// contexts, and `aspect-ratio` needs a unitless ratio. Must stay
+	// in sync by hand with PORTRAIT_WIDTH / PORTRAIT_HEIGHT in
+	// constants.js.
+	aspect-ratio: 270 / 360;
+
+	background: var(--gs-accent-softer);
+	border: 1px solid var(--gs-card-border);
+	border-radius: 12px;
+
+	overflow: hidden;
+
+}
+
+.gs-character-portrait {
+
+	display: block;
+
+	position: absolute;
+	top: 10px;
+	left: 10px;
+
+	width: calc(100% - 20px);
+	height: calc(100% - 20px);
+
+	object-fit: contain;
+	object-position: center;
+
+	border: 0;
+
+}
+
+.gs-portrait-empty {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+	height: 100%;
+
+	color: var(--gs-text-muted);
+
+}
+
+.gs-portrait-empty .dashicons {
+
+	width: 36px;
+	height: 36px;
+	font-size: 36px;
+
+	opacity: 0.35;
+
+}
+
+/* ======================================================
+   Panel
+====================================================== */
+
+.gs-character-panel {
+
+	border: 1px solid var(--gs-card-border);
+	border-radius: 12px;
+
+	overflow: hidden;
+
+	background: transparent;
+
+}
+
+.gs-character-summary {
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+
+	padding: 16px 20px;
+
+	background: var(--gs-accent-soft);
+
+}
+
+.gs-summary-main {
+
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	min-width: 0;
+
+}
+
+/*
+ * characterName renders as a real heading (h2–h6) so it participates in
+ * the page's document outline. That also means the active theme's own
+ * heading typography can cascade onto it — width, margin, background,
+ * border, etc. The extra specificity + !important below is a
+ * defensive guard so the theme can't visually break out of the card,
+ * keeping the pre-refactor look identical regardless of theme.
+ */
+.gs-character-summary .gs-character-name {
+
+	@extend %gs-heading-reset;
+
+	padding: 0 !important;
+	text-align: inherit !important;
+
+	font-size: 22px !important;
+	line-height: 1.3 !important;
+
+	color: var(--gs-text) !important;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+}
+
+/* ======================================================
+   Rows
+====================================================== */
+
+.gs-character-rows {
+
+	display: flex;
+	flex-direction: column;
+
+}
+
+.gs-row {
+
+	display: grid;
+	grid-template-columns: 170px minmax(0, 1fr);
+
+}
+
+.gs-row + .gs-row {
+	border-top: 1px solid var(--gs-row-border);
+}
+
+.gs-row-label {
+
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	padding: 14px 16px;
+
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.5;
+
+	color: var(--gs-text);
+
+	border-right: 1px solid var(--gs-row-border);
+
+}
+
+.gs-row-label .dashicons {
+
+	flex-shrink: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 17px;
+	height: 17px;
+	font-size: 17px;
+	line-height: 1;
+
+	color: var(--gs-accent);
+
+}
+
+.gs-row-value {
+
+	padding: 14px 16px;
+
+	font-size: 15px;
+	line-height: 1.6;
+
+	color: var(--gs-text);
+
+	overflow-wrap: anywhere;
+
+}
+
+/* ======================================================
+   Rich Text (multi-line field values)
+====================================================== */
+
+.gs-richtext p {
+	margin: 0;
+}
+
+.gs-richtext p + p {
+	margin-top: 6px;
+}
+
+.gs-richtext ul,
+.gs-richtext ol {
+	margin: 6px 0;
+	padding-left: 20px;
+}
+
+.gs-richtext li + li {
+	margin-top: 4px;
+}
+
+.gs-richtext strong {
+	font-weight: 700;
+}
+
+.gs-richtext em {
+	font-style: italic;
+}
+
+.gs-richtext a {
+
+	color: var(--gs-accent);
+	font-weight: 600;
+	text-decoration: none;
+
+	transition: color 0.2s ease, text-decoration 0.2s ease;
+
+}
+
+.gs-richtext a:hover {
+	text-decoration: underline;
+}
+
+.gs-richtext a:visited {
+	color: var(--gs-accent);
+}
+
+/* ======================================================
+   Tablet & Mobile (≤ 768px)
+   ------------------------------------------------------
+   Uses its own breakpoint, kept as a literal and separate from
+   $gs-mobile-breakpoint (781px, src/shared/tokens.scss) used by
+   Accordion Item and Content Scroll -- this block's layout switches
+   at a different width, so unifying the two would change behavior
+   for no technical benefit.
+====================================================== */
+
+@media (max-width: 768px) {
+
+	.gs-character {
+		margin: 14px 0;
+	}
+
+	.gs-character-card {
+
+		grid-template-columns: 1fr;
+		gap: 16px;
+
+		padding: 16px;
+		border-radius: 14px;
+
+	}
+
+	.gs-character-portrait-wrap {
+
+		width: 100%;
+		max-width: 220px;
+
+		margin: 0 auto;
+
+	}
+
+	.gs-character-summary {
+
+		padding: 14px 16px;
+
+	}
+
+	.gs-character-name {
+		font-size: 19px;
+	}
+
+	.gs-row {
+		grid-template-columns: 36% minmax(0, 1fr);
+	}
+
+	.gs-row-label,
+	.gs-row-value {
+		padding: 12px 14px;
+		font-size: 14px;
+	}
+
+}
+
+@media (max-width: 480px) {
+
+	.gs-character-card {
+		padding: 12px;
+	}
+
+	.gs-character-portrait-wrap {
+		max-width: 170px;
+	}
+
+	.gs-character-name {
+		font-size: 17px;
+	}
+
+	.gs-row {
+		grid-template-columns: 38% minmax(0, 1fr);
+	}
+
+	.gs-row-label,
+	.gs-row-value {
+		padding: 10px 12px;
+		font-size: 13px;
+	}
+
+	.gs-row-label .dashicons {
+		display: none;
+	}
+
+}
