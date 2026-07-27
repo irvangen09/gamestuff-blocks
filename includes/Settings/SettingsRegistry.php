@@ -81,6 +81,10 @@ final class SettingsRegistry {
 						'selector' => '.gs-toc',
 						'property' => '--gs-accent',
 					),
+					array(
+						'selector' => '.gs-timeline',
+						'property' => '--gs-timeline-accent',
+					),
 				),
 				'group'       => 'appearance',
 				'description' => __( 'Accent color used across every GameStuff block.', 'gamestuff-blocks' ),
