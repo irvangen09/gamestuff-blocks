@@ -5,6 +5,16 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.0] - 2026-07-28
+
+### Added
+
+- **Timeline** and **Timeline Item** blocks: a vertical timeline for
+  sequential content (events, walkthroughs, quests, etc.), with a
+  Numbered Timeline variant.
+- Timeline's accent color is wired to the `primary_color` global
+  setting, the same pattern used by TOC.
+
 ## [1.3.0] - 2026-07-27
 
 ### Added

@@ -1,25 +1,21 @@
-import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+
+import { TIMELINE_TYPES, DEFAULT_TIMELINE_TYPE } from './constants';
 
 export default function Save( { attributes } ) {
-	const { title } = attributes;
+	const { timelineType } = attributes;
+
+	const TagName =
+		TIMELINE_TYPES[ timelineType ]?.tag ||
+		TIMELINE_TYPES[ DEFAULT_TIMELINE_TYPE ].tag;
 
 	const blockProps = useBlockProps.save( {
-		className: 'gs-timeline-item',
+		className: `gs-timeline gs-timeline--${ timelineType }`,
 	} );
 
 	return (
-		<li { ...blockProps }>
-			<span className="gs-timeline-item__node" aria-hidden="true" />
-			<div className="gs-timeline-item__content">
-				<RichText.Content
-					tagName="p"
-					className="gs-timeline-item__title"
-					value={ title }
-				/>
-				<div className="gs-timeline-item__body">
-					<InnerBlocks.Content />
-				</div>
-			</div>
-		</li>
+		<TagName { ...blockProps }>
+			<InnerBlocks.Content />
+		</TagName>
 	);
 }

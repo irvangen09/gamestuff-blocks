@@ -1,29 +1,29 @@
 /* ======================================================
-   Timeline Item — Editor Styles
+   GameStuff Timeline — Editor Styles (Parent)
    ------------------------------------------------------
-   The main styles (grid, node, connecting line, typography)
+   The main styles (custom properties, line, node, typography)
    are already active in the editor automatically via
-   style.scss.
+   style.scss -- WordPress loads the "style" asset on both
+   the front end and in the editor.
 
-   This file only handles Gutenberg's default InnerBlocks
-   wrapper inside .gs-timeline-item__body (editor context
-   only), so the content keeps following the grid column
-   width and doesn't add unexpected margin at the start/end.
+   This file only handles elements that appear ONLY in the
+   editor context: the appender ("+ Add Item") shown when
+   every Timeline Item has been removed from the list.
 ====================================================== */
 
-.gs-timeline-item__body {
+.wp-block-gamestuff-timeline {
 
-	.block-editor-inner-blocks {
-		width: 100%;
+	/* The InnerBlocks appender renders as its own element
+	   (not an <li>) when the list is empty -- make sure it
+	   doesn't inherit list styling and still has reasonable
+	   spacing. */
+	.block-list-appender {
+
 		margin: 0;
-	}
+		padding-top: 4px;
 
-	.block-editor-block-list__layout > * {
-		margin: 0;
-	}
+		list-style: none;
 
-	.block-editor-block-list__layout > * + * {
-		margin-top: var(--gs-timeline-body-gap);
 	}
 
 }

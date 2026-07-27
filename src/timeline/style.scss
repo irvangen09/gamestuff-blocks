@@ -1,168 +1,65 @@
 /* ======================================================
-   Timeline Item — Frontend Styles
+   GameStuff Timeline — Frontend Styles (Parent)
    ------------------------------------------------------
-   Custom properties (--gs-timeline-*) are defined by the
-   parent .gs-timeline (see src/timeline/style.scss).
+   Accent: --gs-timeline-accent is wired to the plugin's
+   Primary Color setting (see includes/Settings/
+   SettingsRegistry.php), same convention as the TOC block.
+   The literal value below is only the fallback used before
+   the setting's inline CSS is enqueued.
 
    Structure:
-   li.gs-timeline-item
-     span.gs-timeline-item__node    (visual marker, aria-hidden)
-     div.gs-timeline-item__content
-       p.gs-timeline-item__title
-       div.gs-timeline-item__body   (InnerBlocks: paragraph, list, etc.)
+   ul/ol.gs-timeline (.gs-timeline--default | .gs-timeline--numbered)
+     li.gs-timeline-item   → see src/timeline-item/style.scss
 
-   The vertical line is drawn as a ::before on EVERY item
-   (not a single element for the whole list). Because its
-   height is set to 100% of the li itself, the line always
-   stops exactly at the next item's node center -- adjusting
-   automatically even when item heights differ (long/short
-   rich text content), with no JavaScript needed.
+   The custom properties here are the "contract" consumed by
+   timeline-item/style.scss. Adding a new variant (e.g. a
+   different node size) only needs a new modifier selector
+   like .gs-timeline--numbered below, without changing the
+   structure.
+
+   No dark-mode rule is registered for this block: the accent
+   stays constant in both modes, and every other color here is
+   either `inherit` or has no background/border of its own, so
+   it already follows the theme automatically in dark mode.
 ====================================================== */
 
-.gs-timeline-item {
+.gs-timeline {
 
-	position: relative;
+	--gs-timeline-accent: #fe6f22;
+	--gs-timeline-node-size: 10px;
+	--gs-timeline-node-center-y: 12px;
+	--gs-timeline-gap-x: 16px;
+	--gs-timeline-gap-y: 20px;
+	--gs-timeline-title-gap: 6px;
+	--gs-timeline-body-gap: 8px;
 
-	display: grid;
-	grid-template-columns: var(--gs-timeline-node-size) 1fr;
-	column-gap: var(--gs-timeline-gap-x);
+	margin: 16px 0;
+	padding: 0;
 
-	padding-bottom: var(--gs-timeline-gap-y);
+	list-style: none;
 
-}
-
-.gs-timeline-item:last-child {
-	padding-bottom: 0;
-}
-
-.gs-timeline-item:not(:last-child)::before {
-
-	content: "";
-
-	position: absolute;
-	top: var(--gs-timeline-node-center-y);
-	left: calc(var(--gs-timeline-node-size) / 2 - 0.5px);
-
-	width: 1px;
-	height: 100%;
-
-	background: var(--gs-timeline-accent);
+	/*
+	 * Empty/unset by default (--gs-font-family is never declared
+	 * unless a future Typography setting has an actual value saved),
+	 * so `inherit` is what actually applies out of the box: same as
+	 * today, following whatever the theme's own typography sets.
+	 * Cascades down to every Timeline Item automatically -- no need
+	 * to repeat this in timeline-item/style.scss.
+	 */
+	font-family: var(--gs-font-family, inherit);
 
 }
 
 /* ------------------------------------------------------
-   Node (visual marker)
+   Variant: Numbered Timeline
+   Only the node size changes here -- the connecting line
+   and marker position adjust automatically via the CSS
+   calculations in timeline-item/style.scss (no hardcoded
+   values there).
 ------------------------------------------------------ */
 
-.gs-timeline-item__node {
-
-	position: relative;
-	z-index: 1;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	width: var(--gs-timeline-node-size);
-	height: var(--gs-timeline-node-size);
-
-	margin-top: calc(var(--gs-timeline-node-center-y) - (var(--gs-timeline-node-size) / 2));
-
-	background: var(--gs-timeline-accent);
-	border-radius: 50%;
-
-	color: #fff;
-	font-size: 12px;
-	font-weight: 700;
-	line-height: 1;
-
-}
-
-/* The number is only shown for the Numbered Timeline variant.
-   The node stays aria-hidden -- order is still conveyed to
-   screen readers via the <ol> element's own semantics; the
-   number here is a purely visual reinforcement. */
 .gs-timeline--numbered {
-	counter-reset: gs-timeline-counter;
-}
-
-.gs-timeline--numbered .gs-timeline-item {
-	counter-increment: gs-timeline-counter;
-}
-
-.gs-timeline--numbered .gs-timeline-item__node::before {
-	content: counter(gs-timeline-counter);
-}
-
-/* ------------------------------------------------------
-   Content
------------------------------------------------------- */
-
-.gs-timeline-item__content {
-	min-width: 0;
-}
-
-.gs-timeline-item__title {
-
-	margin: 0 !important;
-
-	font-size: 16px;
-	font-weight: 700;
-	line-height: 1.5;
-
-}
-
-.gs-timeline-item__body {
-
-	margin-top: var(--gs-timeline-title-gap) !important;
-
-	font-size: 15px;
-	line-height: 1.7;
-
-}
-
-/* Resets the default margin of every core block (Paragraph,
-   List, etc.), then defines our own spacing between blocks
-   when the body has more than one block.
-   !important is needed here because the theme's own
-   typography styles usually target the tag directly (e.g.
-   `.entry-content p`), which has higher specificity than our
-   universal selector (`> *`) -- without !important, the
-   theme's default margin would still win and the title→body
-   gap would stack instead of being replaced. */
-.gs-timeline-item__body > * {
-	margin: 0 !important;
-}
-
-.gs-timeline-item__body > * + * {
-	margin-top: var(--gs-timeline-body-gap) !important;
-}
-
-.gs-timeline-item__body ul,
-.gs-timeline-item__body ol {
-	padding-left: 20px;
-}
-
-.gs-timeline-item__body li + li {
-	margin-top: 4px;
-}
-
-.gs-timeline-item__body a {
-
-	color: var(--gs-timeline-accent);
-	font-weight: 600;
-	text-decoration: none;
-
-	transition: text-decoration 0.2s ease;
-
-}
-
-.gs-timeline-item__body a:hover {
-	text-decoration: underline;
-}
-
-.gs-timeline-item__body a:visited {
-	color: var(--gs-timeline-accent);
+	--gs-timeline-node-size: 22px;
 }
 
 /* ------------------------------------------------------
@@ -171,12 +68,9 @@
 
 @media (max-width: 480px) {
 
-	.gs-timeline-item__title {
-		font-size: 15px;
-	}
-
-	.gs-timeline-item__body {
-		font-size: 14px;
+	.gs-timeline {
+		--gs-timeline-gap-x: 12px;
+		--gs-timeline-gap-y: 16px;
 	}
 
 }

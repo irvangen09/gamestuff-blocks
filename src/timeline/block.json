@@ -2,28 +2,26 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 
-	"name": "gamestuff/timeline-item",
+	"name": "gamestuff/timeline",
 
 	"version": "1.0.0",
 
-	"title": "Timeline Item",
+	"title": "GameStuff Timeline",
 
 	"category": "gamestuff",
 
-	"parent": [ "gamestuff/timeline" ],
-
 	"icon": "editor-ol",
 
-	"description": "A single entry in the GameStuff Timeline, made up of a title and free-form content.",
+	"description": "Displays sequential information (heart events, walkthroughs, quests, etc.) as a simple vertical timeline.",
 
-	"keywords": [ "timeline", "item", "sequence", "gamestuff" ],
+	"keywords": [ "timeline", "sequence", "chronology", "gamestuff" ],
 
 	"textdomain": "gamestuff-blocks",
 
 	"attributes": {
-		"title": {
+		"timelineType": {
 			"type": "string",
-			"default": ""
+			"default": "default"
 		}
 	},
 
