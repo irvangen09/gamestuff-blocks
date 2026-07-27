@@ -177,6 +177,7 @@ final class Plugin {
 		\GameStuff\Blocks\Toc\Toc::boot();
 		\GameStuff\Blocks\Accordion\Accordion::boot();
 		\GameStuff\Blocks\ContentScroll\ContentScroll::boot();
+		\GameStuff\Blocks\Infobox\Infobox::boot();
 
 		if ( is_admin() ) {
 			\GameStuff\Settings\SettingsPage::boot();
