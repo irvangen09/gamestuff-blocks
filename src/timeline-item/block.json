@@ -1,0 +1,40 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/timeline-item",
+
+	"version": "1.0.0",
+
+	"title": "Timeline Item",
+
+	"category": "gamestuff",
+
+	"parent": [ "gamestuff/timeline" ],
+
+	"icon": "editor-ol",
+
+	"description": "A single entry in the GameStuff Timeline, made up of a title and free-form content.",
+
+	"keywords": [ "timeline", "item", "sequence", "gamestuff" ],
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+
+	"editorScript": "file:./index.js",
+
+	"editorStyle": "file:./index.css",
+
+	"style": "file:./style-index.css"
+}
