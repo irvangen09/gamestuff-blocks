@@ -1,0 +1,182 @@
+/* ======================================================
+   Timeline Item — Frontend Styles
+   ------------------------------------------------------
+   Custom properties (--gs-timeline-*) are defined by the
+   parent .gs-timeline (see src/timeline/style.scss).
+
+   Structure:
+   li.gs-timeline-item
+     span.gs-timeline-item__node    (visual marker, aria-hidden)
+     div.gs-timeline-item__content
+       p.gs-timeline-item__title
+       div.gs-timeline-item__body   (InnerBlocks: paragraph, list, etc.)
+
+   The vertical line is drawn as a ::before on EVERY item
+   (not a single element for the whole list). Because its
+   height is set to 100% of the li itself, the line always
+   stops exactly at the next item's node center -- adjusting
+   automatically even when item heights differ (long/short
+   rich text content), with no JavaScript needed.
+====================================================== */
+
+.gs-timeline-item {
+
+	position: relative;
+
+	display: grid;
+	grid-template-columns: var(--gs-timeline-node-size) 1fr;
+	column-gap: var(--gs-timeline-gap-x);
+
+	padding-bottom: var(--gs-timeline-gap-y);
+
+}
+
+.gs-timeline-item:last-child {
+	padding-bottom: 0;
+}
+
+.gs-timeline-item:not(:last-child)::before {
+
+	content: "";
+
+	position: absolute;
+	top: var(--gs-timeline-node-center-y);
+	left: calc(var(--gs-timeline-node-size) / 2 - 0.5px);
+
+	width: 1px;
+	height: 100%;
+
+	background: var(--gs-timeline-accent);
+
+}
+
+/* ------------------------------------------------------
+   Node (visual marker)
+------------------------------------------------------ */
+
+.gs-timeline-item__node {
+
+	position: relative;
+	z-index: 1;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: var(--gs-timeline-node-size);
+	height: var(--gs-timeline-node-size);
+
+	margin-top: calc(var(--gs-timeline-node-center-y) - (var(--gs-timeline-node-size) / 2));
+
+	background: var(--gs-timeline-accent);
+	border-radius: 50%;
+
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+
+}
+
+/* The number is only shown for the Numbered Timeline variant.
+   The node stays aria-hidden -- order is still conveyed to
+   screen readers via the <ol> element's own semantics; the
+   number here is a purely visual reinforcement. */
+.gs-timeline--numbered {
+	counter-reset: gs-timeline-counter;
+}
+
+.gs-timeline--numbered .gs-timeline-item {
+	counter-increment: gs-timeline-counter;
+}
+
+.gs-timeline--numbered .gs-timeline-item__node::before {
+	content: counter(gs-timeline-counter);
+}
+
+/* ------------------------------------------------------
+   Content
+------------------------------------------------------ */
+
+.gs-timeline-item__content {
+	min-width: 0;
+}
+
+.gs-timeline-item__title {
+
+	margin: 0 !important;
+
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1.5;
+
+}
+
+.gs-timeline-item__body {
+
+	margin-top: var(--gs-timeline-title-gap) !important;
+
+	font-size: 15px;
+	line-height: 1.7;
+
+}
+
+/* Resets the default margin of every core block (Paragraph,
+   List, etc.), then defines our own spacing between blocks
+   when the body has more than one block.
+   !important is needed here because the theme's own
+   typography styles usually target the tag directly (e.g.
+   `.entry-content p`), which has higher specificity than our
+   universal selector (`> *`) -- without !important, the
+   theme's default margin would still win and the title→body
+   gap would stack instead of being replaced. */
+.gs-timeline-item__body > * {
+	margin: 0 !important;
+}
+
+.gs-timeline-item__body > * + * {
+	margin-top: var(--gs-timeline-body-gap) !important;
+}
+
+.gs-timeline-item__body ul,
+.gs-timeline-item__body ol {
+	padding-left: 20px;
+}
+
+.gs-timeline-item__body li + li {
+	margin-top: 4px;
+}
+
+.gs-timeline-item__body a {
+
+	color: var(--gs-timeline-accent);
+	font-weight: 600;
+	text-decoration: none;
+
+	transition: text-decoration 0.2s ease;
+
+}
+
+.gs-timeline-item__body a:hover {
+	text-decoration: underline;
+}
+
+.gs-timeline-item__body a:visited {
+	color: var(--gs-timeline-accent);
+}
+
+/* ------------------------------------------------------
+   Mobile (≤ 480px)
+------------------------------------------------------ */
+
+@media (max-width: 480px) {
+
+	.gs-timeline-item__title {
+		font-size: 15px;
+	}
+
+	.gs-timeline-item__body {
+		font-size: 14px;
+	}
+
+}
