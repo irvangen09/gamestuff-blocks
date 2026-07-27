@@ -5,6 +5,21 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.5.0] - 2026-07-28
+
+### Added
+
+- **Character Infobox** and **Infobox Field** blocks: a portrait +
+  key/value information card, e.g. for character profiles, item
+  stats, or quest summaries.
+- Character Infobox's accent color is wired to the `primary_color`
+  global setting, the same pattern used by TOC and Timeline.
+- Dark mode styling for these blocks is generated through the shared
+  `DarkMode` service, the same pattern used by TOC, Accordion, and
+  Content Scroll.
+- A custom `gamestuff_character` image size (270×360, scaled not
+  cropped) for character portraits.
+
 ## [1.4.0] - 2026-07-28
 
 ### Added
@@ -15,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Timeline's accent color is wired to the `primary_color` global
   setting, the same pattern used by TOC.
 
-## [1.3.0] - 2026-07-27
+## [1.3.0] - 2026-07-26
 
 ### Added
 

@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,6 +24,7 @@ Blocks currently available:
 * Accordion — displays content as a set of collapsible panels.
 * Content Scroll — a navigation grid on desktop that becomes a horizontal scroll on mobile.
 * Timeline — a vertical timeline for sequential content, with a numbered variant.
+* Character Infobox — a portrait + key/value information card, e.g. for character profiles or item stats.
 
 More content blocks are introduced in subsequent releases.
 
@@ -49,6 +50,9 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 
 == Changelog ==
 
+= 1.5.0 =
+* Added the Character Infobox and Infobox Field blocks.
+
 = 1.4.0 =
 * Added the Timeline and Timeline Item blocks.
 
@@ -66,6 +70,9 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.5.0 =
+Adds the Character Infobox and Infobox Field blocks.
 
 = 1.4.0 =
 Adds the Timeline and Timeline Item blocks.
