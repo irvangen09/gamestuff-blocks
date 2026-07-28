@@ -1,21 +1,41 @@
+# Files and folders excluded from the distributable package produced
+# by `npm run plugin-zip` (wp-scripts plugin-zip). Everything listed
+# here is either a development-only tool, a source file already
+# compiled into build/, or not meant for end users.
+
+# Version control
 .git
 .github
 .gitignore
+.gitattributes
+
+# Editor / tooling config
 .editorconfig
 .distignore
 
+# Node tooling
 node_modules
-src
-tests
-
-composer.json
-composer.lock
 package.json
 package-lock.json
 
+# PHP tooling
+composer.json
+composer.lock
+composer.phar
+vendor
 phpcs.xml
-phpcs.xml.dist
-webpack.config.js
 
-*.log
+# Uncompiled block source — build/ is what ships
+src
+
+# Contributor-facing docs — not needed by end users running the plugin
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+SECURITY.md
+
+# Stray local build artifacts
+*.zip
+
+# OS cruft
 .DS_Store
+Thumbs.db
