@@ -21,7 +21,7 @@
 	"attributes": {
 		"title": {
 			"type": "string",
-			"default": "Daftar Isi"
+			"default": "Table of Contents"
 		}
 	},
 
