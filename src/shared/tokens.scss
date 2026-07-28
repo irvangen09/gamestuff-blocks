@@ -3,8 +3,8 @@
  *
  * Single source of truth for values that would otherwise be hardcoded
  * independently in more than one file. Only tokens actually shared by
- * more than one block are added here — see ARCHITECTURE.md and
- * ENGINEERING_PRINCIPLES.md on avoiding premature abstraction.
+ * more than one block are added here, to avoid extracting shared
+ * abstractions before they're genuinely needed.
  *
  * SCSS can't share a literal value with JS directly, so this is the
  * canonical SCSS-side value for the mobile breakpoint, kept manually

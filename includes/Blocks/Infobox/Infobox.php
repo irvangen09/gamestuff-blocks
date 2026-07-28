@@ -55,7 +55,8 @@ final class Infobox {
 	 * Values match this block's previous production styling exactly:
 	 * already generic hex/rgba values, not tied to any one theme's
 	 * own custom properties, so no adjustment was needed here (unlike
-	 * the Accordion case documented in PROJECT_DECISIONS.md).
+	 * Accordion Item, whose original dark-mode values referenced
+	 * theme-specific custom properties and had to be reworked first).
 	 *
 	 * @since 1.5.0
 	 *
