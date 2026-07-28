@@ -16,8 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Single entry point for everything the TOC block needs beyond its
  * own block.json / render.php registration (handled generically by
- * BlockRegistry): the heading anchor injector, and this block's dark
- * mode rules.
+ * BlockRegistry): the heading anchor injector, this block's dark
+ * mode rules, and invalidating HeadingCollector's cached heading
+ * scan whenever a post is saved.
  *
  * As blocks grow more complex than "just render.php", each one gets a
  * bootstrap class following this same shape, called once from
@@ -46,6 +47,8 @@ final class Toc {
 		HeadingAnchorInjector::boot();
 
 		DarkMode::register( self::dark_mode_rules() );
+
+		add_action( 'save_post', array( HeadingCollector::class, 'clear_cache' ) );
 	}
 
 	/**
