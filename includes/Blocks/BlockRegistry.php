@@ -111,7 +111,39 @@ final class BlockRegistry {
 				continue;
 			}
 
-			register_block_type( $block['path'] );
+			$registered = register_block_type( $block['path'] );
+
+			self::set_script_translations( $registered );
+		}
+	}
+
+	/**
+	 * Register translations for a block's editor script handle(s), so
+	 * strings wrapped in __() in edit.js actually get translated in
+	 * the block editor once a translation file for the visitor's
+	 * locale exists in languages/. Without this, __() wrapping alone
+	 * is not enough — WordPress has no way to know which script
+	 * handle a given translation file belongs to.
+	 *
+	 * Called once per block from register(), rather than requiring
+	 * each block's own bootstrap class to do it — new blocks are
+	 * covered automatically the moment they're discovered by all(),
+	 * with no extra step required.
+	 *
+	 * @since 1.5.1
+	 *
+	 * @param \WP_Block_Type|false $block_type Return value of
+	 *        register_block_type(), or false if registration failed.
+	 * @return void
+	 */
+	private static function set_script_translations( $block_type ): void {
+
+		if ( ! $block_type instanceof \WP_Block_Type ) {
+			return;
+		}
+
+		foreach ( $block_type->editor_script_handles as $handle ) {
+			wp_set_script_translations( $handle, 'gamestuff-blocks', GAMESTUFF_BLOCKS_PATH . 'languages' );
 		}
 	}
 
