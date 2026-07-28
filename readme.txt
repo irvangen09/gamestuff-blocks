@@ -16,7 +16,7 @@ GameStuff Blocks provides a focused set of Gutenberg blocks built specifically f
 
 Every block is built with a clear purpose, clean semantic HTML, accessibility in mind, and no unnecessary CSS or JavaScript. The plugin favors a small number of well-made blocks over a large number of overlapping ones.
 
-Each block can be individually enabled or disabled from the plugin's settings page. A disabled block is not registered, and loads no styles or scripts on the front end.
+Only the blocks a page actually uses are registered and loaded — an inactive block adds no styles or scripts on the front end.
 
 Blocks currently available:
 
@@ -35,10 +35,6 @@ More content blocks are introduced in subsequent releases.
 3. Configure global settings under Settings > GameStuff Blocks.
 
 == Frequently Asked Questions ==
-
-= Can I disable individual blocks? =
-
-Yes. Every block can be turned on or off independently. A disabled block is removed from the block inserter and does not load any of its assets on the front end.
 
 = Does this plugin depend on jQuery or other front-end libraries? =
 
