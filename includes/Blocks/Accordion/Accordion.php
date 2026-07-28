@@ -7,6 +7,7 @@
 
 namespace GameStuff\Blocks\Accordion;
 
+use GameStuff\Blocks\BlockRegistry;
 use GameStuff\Services\DarkMode;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -106,11 +107,7 @@ final class Accordion {
 	 */
 	public static function print_progressive_enhancement_flag(): void {
 
-		if ( ! is_singular() ) {
-			return;
-		}
-
-		if ( ! has_block( 'gamestuff/accordion', get_the_ID() ) ) {
+		if ( ! BlockRegistry::page_has_block( 'gamestuff/accordion' ) ) {
 			return;
 		}
 
@@ -131,11 +128,7 @@ final class Accordion {
 	 */
 	public static function enqueue_dashicons(): void {
 
-		if ( ! is_singular() ) {
-			return;
-		}
-
-		if ( ! has_block( 'gamestuff/accordion', get_the_ID() ) ) {
+		if ( ! BlockRegistry::page_has_block( 'gamestuff/accordion' ) ) {
 			return;
 		}
 
