@@ -7,6 +7,7 @@
 
 namespace GameStuff\Blocks\Infobox;
 
+use GameStuff\Blocks\BlockRegistry;
 use GameStuff\Services\DarkMode;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -113,11 +114,7 @@ final class Infobox {
 	 */
 	public static function enqueue_dashicons(): void {
 
-		if ( ! is_singular() ) {
-			return;
-		}
-
-		if ( ! has_block( 'gamestuff/character-infobox', get_the_ID() ) ) {
+		if ( ! BlockRegistry::page_has_block( 'gamestuff/character-infobox' ) ) {
 			return;
 		}
 
