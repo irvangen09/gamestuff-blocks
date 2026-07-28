@@ -43,7 +43,17 @@ final class HeadingCollector {
 	 */
 	public static function get_headings( int $post_id ): array {
 
-		$post_content = get_post_field( 'post_content', $post_id );
+		/*
+		 * 'raw' context is deliberate here, not the 'display' default.
+		 * This content is about to be re-parsed with parse_blocks(),
+		 * which expects the exact markup as stored in the database —
+		 * including the `<!-- wp:heading -->` comment delimiters.
+		 * The default 'display' context runs the value through the
+		 * `post_content` filter (wptexturize, wpautop, and similar),
+		 * which is meant for content about to be shown to a visitor,
+		 * not content about to be parsed back into blocks.
+		 */
+		$post_content = get_post_field( 'post_content', $post_id, 'raw' );
 
 		if ( ! is_string( $post_content ) || '' === $post_content ) {
 			return array();
