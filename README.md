@@ -35,7 +35,7 @@ For end users, install this plugin like any other WordPress plugin: upload the p
 This repository contains the plugin's source. A build step is required before the plugin can be used — the `build/` directory is generated, not committed.
 
 ```bash
-git clone https://github.com/irvangen09/gamestuff-blocks
+git clone https://github.com/irvangen09/gamestuff-blocks.git
 cd gamestuff-blocks
 
 npm install
