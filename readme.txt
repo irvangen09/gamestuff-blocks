@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,13 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 
 == Changelog ==
 
+= 1.5.1 =
+* Fixed a leftover default title on the TOC block not being translated to English.
+* Fixed script translations not being registered for any block, so translated strings weren't showing up in the editor.
+* Improved TOC performance by caching the heading scan on a per-post basis.
+* Added lazy loading to Content Scroll Item images.
+* Various internal code-quality and documentation fixes.
+
 = 1.5.0 =
 * Added the Character Infobox and Infobox Field blocks.
 
@@ -66,6 +73,9 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.5.1 =
+Bug fixes and performance improvements; no new blocks. Safe to update.
 
 = 1.5.0 =
 Adds the Character Infobox and Infobox Field blocks.

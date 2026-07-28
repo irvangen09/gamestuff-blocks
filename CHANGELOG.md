@@ -5,6 +5,33 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.5.1] - 2026-07-28
+
+### Fixed
+
+- TOC block's default title, which was left in Indonesian instead of
+  being translated to English along with every other block's strings.
+- Script translations were never registered for any block, so
+  `__()`-wrapped editor strings had no way to actually be translated
+  even once translation files existed for a locale.
+- `HeadingCollector` fetched `post_content` with the default filtered
+  context before re-parsing it into blocks; switched to the raw,
+  unfiltered context that `parse_blocks()` expects.
+
+### Added
+
+- Lazy loading for Content Scroll Item thumbnail images.
+- Caching for the TOC block's heading scan, invalidated automatically
+  when a post is saved.
+
+### Changed
+
+- Internal refactor: the repeated "is this block present on the
+  current page" check used for conditional asset loading is now a
+  single shared helper instead of being duplicated per block.
+- Various documentation and code-comment fixes for internal
+  consistency.
+
 ## [1.5.0] - 2026-07-28
 
 ### Added
