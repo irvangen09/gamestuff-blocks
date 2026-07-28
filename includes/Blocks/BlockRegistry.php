@@ -237,4 +237,29 @@ final class BlockRegistry {
 
 		return is_array( $disabled ) ? $disabled : array();
 	}
+
+	/**
+	 * Check whether the page currently being viewed contains a given
+	 * block, for blocks that load extra assets (a stylesheet, an
+	 * inline script) only when actually needed on the front end.
+	 *
+	 * Centralized here rather than duplicated in each block's own
+	 * bootstrap class — this guard is identical regardless of which
+	 * block is being checked for, so any block adding its own
+	 * conditional asset in the future can reuse it directly instead
+	 * of repeating the same `is_singular()` + `has_block()` pair.
+	 *
+	 * @since 1.5.1
+	 *
+	 * @param string $block_name Full block name, e.g. 'gamestuff/accordion'.
+	 * @return bool
+	 */
+	public static function page_has_block( string $block_name ): bool {
+
+		if ( ! is_singular() ) {
+			return false;
+		}
+
+		return has_block( $block_name, get_the_ID() );
+	}
 }
