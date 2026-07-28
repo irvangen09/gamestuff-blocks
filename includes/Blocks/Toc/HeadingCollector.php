@@ -36,12 +36,70 @@ final class HeadingCollector {
 	 * Get every heading in a post, each with a unique anchor already
 	 * assigned.
 	 *
+	 * Cached in a transient, since this is a dynamic block re-rendered
+	 * on every visit — without caching, the full scan below (parsing
+	 * the entire post_content, walking the block tree recursively)
+	 * would repeat on every single page view. See clear_cache() for
+	 * invalidation.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post to scan.
 	 * @return array<int, array{level:int, text:string, anchor:string}>
 	 */
 	public static function get_headings( int $post_id ): array {
+
+		$cache_key = self::cache_key( $post_id );
+		$cached    = get_transient( $cache_key );
+
+		if ( is_array( $cached ) ) {
+			return $cached;
+		}
+
+		$headings = self::scan( $post_id );
+
+		set_transient( $cache_key, $headings, DAY_IN_SECONDS );
+
+		return $headings;
+	}
+
+	/**
+	 * Clear the cached heading scan for a post, so the next render
+	 * picks up fresh headings instead of a stale cached list.
+	 *
+	 * Intended to run on `save_post` — see Toc::boot().
+	 *
+	 * @since 1.5.1
+	 *
+	 * @param int $post_id Post whose cache should be cleared.
+	 * @return void
+	 */
+	public static function clear_cache( int $post_id ): void {
+		delete_transient( self::cache_key( $post_id ) );
+	}
+
+	/**
+	 * Build the transient key used to cache a post's heading scan.
+	 *
+	 * @since 1.5.1
+	 *
+	 * @param int $post_id Post the cache belongs to.
+	 * @return string
+	 */
+	private static function cache_key( int $post_id ): string {
+		return 'gamestuff_toc_headings_' . $post_id;
+	}
+
+	/**
+	 * Actually perform the heading scan — the expensive part that
+	 * get_headings() caches the result of.
+	 *
+	 * @since 1.5.1
+	 *
+	 * @param int $post_id Post to scan.
+	 * @return array<int, array{level:int, text:string, anchor:string}>
+	 */
+	private static function scan( int $post_id ): array {
 
 		/*
 		 * 'raw' context is deliberate here, not the 'display' default.
