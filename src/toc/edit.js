@@ -31,7 +31,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					className="gs-toc__title"
 					value={ title }
 					onChange={ ( value ) => setAttributes( { title: value } ) }
-					placeholder={ __( 'Daftar Isi', 'gamestuff-blocks' ) }
+					placeholder={ __( 'Table of Contents', 'gamestuff-blocks' ) }
 				/>
 			</div>
 

@@ -34,7 +34,7 @@ if ( empty( $headings ) ) {
 $tree      = HeadingCollector::build_tree( $headings );
 $list_html = HeadingCollector::render_tree( $tree );
 
-$title = ! empty( $attributes['title'] ) ? $attributes['title'] : __( 'Daftar Isi', 'gamestuff-blocks' );
+$title = ! empty( $attributes['title'] ) ? $attributes['title'] : __( 'Table of Contents', 'gamestuff-blocks' );
 
 $wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'gs-toc' ) );
 ?>
