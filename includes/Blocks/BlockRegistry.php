@@ -227,11 +227,17 @@ final class BlockRegistry {
 	/**
 	 * Get the list of currently disabled block slugs.
 	 *
+	 * Public since 1.6.0 so the Global Settings "Blocks" tab (see
+	 * Settings/SettingsPage.php) can read the current toggle state
+	 * to pre-check/uncheck each block's checkbox — the admin UI this
+	 * class's docblock and option naming have anticipated since
+	 * Sesi 1.
+	 *
 	 * @since 1.0.0
 	 *
 	 * @return string[]
 	 */
-	private static function get_disabled_blocks(): array {
+	public static function get_disabled_blocks(): array {
 
 		$disabled = get_option( self::OPTION, array() );
 
