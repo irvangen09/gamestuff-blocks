@@ -31,6 +31,7 @@ export default function save( { attributes } ) {
 				src={ imageUrl }
 				alt={ imageAlt }
 				style={ { objectFit: scale } }
+				loading="lazy"
 			/>
 		</div>
 	);
