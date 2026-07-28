@@ -208,7 +208,10 @@ export default function Edit( { attributes, setAttributes } ) {
 					label={ __( 'URL', 'gamestuff-blocks' ) }
 					value={ url }
 					onChange={ ( value ) => setAttributes( { url: value } ) }
-					placeholder={ __( '/destination-page/', 'gamestuff-blocks' ) }
+					placeholder={ __(
+						'/destination-page/',
+						'gamestuff-blocks'
+					) }
 					type="url"
 					__next40pxDefaultSize
 				/>

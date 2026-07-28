@@ -22,21 +22,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * collapse behavior depends on, and the Dashicons stylesheet its
  * optional icon field relies on.
  *
- * @since 1.0.0
+ * @since 1.2.0
  */
 final class Accordion {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
 	 *
-	 * @since 1.0.0
+	 * @since 1.2.0
 	 */
 	private function __construct() {}
 
 	/**
 	 * Boot everything this block needs.
 	 *
-	 * @since 1.0.0
+	 * @since 1.2.0
 	 *
 	 * @return void
 	 */
@@ -53,7 +53,7 @@ final class Accordion {
 	 * service rather than baked into style.scss under a fixed theme
 	 * selector — see Services/DarkMode.php for why.
 	 *
-	 * @since 1.0.0
+	 * @since 1.2.0
 	 *
 	 * @return array<int, array{selector:string, css:string}>
 	 */
@@ -101,7 +101,7 @@ final class Accordion {
 	 * desktop — instead of being stuck behind a non-functional
 	 * toggle button.
 	 *
-	 * @since 1.0.0
+	 * @since 1.2.0
 	 *
 	 * @return void
 	 */
@@ -122,7 +122,7 @@ final class Accordion {
 	 * render a dashicon class in its saved markup, so it's enqueued
 	 * only when the page actually contains an Accordion.
 	 *
-	 * @since 1.0.0
+	 * @since 1.2.0
 	 *
 	 * @return void
 	 */

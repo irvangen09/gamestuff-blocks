@@ -253,7 +253,9 @@ const v2 = {
 						className="gs-cs-item__link"
 						href={ url }
 						aria-label={
-							hasTitle ? title.replace( /<[^>]*>/g, '' ) : undefined
+							hasTitle
+								? title.replace( /<[^>]*>/g, '' )
+								: undefined
 						}
 					>
 						{ thumb }

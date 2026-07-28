@@ -18,6 +18,8 @@
 
 	"keywords": [ "timeline", "item", "sequence", "gamestuff" ],
 
+	"example": {},
+
 	"textdomain": "gamestuff-blocks",
 
 	"attributes": {

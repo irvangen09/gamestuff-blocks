@@ -18,6 +18,8 @@
 
 	"keywords": [ "scroll", "card", "gamestuff" ],
 
+	"example": {},
+
 	"textdomain": "gamestuff-blocks",
 
 	"attributes": {

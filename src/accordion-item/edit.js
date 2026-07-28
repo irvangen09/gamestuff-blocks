@@ -150,7 +150,10 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 								title: value,
 							} )
 						}
-						placeholder={ __( 'Section title…', 'gamestuff-blocks' ) }
+						placeholder={ __(
+							'Section title…',
+							'gamestuff-blocks'
+						) }
 						allowedFormats={ [] }
 					/>
 

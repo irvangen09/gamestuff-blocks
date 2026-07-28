@@ -19,6 +19,9 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			return;
 		}
 
+		// +1px tolerance: browsers can report scrollWidth a
+		// sub-pixel larger than clientWidth even when the track
+		// isn't actually scrollable, due to rounding during layout.
 		const hasOverflow = track.scrollWidth > track.clientWidth + 1;
 
 		if ( ! isMobileViewport() || ! hasOverflow ) {
@@ -26,6 +29,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			return;
 		}
 
+		// -4px tolerance: same rounding issue as above, this time on
+		// the "have we reached the end" check — without it, some
+		// browsers/zoom levels never quite hit an exact scrollWidth
+		// match and the arrow would stay visible past the real end.
 		const atEnd =
 			track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
 

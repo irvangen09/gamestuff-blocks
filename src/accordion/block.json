@@ -16,6 +16,8 @@
 
 	"keywords": [ "accordion", "faq", "toggle", "gamestuff" ],
 
+	"example": {},
+
 	"textdomain": "gamestuff-blocks",
 
 	"supports": {

@@ -128,6 +128,15 @@
 
 }
 
+/*
+ * characterName renders as a real heading (h2-h6) in the editor
+ * too, so the same theme-heading-cascade concern documented in
+ * style.scss for this element applies here: the extra
+ * specificity + !important below is a deliberate defense
+ * against the active theme's own heading typography leaking
+ * into the editor summary row, not a shortcut around this
+ * plugin's own selector specificity.
+ */
 .gs-character-summary .gs-character-name {
 
 	@extend %gs-heading-reset;
@@ -138,7 +147,15 @@
 
 	font-size: 20px !important;
 
+	// Default browser outline is replaced, not removed outright,
+	// with a focus-visible ring below so keyboard users editing
+	// this RichText field still get a clear focus indicator.
 	outline: none;
+
+	&:focus-visible {
+		box-shadow: 0 0 0 2px var(--gs-accent, #fe6f22);
+		border-radius: 2px;
+	}
 
 }
 
@@ -195,7 +212,14 @@
 	min-height: 32px;
 	padding: 6px 0;
 
+	// Same reasoning as .gs-character-name above: outline is
+	// replaced with a focus-visible ring, not just removed.
 	outline: none;
+
+	&:focus-visible {
+		box-shadow: 0 0 0 2px var(--gs-accent, #fe6f22);
+		border-radius: 2px;
+	}
 
 }
 

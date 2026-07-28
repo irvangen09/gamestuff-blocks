@@ -16,6 +16,8 @@
 
 	"keywords": [ "scroll", "grid", "navigation", "gamestuff" ],
 
+	"example": {},
+
 	"textdomain": "gamestuff-blocks",
 
 	"attributes": {

@@ -24,21 +24,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * bootstrap class following this same shape, called once from
  * Plugin::register_services() — see includes/Core/Plugin.php.
  *
- * @since 1.0.0
+ * @since 1.1.0
  */
 final class Toc {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
 	 *
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	private function __construct() {}
 
 	/**
 	 * Boot everything this block needs.
 	 *
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 *
 	 * @return void
 	 */
@@ -61,7 +61,7 @@ final class Toc {
 	 *
 	 * Values match this block's previous production styling exactly.
 	 *
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 *
 	 * @return array<int, array{selector:string, css:string}>
 	 */

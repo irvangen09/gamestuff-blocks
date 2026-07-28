@@ -5,6 +5,10 @@
 	"author": "Irvan Noerfazri",
 	"license": "GPL-2.0-or-later",
 	"private": true,
+	"engines": {
+		"node": ">=18.12.0",
+		"npm": ">=8.19.2"
+	},
 	"scripts": {
 		"build": "wp-scripts build",
 		"start": "wp-scripts start",

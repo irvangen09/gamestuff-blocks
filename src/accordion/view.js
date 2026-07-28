@@ -8,20 +8,23 @@
 import { isMobileViewport, watchMobileBreakpoint } from '../shared/breakpoint';
 
 document.addEventListener( 'DOMContentLoaded', () => {
-	const items = document.querySelectorAll( '.gs-accordion-item' );
+	// Query each item's trigger once, up front, and reuse it below —
+	// both the resize-driven state update and the click handler need
+	// it, so there's no reason to re-query the DOM for the same
+	// element twice.
+	const entries = Array.from(
+		document.querySelectorAll( '.gs-accordion-item' )
+	)
+		.map( ( item ) => ( {
+			item,
+			trigger: item.querySelector( '.gs-accordion-item__trigger' ),
+		} ) )
+		.filter( ( entry ) => entry.trigger );
 
 	const updateState = () => {
 		const mobile = isMobileViewport();
 
-		items.forEach( ( item ) => {
-			const trigger = item.querySelector(
-				'.gs-accordion-item__trigger'
-			);
-
-			if ( ! trigger ) {
-				return;
-			}
-
+		entries.forEach( ( { item, trigger } ) => {
 			item.classList.toggle( 'is-open', ! mobile );
 			trigger.setAttribute( 'aria-expanded', ! mobile );
 		} );
@@ -36,13 +39,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// instead of being duplicated in this file.
 	watchMobileBreakpoint( updateState );
 
-	items.forEach( ( item ) => {
-		const trigger = item.querySelector( '.gs-accordion-item__trigger' );
-
-		if ( ! trigger ) {
-			return;
-		}
-
+	entries.forEach( ( { item, trigger } ) => {
 		trigger.addEventListener( 'click', () => {
 			if ( ! isMobileViewport() ) {
 				return;

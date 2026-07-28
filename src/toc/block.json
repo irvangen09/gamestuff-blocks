@@ -16,6 +16,8 @@
 
 	"keywords": [ "toc", "table of contents", "daftar isi", "gamestuff" ],
 
+	"example": {},
+
 	"textdomain": "gamestuff-blocks",
 
 	"attributes": {
