@@ -141,10 +141,19 @@ final class SettingsRegistry {
 	 *                                override, e.g.:
 	 *                                [ [ 'selector' => '.gs-character',
 	 *                                    'property' => '--gs-accent' ] ]
-	 *                                A block adds its own selector here
-	 *                                when it's built, rather than this
-	 *                                file needing to know about every
-	 *                                block that exists.
+	 *                                Currently all declared centrally in
+	 *                                boot(), one setting registration
+	 *                                listing every block target at once —
+	 *                                with only a handful of targets total,
+	 *                                this is simpler than having each
+	 *                                block's bootstrap class register its
+	 *                                own target separately. Worth
+	 *                                revisiting once a new block that
+	 *                                genuinely needs a site-wide accent
+	 *                                color target is added; until then,
+	 *                                a decentralized mechanism would be
+	 *                                solving a problem this setting
+	 *                                doesn't have yet.
 	 *     @type string $group        Section grouping on the admin page,
 	 *                                e.g. 'appearance'.
 	 *     @type string $description  Short help text shown under the field
