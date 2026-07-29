@@ -7,6 +7,8 @@
 
 namespace GameStuff\Settings;
 
+use GameStuff\Blocks\BlockRegistry;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -15,16 +17,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Renders the "Settings > GameStuff Blocks" admin page and handles
  * saving the values entered there.
  *
- * Renders a single settings form built directly from whatever is
- * registered in SettingsRegistry, so adding a new setting later only
- * requires a SettingsRegistry::register() call — this file does not
- * need to change. The tabbed layout (Dashboard / Blocks / Appearance /
- * Performance / Tools / About) described in the product concept is
- * intentionally not built yet: with only one setting registered so
- * far, a single form section is simpler and equally functional; the
- * tab structure belongs to a later stage once there's more than one
- * group of content to separate (e.g. once block enable/disable
- * toggles exist).
+ * Two tabs are rendered: "Appearance" (every setting registered in
+ * SettingsRegistry, filtered by its 'group') and "Blocks" (per-block
+ * enable/disable toggles, reading/writing BlockRegistry's own
+ * option). These are two independent WordPress options, each
+ * registered under the same settings group (PAGE_SLUG) so a single
+ * settings_fields() call covers both — but each tab's <form> only
+ * includes fields for the option that tab edits, so submitting one
+ * tab never touches the other's saved value (see options.php: an
+ * option is only processed when its key is present in $_POST).
+ *
+ * The tabbed layout replaces the single-section form this page used
+ * to render before block enable/disable toggles existed — see the
+ * previous docblock note here, which named this exact trigger.
  *
  * @since 1.0.0
  */
@@ -39,6 +44,19 @@ final class SettingsPage {
 	private const PAGE_SLUG = 'gamestuff-blocks';
 
 	/**
+	 * Valid tab slugs, in the order they're rendered, mapped to their
+	 * label. The first is the default when no ?tab= is present or an
+	 * unrecognized one is passed.
+	 *
+	 * @since 1.6.0
+	 * @var array<string, string>
+	 */
+	private const TABS = array(
+		'appearance' => 'Appearance',
+		'blocks'     => 'Blocks',
+	);
+
+	/**
 	 * Static-only class — not meant to be instantiated.
 	 *
 	 * @since 1.0.0
@@ -46,7 +64,7 @@ final class SettingsPage {
 	private function __construct() {}
 
 	/**
-	 * Register the admin menu entry and the setting itself.
+	 * Register the admin menu entry and both settings.
 	 *
 	 * @since 1.0.0
 	 *
@@ -55,7 +73,7 @@ final class SettingsPage {
 	public static function boot(): void {
 
 		add_action( 'admin_menu', array( self::class, 'register_menu' ) );
-		add_action( 'admin_init', array( self::class, 'register_setting' ) );
+		add_action( 'admin_init', array( self::class, 'register_settings' ) );
 	}
 
 	/**
@@ -77,14 +95,17 @@ final class SettingsPage {
 	}
 
 	/**
-	 * Register the single option every setting value is stored in,
-	 * with the WordPress Settings API.
+	 * Register both options this page saves — SettingsRegistry's
+	 * (Appearance tab) and BlockRegistry's (Blocks tab) — under the
+	 * same settings group, with the WordPress Settings API.
 	 *
-	 * @since 1.0.0
+	 * @since 1.6.0 Renamed from register_setting() (singular) and
+	 *              extended to also register BlockRegistry's option,
+	 *              now that this page has more than one to save.
 	 *
 	 * @return void
 	 */
-	public static function register_setting(): void {
+	public static function register_settings(): void {
 
 		register_setting(
 			self::PAGE_SLUG,
@@ -92,6 +113,16 @@ final class SettingsPage {
 			array(
 				'type'              => 'array',
 				'sanitize_callback' => array( self::class, 'sanitize' ),
+				'default'           => array(),
+			)
+		);
+
+		register_setting(
+			self::PAGE_SLUG,
+			BlockRegistry::option_name(),
+			array(
+				'type'              => 'array',
+				'sanitize_callback' => array( self::class, 'sanitize_active_blocks' ),
 				'default'           => array(),
 			)
 		);
@@ -159,7 +190,45 @@ final class SettingsPage {
 	}
 
 	/**
-	 * Render the settings page.
+	 * Sanitize the submitted Blocks tab values and turn them into the
+	 * disabled-slug list BlockRegistry actually stores.
+	 *
+	 * The form's checkboxes are named so a checked box means "this
+	 * block is active" — the intuitive direction for this UI — but
+	 * BlockRegistry's option has stored the inverse (a deny-list of
+	 * disabled slugs) since it was first introduced, and changing
+	 * that storage format now would be a breaking change for no
+	 * reason a site owner would ever see. So the conversion happens
+	 * once, here: every known block slug that was NOT submitted as
+	 * checked is considered disabled.
+	 *
+	 * A hidden `_submitted` field (see render_blocks_fields()) keeps
+	 * this option's key present in $_POST even when every checkbox is
+	 * unchecked — without it, submitting a form with nothing checked
+	 * would look identical to not submitting this option at all, and
+	 * options.php would silently leave the previous value in place
+	 * instead of saving "everything disabled".
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param mixed $input Raw submitted value for BlockRegistry's option.
+	 * @return string[] Disabled block slugs.
+	 */
+	public static function sanitize_active_blocks( $input ): array {
+
+		$input = is_array( $input ) ? $input : array();
+
+		$checked = isset( $input['active'] ) ? (array) $input['active'] : array();
+		$checked = array_map( 'sanitize_key', $checked );
+
+		$all_slugs = array_keys( BlockRegistry::all() );
+
+		return array_values( array_diff( $all_slugs, $checked ) );
+	}
+
+	/**
+	 * Render the settings page: tab navigation, then the current
+	 * tab's form.
 	 *
 	 * @since 1.0.0
 	 *
@@ -170,13 +239,22 @@ final class SettingsPage {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
+
+		$current_tab = self::current_tab();
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'GameStuff Blocks', 'gamestuff-blocks' ); ?></h1>
+			<?php self::render_tab_nav( $current_tab ); ?>
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( self::PAGE_SLUG );
-				self::render_fields();
+
+				if ( 'blocks' === $current_tab ) {
+					self::render_blocks_fields();
+				} else {
+					self::render_fields( $current_tab );
+				}
+
 				submit_button();
 				?>
 			</form>
@@ -185,19 +263,99 @@ final class SettingsPage {
 	}
 
 	/**
-	 * Render one form field per registered setting.
+	 * Resolve the currently requested tab from `?tab=`, falling back
+	 * to the first entry in TABS for anything missing or unrecognized.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return string
+	 */
+	private static function current_tab(): string {
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only tab selection, not a state change.
+		$requested = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+
+		if ( isset( self::TABS[ $requested ] ) ) {
+			return $requested;
+		}
+
+		return array_key_first( self::TABS );
+	}
+
+	/**
+	 * Render the tab navigation.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string $current_tab Currently active tab slug.
+	 * @return void
+	 */
+	private static function render_tab_nav( string $current_tab ): void {
+
+		$base_url = menu_page_url( self::PAGE_SLUG, false );
+		?>
+		<nav class="nav-tab-wrapper" aria-label="<?php esc_attr_e( 'Secondary menu', 'gamestuff-blocks' ); ?>">
+			<?php foreach ( self::TABS as $slug => $label ) : ?>
+				<a
+					href="<?php echo esc_url( add_query_arg( 'tab', $slug, $base_url ) ); ?>"
+					class="nav-tab <?php echo $slug === $current_tab ? 'nav-tab-active' : ''; ?>"
+				>
+					<?php echo esc_html( self::tab_label( $slug, $label ) ); ?>
+				</a>
+			<?php endforeach; ?>
+		</nav>
+		<br />
+		<?php
+	}
+
+	/**
+	 * Translate a tab's label.
+	 *
+	 * Kept as a small lookup rather than inlining __() calls directly
+	 * in the TABS constant, since constant expressions can't call
+	 * functions.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string $slug          Tab slug.
+	 * @param string $fallback_label Untranslated fallback label.
+	 * @return string
+	 */
+	private static function tab_label( string $slug, string $fallback_label ): string {
+
+		if ( 'appearance' === $slug ) {
+			return __( 'Appearance', 'gamestuff-blocks' );
+		}
+
+		if ( 'blocks' === $slug ) {
+			return __( 'Blocks', 'gamestuff-blocks' );
+		}
+
+		return $fallback_label;
+	}
+
+	/**
+	 * Render one form field per registered setting belonging to the
+	 * given tab's group.
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param string $tab Current tab slug, matched against each
+	 *                    setting's registered 'group'.
 	 * @return void
 	 */
-	private static function render_fields(): void {
+	private static function render_fields( string $tab ): void {
 
 		$option_name = SettingsRegistry::option_name();
+
+		$settings = array_filter(
+			SettingsRegistry::all(),
+			static fn( array $setting ): bool => $tab === $setting['group']
+		);
 		?>
 		<table class="form-table" role="presentation">
 			<tbody>
-				<?php foreach ( SettingsRegistry::all() as $id => $setting ) : ?>
+				<?php foreach ( $settings as $id => $setting ) : ?>
 					<tr>
 						<th scope="row">
 							<label for="<?php echo esc_attr( $id ); ?>">
@@ -265,5 +423,54 @@ final class SettingsPage {
 			esc_attr( $name ),
 			esc_attr( $value )
 		);
+	}
+
+	/**
+	 * Render the Blocks tab: one checkbox per block discovered by
+	 * BlockRegistry, checked when that block is currently active.
+	 *
+	 * A hidden `_submitted` field guarantees this option's key is
+	 * present in $_POST even if every checkbox ends up unchecked —
+	 * see sanitize_active_blocks() for why that matters.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return void
+	 */
+	private static function render_blocks_fields(): void {
+
+		$option_name = BlockRegistry::option_name();
+		$blocks      = BlockRegistry::all();
+		?>
+		<p class="description">
+			<?php esc_html_e( 'Disabled blocks are not registered at all: they are removed from the block inserter and their CSS/JavaScript are never loaded on the front end.', 'gamestuff-blocks' ); ?>
+		</p>
+		<input type="hidden" name="<?php echo esc_attr( $option_name ); ?>[_submitted]" value="1" />
+		<table class="form-table" role="presentation">
+			<tbody>
+				<?php foreach ( $blocks as $slug => $block ) : ?>
+					<tr>
+						<th scope="row">
+							<label for="<?php echo esc_attr( 'block-' . $slug ); ?>">
+								<?php echo esc_html( $block['title'] ); ?>
+							</label>
+						</th>
+						<td>
+							<label>
+								<input
+									type="checkbox"
+									id="<?php echo esc_attr( 'block-' . $slug ); ?>"
+									name="<?php echo esc_attr( $option_name ); ?>[active][]"
+									value="<?php echo esc_attr( $slug ); ?>"
+									<?php checked( BlockRegistry::is_active( $slug ) ); ?>
+								/>
+								<?php esc_html_e( 'Active', 'gamestuff-blocks' ); ?>
+							</label>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php
 	}
 }
