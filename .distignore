@@ -28,10 +28,13 @@ phpcs.xml
 # Uncompiled block source — build/ is what ships
 src
 
-# Contributor-facing docs — not needed by end users running the plugin
+# docs
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 SECURITY.md
+CHANGELOG.md
+README.md
+LICENSE.md
 
 # Stray local build artifacts
 *.zip
