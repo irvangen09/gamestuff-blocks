@@ -221,9 +221,15 @@ final class SettingsPage {
 		$checked = isset( $input['active'] ) ? (array) $input['active'] : array();
 		$checked = array_map( 'sanitize_key', $checked );
 
-		$all_slugs = array_keys( BlockRegistry::all() );
+		// Only top-level blocks are ever checkboxes in the form (see
+		// render_blocks_fields()), so only those need to be considered
+		// here. Child blocks (accordion-item and similar) never get
+		// their own entry in the saved disabled-list at all — their
+		// state always cascades from their parent's, resolved in
+		// BlockRegistry::is_active().
+		$toggleable_slugs = BlockRegistry::toggleable_slugs();
 
-		return array_values( array_diff( $all_slugs, $checked ) );
+		return array_values( array_diff( $toggleable_slugs, $checked ) );
 	}
 
 	/**
@@ -441,6 +447,7 @@ final class SettingsPage {
 
 		$option_name = BlockRegistry::option_name();
 		$blocks      = BlockRegistry::all();
+		$top_level   = array_intersect_key( $blocks, array_flip( BlockRegistry::toggleable_slugs() ) );
 		?>
 		<p class="description">
 			<?php esc_html_e( 'Disabled blocks are not registered at all: they are removed from the block inserter and their CSS/JavaScript are never loaded on the front end.', 'gamestuff-blocks' ); ?>
@@ -448,7 +455,8 @@ final class SettingsPage {
 		<input type="hidden" name="<?php echo esc_attr( $option_name ); ?>[_submitted]" value="1" />
 		<table class="form-table" role="presentation">
 			<tbody>
-				<?php foreach ( $blocks as $slug => $block ) : ?>
+				<?php foreach ( $top_level as $slug => $block ) : ?>
+					<?php $children = self::child_titles( $slug, $blocks ); ?>
 					<tr>
 						<th scope="row">
 							<label for="<?php echo esc_attr( 'block-' . $slug ); ?>">
@@ -466,11 +474,52 @@ final class SettingsPage {
 								/>
 								<?php esc_html_e( 'Active', 'gamestuff-blocks' ); ?>
 							</label>
+							<?php if ( array() !== $children ) : ?>
+								<p class="description">
+									<?php
+									printf(
+										/* translators: %s: comma-separated list of child block titles, e.g. "Accordion Item". */
+										esc_html__( 'Includes: %s (follows this toggle automatically).', 'gamestuff-blocks' ),
+										esc_html( implode( ', ', $children ) )
+									);
+									?>
+								</p>
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 			</tbody>
 		</table>
 		<?php
+	}
+
+	/**
+	 * Get the display titles of a top-level block's child blocks, if
+	 * any — used to explain in the Blocks tab why a block like
+	 * Accordion Item has no checkbox of its own.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string                            $parent_slug Top-level block's slug.
+	 * @param array<string, array<string, mixed>> $blocks     Full result of BlockRegistry::all().
+	 * @return string[] Child block titles, in discovery order.
+	 */
+	private static function child_titles( string $parent_slug, array $blocks ): array {
+
+		$parent_name = $blocks[ $parent_slug ]['name'] ?? null;
+
+		if ( null === $parent_name ) {
+			return array();
+		}
+
+		$titles = array();
+
+		foreach ( $blocks as $block ) {
+			if ( ( $block['parent'] ?? null ) === $parent_name ) {
+				$titles[] = $block['title'];
+			}
+		}
+
+		return $titles;
 	}
 }

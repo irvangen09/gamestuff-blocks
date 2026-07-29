@@ -150,14 +150,21 @@ final class BlockRegistry {
 	/**
 	 * Discover every block available in build/, active or not.
 	 *
-	 * Used both by register() and by the future block-management
-	 * admin UI, which needs to list every available block along with
-	 * its current active/disabled state.
+	 * Used both by register() and by the block-management admin UI
+	 * (Settings/SettingsPage.php), which needs to list every available
+	 * block along with its current active/disabled state.
 	 *
 	 * @since 1.0.0
+	 * @since 1.6.0 Added the 'parent' key — the full block name of a
+	 *              child block's parent (e.g. 'gamestuff/accordion'
+	 *              for accordion-item), or null for a standalone
+	 *              block. Read directly from block.json's own
+	 *              "parent" declaration, so nothing needs to be kept
+	 *              in sync by hand as blocks are added.
 	 *
 	 * @return array<string, array<string, mixed>> Discovered blocks,
-	 *         keyed by slug, each with 'name', 'title', and 'path'.
+	 *         keyed by slug, each with 'name', 'title', 'path', and
+	 *         'parent'.
 	 */
 	public static function all(): array {
 
@@ -190,9 +197,10 @@ final class BlockRegistry {
 			$slug = basename( $dir );
 
 			self::$blocks[ $slug ] = array(
-				'name'  => $metadata['name'],
-				'title' => $metadata['title'] ?? $slug,
-				'path'  => $dir,
+				'name'   => $metadata['name'],
+				'title'  => $metadata['title'] ?? $slug,
+				'path'   => $dir,
+				'parent' => $metadata['parent'][0] ?? null,
 			);
 		}
 
@@ -202,14 +210,82 @@ final class BlockRegistry {
 	/**
 	 * Check whether a given block slug is currently active.
 	 *
+	 * A child block (one with a non-null 'parent', e.g. accordion-item)
+	 * has no independent on/off state of its own — it always follows
+	 * its parent's state. A child block can only ever be inserted
+	 * inside its parent (enforced by block.json's own "parent"
+	 * declaration), so a separate toggle for it would be either
+	 * redundant (parent active) or dead (parent inactive, child
+	 * unreachable in the inserter either way). The Blocks Settings tab
+	 * only renders a checkbox for non-child blocks for this reason —
+	 * see Settings/SettingsPage.php.
+	 *
 	 * @since 1.0.0
+	 * @since 1.6.0 Cascades to the parent block's state for child blocks.
 	 *
 	 * @param string $slug Block folder slug, e.g. 'accordion'.
 	 * @return bool
 	 */
 	public static function is_active( string $slug ): bool {
 
+		$parent_slug = self::parent_slug( $slug );
+
+		if ( null !== $parent_slug ) {
+			return self::is_active( $parent_slug );
+		}
+
 		return ! in_array( $slug, self::get_disabled_blocks(), true );
+	}
+
+	/**
+	 * Resolve a block's parent slug, if it has one.
+	 *
+	 * @since 1.6.0
+	 *
+	 * @param string $slug Block folder slug.
+	 * @return string|null Parent's own folder slug, or null if this
+	 *         block has no parent or its parent isn't found among the
+	 *         blocks discovered by all() (e.g. a parent slug that was
+	 *         renamed or removed — treated as standalone rather than
+	 *         silently failing).
+	 */
+	private static function parent_slug( string $slug ): ?string {
+
+		$blocks = self::all();
+
+		$parent_name = $blocks[ $slug ]['parent'] ?? null;
+
+		if ( null === $parent_name ) {
+			return null;
+		}
+
+		foreach ( $blocks as $candidate_slug => $candidate ) {
+			if ( $candidate['name'] === $parent_name ) {
+				return $candidate_slug;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get every top-level (non-child) block slug — the set of blocks
+	 * that get their own independent toggle in the Blocks Settings
+	 * tab. Child blocks (accordion-item and similar) are excluded;
+	 * their state always follows their parent (see is_active()).
+	 *
+	 * @since 1.6.0
+	 *
+	 * @return string[]
+	 */
+	public static function toggleable_slugs(): array {
+
+		return array_keys(
+			array_filter(
+				self::all(),
+				static fn( array $block ): bool => null === $block['parent']
+			)
+		);
 	}
 
 	/**
