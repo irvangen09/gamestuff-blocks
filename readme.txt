@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.5.1
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,11 +40,21 @@ More content blocks are introduced in subsequent releases.
 
 No. Blocks are built with modern, dependency-free JavaScript where scripting is needed at all.
 
+= Can I disable blocks I don't use? =
+
+Yes. Go to Settings > GameStuff Blocks > Blocks and switch off any block you don't need. A disabled block is not just hidden from the inserter — it isn't registered at all, so its CSS and JavaScript are never loaded on the front end either.
+
+Blocks made up of a parent and a child (e.g. Accordion and Accordion Item) share a single toggle: disabling the parent disables the child with it, since the child can only ever be used inside its parent.
+
 = How does dark mode work? =
 
 By default, blocks follow the visitor's own OS/browser dark mode preference. If your theme has its own dark mode toggle, enter the CSS selector it uses under Settings > GameStuff Blocks > Dark Mode Selector (e.g. `.dark-mode`), and blocks will switch together with the rest of your theme instead.
 
 == Changelog ==
+
+= 1.6.0 =
+* Added per-block enable/disable toggles under Settings > GameStuff Blocks > Blocks.
+* Settings page is now organized into Appearance and Blocks tabs.
 
 = 1.5.1 =
 * Fixed a leftover default title on the TOC block not being translated to English.
@@ -73,6 +83,9 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.6.0 =
+Adds per-block enable/disable toggles under Settings > GameStuff Blocks. No breaking changes.
 
 = 1.5.1 =
 Bug fixes and performance improvements; no new blocks. Safe to update.
