@@ -16,9 +16,10 @@
 		"lint:js": "wp-scripts lint-js",
 		"lint:css": "wp-scripts lint-style",
 		"packages-update": "wp-scripts packages-update",
-		"plugin-zip": "wp-scripts plugin-zip"
+		"plugin-zip": "wp-scripts plugin-zip && node bin/strip-docs-from-zip.js"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^33.0.0"
+		"@wordpress/scripts": "^33.0.0",
+		"adm-zip": "^0.5.18"
 	}
 }

@@ -5,6 +5,28 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.6.0] - 2026-07-29
+
+### Added
+
+- Per-block enable/disable toggles under Settings > GameStuff Blocks >
+  Blocks, replacing the deny-list that previously had no admin UI of
+  its own.
+- Settings page is now organized into Appearance and Blocks tabs.
+
+### Changed
+
+- `BlockRegistry::get_disabled_blocks()` is now public, so the new
+  Blocks tab can read current toggle state.
+- Child blocks (Accordion Item, Content Scroll Item, Infobox Field,
+  Timeline Item) no longer have an independent enable/disable state:
+  they now follow their parent block's toggle automatically, since a
+  child block can only ever be inserted inside its parent. Only
+  top-level blocks appear as a toggle in the Blocks tab.
+- `.distignore` now also excludes `CHANGELOG.md`, `README.md`, and
+  `LICENSE.md` from the distributable zip — license terms remain
+  declared in the plugin header and `readme.txt`.
+
 ## [1.5.1] - 2026-07-28
 
 ### Fixed
