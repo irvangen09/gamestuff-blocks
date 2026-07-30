@@ -16,7 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use GameStuff\Blocks\Toc\HeadingCollector;
-use GameStuff\Settings\SettingsRegistry;
 
 $post_id = get_the_ID();
 
@@ -37,23 +36,7 @@ $list_html = HeadingCollector::render_tree( $tree );
 
 $title = ! empty( $attributes['title'] ) ? $attributes['title'] : __( 'Table of Contents', 'gamestuff-blocks' );
 
-$wrapper_extra_attributes = array( 'class' => 'gs-toc' );
-
-/*
- * "Auto" (the default) needs no attribute at all — style.scss
- * already looks correct in both light and dark without one, via
- * inherited colors and CSS system colors. The attribute only shows
- * up when a site owner has explicitly forced one scheme from the
- * Color Scheme setting, which style.scss matches against via
- * [data-color-scheme="light"] / [data-color-scheme="dark"].
- */
-$color_scheme = SettingsRegistry::get_value( 'color_scheme' );
-
-if ( in_array( $color_scheme, array( 'light', 'dark' ), true ) ) {
-	$wrapper_extra_attributes['data-color-scheme'] = $color_scheme;
-}
-
-$wrapper_attributes = get_block_wrapper_attributes( $wrapper_extra_attributes );
+$wrapper_attributes = get_block_wrapper_attributes( array( 'class' => 'gs-toc' ) );
 ?>
 <details <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput -- already escaped by get_block_wrapper_attributes(). ?>>
 	<summary class="gs-toc__summary">

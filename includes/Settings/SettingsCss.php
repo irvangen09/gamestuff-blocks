@@ -18,7 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * places — the same generated CSS, not two separate code paths that
  * could drift out of sync.
  *
+ * Also adds a `<body>` class for the "Color Scheme" setting, when a
+ * site owner has forced Light or Dark rather than leaving it on Auto
+ * — see add_color_scheme_body_class() for why this is a body class
+ * rather than a per-block wrapper attribute.
+ *
  * @since 1.0.0
+ * @since 1.7.0 Added the Color Scheme body class.
  */
 final class SettingsCss {
 
@@ -40,13 +46,18 @@ final class SettingsCss {
 	private function __construct() {}
 
 	/**
-	 * Hook the generated CSS into both the front end and the editor.
+	 * Hook the generated CSS into both the front end and the editor,
+	 * and the Color Scheme body class into the front end.
 	 *
-	 * Same callback for both contexts, since the CSS to print is
+	 * Same callback for both CSS contexts, since the CSS to print is
 	 * identical either way — only where it needs to end up differs,
-	 * and both hooks route through the regular styles queue.
+	 * and both hooks route through the regular styles queue. The
+	 * body class only applies on the front end, where `body_class()`
+	 * output actually reaches visitors — it has no equivalent effect
+	 * worth adding inside the block editor's own iframe.
 	 *
 	 * @since 1.0.0
+	 * @since 1.7.0 Added the body_class filter.
 	 *
 	 * @return void
 	 */
@@ -54,6 +65,7 @@ final class SettingsCss {
 
 		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue' ) );
 		add_action( 'enqueue_block_editor_assets', array( self::class, 'enqueue' ) );
+		add_filter( 'body_class', array( self::class, 'add_color_scheme_body_class' ) );
 	}
 
 	/**
@@ -139,5 +151,41 @@ final class SettingsCss {
 		}
 
 		return implode( '', $rules );
+	}
+
+	/**
+	 * Add a `gs-color-scheme-light` or `gs-color-scheme-dark` class
+	 * to `<body>` when the "Color Scheme" setting has been forced
+	 * away from Auto. No class is added under Auto.
+	 *
+	 * A body class, rather than an attribute added to each block's
+	 * own wrapper markup (the approach first tried for the TOC
+	 * block), because most of this plugin's blocks are static:
+	 * their markup is generated once in the editor and saved
+	 * literally into post_content, with no PHP render step that
+	 * could re-check this setting on every page load. A body class
+	 * has no such problem — `body_class()` output is generated fresh
+	 * on every request regardless of how any individual block's own
+	 * markup was produced, so the same mechanism works identically
+	 * for static and dynamic blocks alike. Each migrated block's
+	 * style.scss then only needs a `body.gs-color-scheme-light .gs-x`
+	 * / `body.gs-color-scheme-dark .gs-x` selector pair to react to
+	 * it — no block-specific PHP required.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param array<int, string> $classes Existing body classes.
+	 * @return array<int, string> Body classes, with the color scheme
+	 *                            class appended if applicable.
+	 */
+	public static function add_color_scheme_body_class( array $classes ): array {
+
+		$color_scheme = SettingsRegistry::get_value( 'color_scheme' );
+
+		if ( in_array( $color_scheme, array( 'light', 'dark' ), true ) ) {
+			$classes[] = 'gs-color-scheme-' . $color_scheme;
+		}
+
+		return $classes;
 	}
 }

@@ -44,9 +44,15 @@
  *
  * A site owner can still force one specific, solid look regardless of
  * the theme via the "Color Scheme" setting (SettingsRegistry.php) —
- * see the `[data-color-scheme]` rules at the bottom of this file, and
- * src/toc/render.php for where that attribute gets added to the
- * wrapper. Left on "Auto" (the default), no attribute is added at all
+ * see the `body.gs-color-scheme-light` / `body.gs-color-scheme-dark`
+ * rules at the bottom of this file, and
+ * includes/Settings/SettingsCss.php for where that body class comes
+ * from. A `<body>` class, rather than an attribute on this block's
+ * own wrapper (tried and reverted here — see Decision Log): most of
+ * this plugin's other blocks are static, with no render step that
+ * could add such an attribute on every page load, so a mechanism that
+ * only worked for this one dynamic block would not carry over to
+ * them. Left on "Auto" (the default), no body class is added at all
  * and everything above applies unconditionally.
  */
 
@@ -138,22 +144,22 @@
 
 /*
  * Explicit overrides for the "Color Scheme" setting's Light/Dark
- * options — inert under "Auto", the default, since render.php only
- * adds the [data-color-scheme] attribute when one of these is
- * chosen. Unlike "Auto" above, these ARE solid fills: a site owner
- * choosing one of these has deliberately opted out of following the
- * theme, so there's no reason to keep them translucent. Values match
- * this block's historical production colors exactly (the same pair
- * Services/DarkMode.php used to output for this block before this
- * file took over its own dark-mode styling).
+ * options — inert under "Auto", the default, since SettingsCss only
+ * adds one of these body classes when a site owner has explicitly
+ * chosen Light or Dark. Unlike "Auto" above, these ARE solid fills: a
+ * site owner choosing one of these has deliberately opted out of
+ * following the theme, so there's no reason to keep them translucent.
+ * Values match this block's historical production colors exactly
+ * (the same pair Services/DarkMode.php used to output for this block
+ * before this file took over its own dark-mode styling).
  */
-.gs-toc[ data-color-scheme="light" ] {
+body.gs-color-scheme-light .gs-toc {
 	background-color: #fff;
 	color: #1e1e1e;
 	--gs-toc-border: #dcdcde;
 }
 
-.gs-toc[ data-color-scheme="dark" ] {
+body.gs-color-scheme-dark .gs-toc {
 	background-color: #1e1e1e;
 	color: #f0f0f1;
 	--gs-toc-border: #3c3c3c;
