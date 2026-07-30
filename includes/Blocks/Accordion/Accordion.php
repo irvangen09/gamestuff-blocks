@@ -8,7 +8,6 @@
 namespace GameStuff\Blocks\Accordion;
 
 use GameStuff\Blocks\BlockRegistry;
-use GameStuff\Services\DarkMode;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,12 +16,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Single entry point for everything the Accordion block family
  * (Accordion + Accordion Item) needs beyond plain block.json
- * registration, handled generically by BlockRegistry: this block's
- * dark mode rules, the progressive-enhancement flag its mobile
- * collapse behavior depends on, and the Dashicons stylesheet its
- * optional icon field relies on.
+ * registration, handled generically by BlockRegistry: the
+ * progressive-enhancement flag its mobile collapse behavior depends
+ * on, and the Dashicons stylesheet its optional icon field relies on.
+ *
+ * This block does not register anything with the DarkMode service.
+ * Its dark-mode appearance is handled entirely in
+ * accordion-item/style.scss, via `currentColor` and `color-mix()`
+ * rather than a literal light/dark color pair scoped by a theme
+ * selector — see that file's docblock for the reasoning, and TOC
+ * (includes/Blocks/Toc/Toc.php) for the first block migrated to this
+ * approach.
  *
  * @since 1.2.0
+ * @since 1.7.0 No longer registers dark-mode rules with the DarkMode
+ *              service — see the class docblock.
  */
 final class Accordion {
 
@@ -37,55 +45,15 @@ final class Accordion {
 	 * Boot everything this block needs.
 	 *
 	 * @since 1.2.0
+	 * @since 1.7.0 No longer registers dark-mode rules — see the
+	 *              class docblock.
 	 *
 	 * @return void
 	 */
 	public static function boot(): void {
 
-		DarkMode::register( self::dark_mode_rules() );
-
 		add_action( 'wp_head', array( self::class, 'print_progressive_enhancement_flag' ), 1 );
 		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_dashicons' ) );
-	}
-
-	/**
-	 * This block's dark-mode CSS, registered with the DarkMode
-	 * service rather than baked into style.scss under a fixed theme
-	 * selector — see Services/DarkMode.php for why.
-	 *
-	 * @since 1.2.0
-	 *
-	 * @return array<int, array{selector:string, css:string}>
-	 */
-	private static function dark_mode_rules(): array {
-
-		return array(
-			/*
-			 * Transparent rather than a guessed dark hex: the item
-			 * has no surface of its own, so it blends into whatever
-			 * background the theme's own dark mode already applies
-			 * to the article body — the same "no background" look
-			 * this block has always had in light mode, just carried
-			 * through to dark mode instead of assuming a fixed color
-			 * that would only match one particular theme.
-			 */
-			array(
-				'selector' => '.gs-accordion-item, .gs-accordion-item__content',
-				'css'      => 'background:transparent;',
-			),
-			array(
-				'selector' => '.gs-accordion-item__trigger, .gs-accordion-item__trigger:hover, .gs-accordion-item__trigger:active, .gs-accordion-item__trigger:focus',
-				'css'      => 'border-bottom-color:#3c3c3c;',
-			),
-			array(
-				'selector' => '.gs-accordion-item__chevron',
-				'css'      => 'color:#a7aaad;',
-			),
-			array(
-				'selector' => '.gs-accordion-item__content table, .gs-accordion-item__content th, .gs-accordion-item__content td',
-				'css'      => 'border-color:#3c3c3c;',
-			),
-		);
 	}
 
 	/**
