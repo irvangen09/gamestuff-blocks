@@ -8,7 +8,6 @@
 namespace GameStuff\Blocks\Infobox;
 
 use GameStuff\Blocks\BlockRegistry;
-use GameStuff\Services\DarkMode;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,12 +16,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Single entry point for everything the Character Infobox block
  * family (Character Infobox + Infobox Field) needs beyond plain
- * block.json registration, handled generically by BlockRegistry:
- * this block's dark mode rules, the custom portrait image size its
- * upload control depends on, and the Dashicons stylesheet its portrait
- * empty-state and optional field icons rely on.
+ * block.json registration, handled generically by BlockRegistry: the
+ * custom portrait image size its upload control depends on, and the
+ * Dashicons stylesheet its portrait empty-state and optional field
+ * icons rely on.
+ *
+ * This block does not register anything with the DarkMode service.
+ * Its dark-mode appearance is handled entirely in style.scss, via
+ * `currentColor`/`color-mix()` rather than a literal light/dark color
+ * pair scoped by a theme selector — see that file's docblock for the
+ * reasoning, and TOC (includes/Blocks/Toc/Toc.php) for the first
+ * block migrated to this approach.
  *
  * @since 1.5.0
+ * @since 1.7.0 No longer registers dark-mode rules with the DarkMode
+ *              service — see the class docblock.
  */
 final class Infobox {
 
@@ -37,40 +45,15 @@ final class Infobox {
 	 * Boot everything this block needs.
 	 *
 	 * @since 1.5.0
+	 * @since 1.7.0 No longer registers dark-mode rules — see the
+	 *              class docblock.
 	 *
 	 * @return void
 	 */
 	public static function boot(): void {
 
-		DarkMode::register( self::dark_mode_rules() );
-
 		add_action( 'after_setup_theme', array( self::class, 'register_portrait_image_size' ) );
 		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_dashicons' ) );
-	}
-
-	/**
-	 * This block's dark-mode CSS, registered with the DarkMode
-	 * service rather than baked into style.scss under a fixed theme
-	 * selector — see Services/DarkMode.php for why.
-	 *
-	 * Values match this block's previous production styling exactly:
-	 * already generic hex/rgba values, not tied to any one theme's
-	 * own custom properties, so no adjustment was needed here (unlike
-	 * Accordion Item, whose original dark-mode values referenced
-	 * theme-specific custom properties and had to be reworked first).
-	 *
-	 * @since 1.5.0
-	 *
-	 * @return array<int, array{selector:string, css:string}>
-	 */
-	private static function dark_mode_rules(): array {
-
-		return array(
-			array(
-				'selector' => '.gs-character',
-				'css'      => '--gs-card-bg:#1c1c1d;--gs-card-border:rgba(254, 111, 34, 0.22);--gs-accent-soft:rgba(254, 111, 34, 0.14);--gs-accent-softer:rgba(254, 111, 34, 0.08);--gs-row-border:rgba(255, 255, 255, 0.08);--gs-text:#f2f2f3;--gs-text-muted:#b7b9bc;--gs-shadow:0 1px 3px rgba(0, 0, 0, 0.4);',
-			),
-		);
 	}
 
 	/**
