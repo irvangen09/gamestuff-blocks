@@ -1,30 +1,64 @@
 /**
  * Frontend styling for GameStuff TOC.
  *
- * Visuals match the block's previous production styling exactly.
- * One change from that version, required by locked project decisions
- * rather than a style preference: the accent color is read from the
- * `--gs-accent` custom property instead of a fixed SCSS value, so it
- * participates in the plugin-wide Primary Color setting (see
+ * Visuals match the block's previous production styling exactly in
+ * light mode. Dark mode is deliberately NOT a mirrored solid color
+ * pair anymore — see below.
+ *
+ * The accent color is read from the `--gs-accent` custom property
+ * instead of a fixed SCSS value, so it participates in the
+ * plugin-wide Primary Color setting (see
  * includes/Settings/SettingsRegistry.php). The value declared here is
  * only the fallback used before any setting CSS loads (and matches
  * that setting's own default), not a second source of truth for the
  * color itself.
  *
- * Dark mode styling for this block is NOT here — it's generated
- * dynamically by includes/Services/DarkMode.php from rules registered
- * in includes/Blocks/Toc/Toc.php, since whether it's scoped under the
- * site's own theme toggle or under `prefers-color-scheme` is a
- * site-wide decision this file has no way to know at build time.
+ * Dark mode support here works differently from every other block in
+ * this plugin: there is no separate light/dark color pair, and no
+ * dependency on includes/Services/DarkMode.php or the
+ * "Dark Mode Selector" setting. Instead, every color below is
+ * expressed relative to `currentColor` (the text color this element
+ * inherits from its surroundings):
+ *
+ * - `color: inherit` — the block never declares its own text color,
+ *   it uses whatever color the theme has already applied to the
+ *   surrounding article content. Whatever mechanism the theme uses to
+ *   go dark (a toggle class, a data attribute, anything at all), this
+ *   block already reflects it, because it never diverges from it in
+ *   the first place.
+ * - `background-color: color-mix( in srgb, currentColor 4%, transparent )`
+ *   — a translucent tint, not a solid fill. Because it's translucent,
+ *   it shows through to whatever the real background actually is
+ *   (light or dark) without this file ever needing to know that
+ *   value. A solid fill (including the CSS system color `Canvas`,
+ *   tried and reverted here — see Decision Log) cannot do this: it
+ *   only resolves correctly when the browser's `color-scheme` CSS
+ *   property matches the theme's dark mode state, which many themes
+ *   (including the one this was tested against) never set — their
+ *   toggle only ever affects `prefers-color-scheme`-independent CSS
+ *   like a class or custom properties, not that browser-level
+ *   property.
+ * - The border color is likewise derived from `currentColor` via
+ *   `color-mix()`, staying proportionally correct relative to
+ *   whatever the current text/background pair is.
+ *
+ * A site owner can still force one specific, solid look regardless of
+ * the theme via the "Color Scheme" setting (SettingsRegistry.php) —
+ * see the `[data-color-scheme]` rules at the bottom of this file, and
+ * src/toc/render.php for where that attribute gets added to the
+ * wrapper. Left on "Auto" (the default), no attribute is added at all
+ * and everything above applies unconditionally.
  */
 
 .gs-toc {
 	--gs-accent: #fe6f22;
+	--gs-toc-border: color-mix( in srgb, currentColor 15%, transparent );
 
 	margin: 1.5em 0;
 
-	background: #fff;
-	border: 1px solid #dcdcde;
+	color: inherit;
+	background-color: color-mix( in srgb, currentColor 4%, transparent );
+	border: 1px solid var( --gs-toc-border );
 	border-radius: 8px;
 }
 
@@ -39,7 +73,7 @@
 
 	font-size: 1rem;
 	font-weight: 600;
-	color: #1e1e1e;
+	color: inherit;
 
 	&::-webkit-details-marker {
 		display: none;
@@ -48,12 +82,12 @@
 	&::after {
 		content: "+";
 		margin-left: auto;
-		color: var(--gs-accent);
+		color: var( --gs-accent );
 		font-family: monospace;
 	}
 
 	&:focus-visible {
-		outline: 2px solid var(--gs-accent);
+		outline: 2px solid var( --gs-accent );
 		outline-offset: 2px;
 	}
 }
@@ -65,12 +99,12 @@
 .gs-toc__icon {
 	display: flex;
 	flex-shrink: 0;
-	color: var(--gs-accent);
+	color: var( --gs-accent );
 }
 
 .gs-toc__nav {
 	padding: 4px 18px 18px;
-	border-top: 1px solid #dcdcde;
+	border-top: 1px solid var( --gs-toc-border );
 }
 
 .gs-toc__list {
@@ -87,17 +121,40 @@
 	margin-bottom: 6px;
 
 	a {
-		color: #1e1e1e;
+		color: inherit;
 		text-decoration: none;
 
 		&:hover {
-			color: var(--gs-accent);
+			color: var( --gs-accent );
 			text-decoration: underline;
 		}
 
 		&:focus-visible {
-			outline: 2px solid var(--gs-accent);
+			outline: 2px solid var( --gs-accent );
 			outline-offset: 2px;
 		}
 	}
+}
+
+/*
+ * Explicit overrides for the "Color Scheme" setting's Light/Dark
+ * options — inert under "Auto", the default, since render.php only
+ * adds the [data-color-scheme] attribute when one of these is
+ * chosen. Unlike "Auto" above, these ARE solid fills: a site owner
+ * choosing one of these has deliberately opted out of following the
+ * theme, so there's no reason to keep them translucent. Values match
+ * this block's historical production colors exactly (the same pair
+ * Services/DarkMode.php used to output for this block before this
+ * file took over its own dark-mode styling).
+ */
+.gs-toc[ data-color-scheme="light" ] {
+	background-color: #fff;
+	color: #1e1e1e;
+	--gs-toc-border: #dcdcde;
+}
+
+.gs-toc[ data-color-scheme="dark" ] {
+	background-color: #1e1e1e;
+	color: #f0f0f1;
+	--gs-toc-border: #3c3c3c;
 }
