@@ -5,7 +5,7 @@ Thanks for your interest in contributing. This document covers how to set up the
 ## Getting Started
 
 ```bash
-git clone https://github.com/irvangen09/gamestuff-blocks
+git clone https://github.com/irvangen09/gamestuff-blocks.git
 cd gamestuff-blocks
 
 npm install
