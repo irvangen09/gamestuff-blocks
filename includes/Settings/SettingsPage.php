@@ -153,7 +153,7 @@ final class SettingsPage {
 				continue;
 			}
 
-			$sanitized[ $id ] = self::sanitize_value( $input[ $id ], $setting['type'] );
+			$sanitized[ $id ] = self::sanitize_value( $input[ $id ], $setting );
 		}
 
 		return $sanitized;
@@ -163,14 +163,19 @@ final class SettingsPage {
 	 * Sanitize a single value according to its setting type.
 	 *
 	 * @since 1.0.0
+	 * @since 1.7.0 Now takes the full setting config instead of just
+	 *              its type, so the 'select' type can validate the
+	 *              submitted value against its own registered
+	 *              'options' rather than accepting any string.
 	 *
-	 * @param mixed  $value Raw value for this one field.
-	 * @param string $type  Setting type, e.g. 'color', 'text'.
+	 * @param mixed                $value   Raw value for this one field.
+	 * @param array<string, mixed> $setting Setting configuration, as registered.
 	 * @return string Sanitized value.
 	 */
-	private static function sanitize_value( $value, string $type ): string {
+	private static function sanitize_value( $value, array $setting ): string {
 
 		$value = (string) $value;
+		$type  = $setting['type'];
 
 		if ( 'color' === $type ) {
 			$color = sanitize_hex_color( $value );
@@ -184,6 +189,17 @@ final class SettingsPage {
 			// can reach this field in the first place.
 			$value = (string) preg_replace( '/[{};<]/', '', $value );
 			return trim( sanitize_text_field( $value ) );
+		}
+
+		if ( 'select' === $type ) {
+			// Anything other than one of the registered option
+			// values is rejected outright (falls back to the
+			// setting's default via get_value()) rather than saved
+			// as-is — this field's own <select> never submits
+			// anything else, so a value that doesn't match can only
+			// come from a crafted request.
+			$value = sanitize_key( $value );
+			return array_key_exists( $value, $setting['options'] ) ? $value : '';
 		}
 
 		return sanitize_text_field( $value );
@@ -388,9 +404,11 @@ final class SettingsPage {
 	 * The 'color' type uses a native `<input type="color">` rather
 	 * than a JavaScript-driven color picker, so this page has no
 	 * script dependency at all — the browser provides the picker UI
-	 * itself.
+	 * itself. 'select' renders a plain `<select>` from the setting's
+	 * registered 'options', likewise with no script dependency.
 	 *
 	 * @since 1.0.0
+	 * @since 1.7.0 Added the 'select' type.
 	 *
 	 * @param string               $id          Setting id.
 	 * @param array<string, mixed> $setting     Setting configuration, as registered.
@@ -420,6 +438,22 @@ final class SettingsPage {
 				esc_attr( $value ),
 				esc_attr( '.dark-mode' )
 			);
+			return;
+		}
+
+		if ( 'select' === $setting['type'] ) {
+			printf( '<select id="%1$s" name="%2$s">', esc_attr( $id ), esc_attr( $name ) );
+
+			foreach ( $setting['options'] as $option_value => $option_label ) {
+				printf(
+					'<option value="%1$s"%2$s>%3$s</option>',
+					esc_attr( $option_value ),
+					selected( $value, $option_value, false ),
+					esc_html( $option_label )
+				);
+			}
+
+			echo '</select>';
 			return;
 		}
 
