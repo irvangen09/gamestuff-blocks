@@ -182,15 +182,6 @@ final class SettingsPage {
 			return null === $color ? '' : $color;
 		}
 
-		if ( 'css_selector' === $type ) {
-			// Strip characters that could break out of the CSS rule
-			// this value gets embedded into (Services/DarkMode.php) —
-			// defense in depth, even though only manage_options users
-			// can reach this field in the first place.
-			$value = (string) preg_replace( '/[{};<]/', '', $value );
-			return trim( sanitize_text_field( $value ) );
-		}
-
 		if ( 'select' === $type ) {
 			// Anything other than one of the registered option
 			// values is rejected outright (falls back to the
@@ -426,17 +417,6 @@ final class SettingsPage {
 				esc_attr( $id ),
 				esc_attr( $name ),
 				esc_attr( $value )
-			);
-			return;
-		}
-
-		if ( 'css_selector' === $setting['type'] ) {
-			printf(
-				'<input type="text" id="%1$s" name="%2$s" value="%3$s" class="regular-text code" placeholder="%4$s" />',
-				esc_attr( $id ),
-				esc_attr( $name ),
-				esc_attr( $value ),
-				esc_attr( '.dark-mode' )
 			);
 			return;
 		}

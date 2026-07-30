@@ -5,6 +5,35 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.7.0] - 2026-07-31
+
+### Changed
+
+- Dark mode support for every block (Table of Contents, Accordion
+  Item, Content Scroll Item, Character Infobox) is now automatic and
+  requires no configuration. Each block's colors are now derived from
+  the surrounding theme's own text color rather than a fixed
+  light/dark color pair, so they adapt correctly to any theme's dark
+  mode implementation without a site owner needing to identify and
+  enter its CSS selector.
+- New "Color Scheme" setting (Settings > GameStuff Blocks >
+  Appearance) lets a site owner force Light or Dark for every block
+  at once, for cases where a fixed appearance is preferred over
+  automatic detection.
+- Character Infobox and Table of Contents no longer render a drop
+  shadow by default; both now rely on their border alone for visual
+  separation, since a shadow cannot adapt automatically to light or
+  dark the same way flat colors can. A shadow is still applied when
+  Color Scheme is forced to Light or Dark.
+- Accordion Item's background is now transparent in light mode as
+  well as dark (previously white in light mode only).
+
+### Removed
+
+- The "Dark Mode Selector" setting and the internal service that
+  powered it have been removed — no longer needed now that every
+  block adapts automatically.
+
 ## [1.6.0] - 2026-07-29
 
 ### Added

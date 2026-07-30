@@ -18,14 +18,13 @@
 
    Item-level styles (.gs-cs-item, .gs-cs-thumb, .gs-cs-title)
    live in content-scroll-item/style.scss, since that block is
-   what actually renders them.
+   what actually renders them — including that block's own
+   dark-mode handling (currentColor/color-mix, no service or
+   setting dependency; see that file's docblock).
 
-   Dark mode styling for this block is NOT here — it's generated
-   dynamically by includes/Services/DarkMode.php from rules
-   registered in includes/Blocks/ContentScroll/ContentScroll.php,
-   since whether it's scoped under the site's own theme toggle or
-   under `prefers-color-scheme` is a site-wide decision this file
-   has no way to know at build time.
+   This block (the parent grid/track wrapper) has never needed
+   any dark-mode styling of its own — every color here is either
+   inherited or lives on the item elements instead.
 ====================================================== */
 
 .gs-content-scroll {

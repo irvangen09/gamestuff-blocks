@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.6.0
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,9 +48,14 @@ Blocks made up of a parent and a child (e.g. Accordion and Accordion Item) share
 
 = How does dark mode work? =
 
-By default, blocks follow the visitor's own OS/browser dark mode preference. If your theme has its own dark mode toggle, enter the CSS selector it uses under Settings > GameStuff Blocks > Dark Mode Selector (e.g. `.dark-mode`), and blocks will switch together with the rest of your theme instead.
+Every block automatically adapts to your theme's dark mode — no setup needed. If a site owner wants one fixed appearance regardless of the theme instead, the "Color Scheme" setting under Settings > GameStuff Blocks > Appearance can force every block to Light or Dark.
 
 == Changelog ==
+
+= 1.7.0 =
+* Dark mode now works automatically for every block — no CSS selector setup needed.
+* New "Color Scheme" setting to force Light or Dark for every block at once, if preferred.
+* Removed the "Dark Mode Selector" setting, no longer needed.
 
 = 1.6.0 =
 * Added per-block enable/disable toggles under Settings > GameStuff Blocks > Blocks.
@@ -83,6 +88,9 @@ By default, blocks follow the visitor's own OS/browser dark mode preference. If 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.7.0 =
+Dark mode is now automatic for every block. If you had configured a Dark Mode Selector, it's no longer needed and has been removed — no action required.
 
 = 1.6.0 =
 Adds per-block enable/disable toggles under Settings > GameStuff Blocks. No breaking changes.

@@ -96,32 +96,6 @@ final class SettingsRegistry {
 		);
 
 		self::register(
-			'dark_mode_selector',
-			array(
-				'label'       => __( 'Dark Mode Selector (legacy blocks)', 'gamestuff-blocks' ),
-				'type'        => 'css_selector',
-				/*
-				 * Deliberately empty by default, not the old plugin's
-				 * ".site-s-dark" — this plugin is public and used
-				 * with many different themes, so it must not assume
-				 * any one theme's dark-mode class. Left empty, dark
-				 * styling instead follows the visitor's own OS/browser
-				 * preference; see Services/DarkMode.php.
-				 *
-				 * Only consulted by blocks still registered with the
-				 * DarkMode service. Blocks migrated to the
-				 * theme-agnostic approach (see the "Color Scheme"
-				 * setting below, and src/toc/style.scss for the first
-				 * example) no longer read this value at all.
-				 */
-				'default'     => '',
-				'targets'     => array(),
-				'group'       => 'appearance',
-				'description' => __( 'CSS selector your theme applies when its own dark mode is active, e.g. ".site-s-dark" or "[data-theme=\'dark\']". Leave empty to follow the visitor\'s OS/browser preference instead. Applies only to blocks that have not yet moved to automatic color scheme detection.', 'gamestuff-blocks' ),
-			)
-		);
-
-		self::register(
 			'color_scheme',
 			array(
 				'label'       => __( 'Color Scheme', 'gamestuff-blocks' ),
@@ -146,7 +120,7 @@ final class SettingsRegistry {
 				),
 				'targets'     => array(),
 				'group'       => 'appearance',
-				'description' => __( 'How blocks that support automatic color scheme detection should adapt to dark mode. Blocks that have not yet moved to this mechanism are unaffected — see Dark Mode Selector above.', 'gamestuff-blocks' ),
+				'description' => __( 'How every GameStuff block adapts to dark mode.', 'gamestuff-blocks' ),
 			)
 		);
 	}
@@ -166,8 +140,8 @@ final class SettingsRegistry {
 	 *
 	 *     @type string $label        Human-readable label for the admin page.
 	 *     @type string $type         Field type interpreted by SettingsPage's
-	 *                                field renderer: 'color', 'css_selector',
-	 *                                'select', or 'text' (default).
+	 *                                field renderer: 'color', 'select',
+	 *                                or 'text' (default).
 	 *     @type string $default      Value used whenever nothing has been
 	 *                                saved yet, or the saved value is empty.
 	 *     @type array  $options      For type 'select' only: allowed values

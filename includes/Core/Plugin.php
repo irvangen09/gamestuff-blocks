@@ -172,7 +172,6 @@ final class Plugin {
 
 		\GameStuff\Settings\SettingsRegistry::boot();
 		\GameStuff\Settings\SettingsCss::boot();
-		\GameStuff\Services\DarkMode::boot();
 
 		\GameStuff\Blocks\Toc\Toc::boot();
 		\GameStuff\Blocks\Accordion\Accordion::boot();
