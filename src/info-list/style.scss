@@ -1,0 +1,252 @@
+/* ======================================================
+   GameStuff Info List — Frontend Styles
+   ------------------------------------------------------
+   Accent color reads from `--gs-accent` (Primary Color setting, see
+   includes/Settings/SettingsRegistry.php); the value here is only the
+   pre-setting-CSS fallback.
+
+   Structure:
+   .gs-info-list
+     .gs-info-list-row (× N)                        — Info List Field
+       .gs-info-list-row-label > icon? + label text
+       .gs-info-list-row-value
+     .gs-info-list-requirements (0–1)                — Info List Requirements
+       .gs-info-list-requirements-title > icon + fixed "Requirements" text
+       .gs-info-list-requirements-list
+         .gs-info-list-requirement (× N)             — Info List Requirement
+           icon? + text
+
+   Dependency note: Info List Field, Info List Requirements, and Info
+   List Requirement have no style.scss/editor.scss of their own — each
+   can only ever be inserted inside its declared parent (see their
+   block.json "parent" restriction), and their markup is styled
+   entirely from THIS file, same pattern as Character Infobox Field
+   relying on src/infobox/style.scss.
+
+   No background/shadow by design (see info-list-block-spec.md §7) —
+   the box is a plain bordered container that shows the theme's own
+   background through it, not a card.
+
+   Dark mode needs no config: neutral tokens are relative to
+   `currentColor` via `color-mix()` — no historical literal values to
+   match since this is a new block (see src/toc/style.scss or
+   src/infobox/style.scss for why a literal color pair doesn't
+   reliably track a theme's dark mode toggle on its own).
+
+   A site owner can force a solid Light/Dark look via the "Color
+   Scheme" setting — see the `body.gs-color-scheme-*` rules near the
+   bottom of this file, and includes/Settings/SettingsCss.php for the
+   body class. The neutral literal values used there intentionally
+   match Character Infobox's own forced-mode palette, for one
+   consistent neutral system across every block in the plugin.
+====================================================== */
+
+.gs-info-list {
+
+	--gs-accent: #fe6f22;
+	--gs-border: color-mix( in srgb, currentColor 14%, transparent );
+	--gs-hairline: color-mix( in srgb, currentColor 8%, transparent );
+	--gs-value-color: color-mix( in srgb, currentColor 65%, transparent );
+
+	color: inherit;
+	margin: 16px 0;
+
+	/*
+	 * Empty/unset by default (--gs-font-family is never declared
+	 * unless the Typography setting has an actual value saved — see
+	 * includes/Settings/SettingsCss.php), so `inherit` is what
+	 * actually applies out of the box: follows the theme's own
+	 * typography.
+	 */
+	font-family: var(--gs-font-family, inherit);
+
+	border: 1px solid var(--gs-border);
+	border-radius: 8px;
+
+	overflow: hidden;
+	background: transparent;
+
+}
+
+/* ======================================================
+   Field Rows
+====================================================== */
+
+.gs-info-list-row {
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+
+	padding: 12px 18px;
+
+}
+
+.gs-info-list-row + .gs-info-list-row,
+.gs-info-list-requirements {
+	border-top: 1px solid var(--gs-hairline);
+}
+
+.gs-info-list-row-label {
+
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	font-weight: 700;
+	font-size: 15px;
+	line-height: 1.5;
+
+	color: inherit;
+
+}
+
+.gs-info-list-row-label .dashicons {
+
+	flex-shrink: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 17px;
+	height: 17px;
+	font-size: 17px;
+	line-height: 1;
+
+	color: var(--gs-accent);
+
+}
+
+.gs-info-list-row-value {
+
+	font-size: 15px;
+	line-height: 1.5;
+	text-align: right;
+
+	color: var(--gs-value-color);
+
+	overflow-wrap: anywhere;
+
+}
+
+/* ======================================================
+   Requirements Section
+====================================================== */
+
+.gs-info-list-requirements {
+	padding: 12px 18px 16px;
+}
+
+.gs-info-list-requirements-title {
+
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	margin-bottom: 8px;
+
+	font-weight: 700;
+	font-size: 15px;
+
+	color: inherit;
+
+}
+
+.gs-info-list-requirements-title .dashicons {
+
+	width: 17px;
+	height: 17px;
+	font-size: 17px;
+	line-height: 1;
+
+	color: var(--gs-accent);
+
+}
+
+.gs-info-list-requirements-list {
+
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+
+}
+
+.gs-info-list-requirement {
+
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+
+	font-size: 14px;
+	line-height: 1.5;
+
+	color: var(--gs-value-color);
+
+}
+
+.gs-info-list-requirement .dashicons {
+
+	flex-shrink: 0;
+	margin-top: 2px;
+
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+	line-height: 1;
+
+	color: var(--gs-accent);
+
+}
+
+/* ======================================================
+   Mobile (≤ 480px)
+====================================================== */
+
+@media (max-width: 480px) {
+
+	.gs-info-list {
+		margin: 14px 0;
+	}
+
+	.gs-info-list-row {
+		padding: 10px 14px;
+		gap: 10px;
+	}
+
+	.gs-info-list-row-label,
+	.gs-info-list-row-value {
+		font-size: 14px;
+	}
+
+	.gs-info-list-requirements {
+		padding: 10px 14px 14px;
+	}
+
+}
+
+/*
+ * Forced Light/Dark from "Color Scheme" — inert under "Auto". No
+ * historical value to match (new block); these literals intentionally
+ * reuse Character Infobox's neutral palette (src/infobox/style.scss)
+ * for consistency across the plugin.
+ */
+body.gs-color-scheme-light .gs-info-list {
+	--gs-border: rgba(20, 20, 23, 0.14);
+	--gs-hairline: rgba(20, 20, 23, 0.08);
+	--gs-value-color: #595e63;
+	color: #1d2327;
+}
+
+body.gs-color-scheme-dark .gs-info-list {
+	--gs-border: rgba(255, 255, 255, 0.14);
+	--gs-hairline: rgba(255, 255, 255, 0.08);
+	--gs-value-color: #b7b9bc;
+	color: #f2f2f3;
+}
