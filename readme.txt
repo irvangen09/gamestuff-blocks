@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.7.0
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,7 @@ Blocks currently available:
 * Content Scroll — a navigation grid on desktop that becomes a horizontal scroll on mobile.
 * Timeline — a vertical timeline for sequential content, with a numbered variant.
 * Character Infobox — a portrait + key/value information card, e.g. for character profiles or item stats.
+* Info List — a compact box of key-value attributes with an optional Requirements checklist, e.g. for an event's trigger conditions.
 
 More content blocks are introduced in subsequent releases.
 
@@ -51,6 +52,9 @@ Blocks made up of a parent and a child (e.g. Accordion and Accordion Item) share
 Every block automatically adapts to your theme's dark mode — no setup needed. If a site owner wants one fixed appearance regardless of the theme instead, the "Color Scheme" setting under Settings > GameStuff Blocks > Appearance can force every block to Light or Dark.
 
 == Changelog ==
+
+= 1.8.0 =
+* Added the Info List block, with an optional Requirements checklist.
 
 = 1.7.0 =
 * Dark mode now works automatically for every block — no CSS selector setup needed.
@@ -88,6 +92,9 @@ Every block automatically adapts to your theme's dark mode — no setup needed. 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.8.0 =
+Adds the Info List block. No breaking changes.
 
 = 1.7.0 =
 Dark mode is now automatic for every block. If you had configured a Dark Mode Selector, it's no longer needed and has been removed — no action required.

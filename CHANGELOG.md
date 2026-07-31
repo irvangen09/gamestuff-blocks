@@ -5,6 +5,20 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.8.0] - 2026-07-31
+
+### Added
+
+- New **Info List** block: a compact box for displaying key-value
+  attributes (e.g. an event's trigger requirements — Location, Time,
+  Season, Weather) as a list of rows, each with an optional icon,
+  label, and value.
+- Optional **Requirements** section within Info List: a checklist of
+  free-form requirement items, each with its own optional icon.
+- Info List's accent color follows the "Primary Color" setting
+  (Settings > GameStuff Blocks > Appearance), consistent with every
+  other GameStuff block.
+
 ## [1.7.0] - 2026-07-31
 
 ### Changed
