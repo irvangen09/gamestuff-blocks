@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/info-list-field",
+
+	"version": "1.0.0",
+
+	"title": "Info List Field",
+
+	"category": "gamestuff",
+
+	"parent": [ "gamestuff/info-list" ],
+
+	"icon": "minus",
+
+	"description": "One icon/label/value row inside a GameStuff Info List.",
+
+	"keywords": [ "info", "list", "row", "field", "gamestuff" ],
+
+	"example": {},
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+
+		"value": {
+			"type": "string",
+			"default": ""
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+
+	"editorScript": "file:./index.js"
+}
