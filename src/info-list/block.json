@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/info-list",
+
+	"version": "1.0.0",
+
+	"title": "GameStuff Info List",
+
+	"category": "gamestuff",
+
+	"icon": "editor-table",
+
+	"description": "Displays a compact box of key-value attributes, such as event trigger requirements, with an optional Requirements checklist.",
+
+	"keywords": [ "info", "list", "requirement", "attribute", "gamestuff" ],
+
+	"example": {},
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {},
+
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+
+	"editorScript": "file:./index.js",
+
+	"editorStyle": "file:./index.css",
+
+	"style": "file:./style-index.css"
+}
