@@ -1,0 +1,43 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/info-list-requirement",
+
+	"version": "1.0.0",
+
+	"title": "Info List Requirement",
+
+	"category": "gamestuff",
+
+	"parent": [ "gamestuff/info-list-requirements" ],
+
+	"icon": "yes",
+
+	"description": "One requirement item inside a GameStuff Info List's Requirements section.",
+
+	"keywords": [ "info", "list", "requirement", "checklist", "gamestuff" ],
+
+	"example": {},
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"icon": {
+			"type": "string",
+			"default": ""
+		},
+
+		"text": {
+			"type": "string",
+			"default": ""
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+
+	"editorScript": "file:./index.js"
+}
