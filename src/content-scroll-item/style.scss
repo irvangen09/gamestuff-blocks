@@ -9,17 +9,12 @@
    <a class="gs-cs-item__link">; otherwise only the title renders as
    its own <a> — see save.js.
 
-   Dark mode support for .gs-cs-thumb (the only color that ever
-   changed between modes here) no longer depends on
-   includes/Services/DarkMode.php or the "Dark Mode Selector" setting.
-   Its overlay is expressed relative to `currentColor` via
-   `color-mix()` instead of a literal black/white rgba pair scoped by
-   a theme selector — see src/toc/style.scss for the first block
-   migrated to this approach, and its docblock for why a literal pair
-   doesn't reliably track a theme's own dark mode toggle. A site owner
-   can still force one specific look via the "Color Scheme" setting —
-   see the body.gs-color-scheme-light / body.gs-color-scheme-dark
-   rules near the bottom of this file.
+   .gs-cs-thumb's overlay (the only mode-dependent color here) is
+   relative to `currentColor` via `color-mix()`, so it needs no config
+   — see src/toc/style.scss for why a literal color pair doesn't
+   reliably track a theme's own dark mode toggle. A site owner can
+   still force a solid look via "Color Scheme" — see the
+   body.gs-color-scheme-* rules near the bottom of this file.
 ====================================================== */
 
 .gs-cs-item {
@@ -142,14 +137,8 @@ a.gs-cs-title:focus-visible {
 }
 
 /*
- * Explicit overrides for the "Color Scheme" setting's Light/Dark
- * options — inert under "Auto", the default, since SettingsCss only
- * adds one of these body classes when a site owner has explicitly
- * chosen Light or Dark. Values match this block's historical
- * production colors: a light overlay tinted black in light mode,
- * tinted white in dark mode (the same pair
- * Services/DarkMode.php used to output for this block before this
- * file took over its own dark-mode styling).
+ * Forced Light/Dark from "Color Scheme" — inert under "Auto".
+ * Matches this block's historical overlay values exactly.
  */
 body.gs-color-scheme-light .gs-cs-thumb {
 	--gs-cs-thumb-overlay: rgba(0, 0, 0, 0.04);

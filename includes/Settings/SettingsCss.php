@@ -47,14 +47,8 @@ final class SettingsCss {
 
 	/**
 	 * Hook the generated CSS into both the front end and the editor,
-	 * and the Color Scheme body class into the front end.
-	 *
-	 * Same callback for both CSS contexts, since the CSS to print is
-	 * identical either way — only where it needs to end up differs,
-	 * and both hooks route through the regular styles queue. The
-	 * body class only applies on the front end, where `body_class()`
-	 * output actually reaches visitors — it has no equivalent effect
-	 * worth adding inside the block editor's own iframe.
+	 * and the Color Scheme body class into the front end only (no
+	 * body_class() equivalent exists inside the editor iframe).
 	 *
 	 * @since 1.0.0
 	 * @since 1.7.0 Added the body_class filter.
@@ -154,23 +148,13 @@ final class SettingsCss {
 	}
 
 	/**
-	 * Add a `gs-color-scheme-light` or `gs-color-scheme-dark` class
-	 * to `<body>` when the "Color Scheme" setting has been forced
-	 * away from Auto. No class is added under Auto.
+	 * Add a `gs-color-scheme-light`/`gs-color-scheme-dark` class to
+	 * `<body>` when Color Scheme is forced away from Auto.
 	 *
-	 * A body class, rather than an attribute added to each block's
-	 * own wrapper markup (the approach first tried for the TOC
-	 * block), because most of this plugin's blocks are static:
-	 * their markup is generated once in the editor and saved
-	 * literally into post_content, with no PHP render step that
-	 * could re-check this setting on every page load. A body class
-	 * has no such problem — `body_class()` output is generated fresh
-	 * on every request regardless of how any individual block's own
-	 * markup was produced, so the same mechanism works identically
-	 * for static and dynamic blocks alike. Each migrated block's
-	 * style.scss then only needs a `body.gs-color-scheme-light .gs-x`
-	 * / `body.gs-color-scheme-dark .gs-x` selector pair to react to
-	 * it — no block-specific PHP required.
+	 * A body class rather than a per-block wrapper attribute: most
+	 * blocks in this plugin are static (markup saved into
+	 * post_content, no render step to re-check this setting), and
+	 * `body_class()` is regenerated every request regardless.
 	 *
 	 * @since 1.7.0
 	 *

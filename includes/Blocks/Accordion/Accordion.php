@@ -16,21 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Single entry point for everything the Accordion block family
  * (Accordion + Accordion Item) needs beyond plain block.json
- * registration, handled generically by BlockRegistry: the
- * progressive-enhancement flag its mobile collapse behavior depends
- * on, and the Dashicons stylesheet its optional icon field relies on.
+ * registration: the progressive-enhancement flag its mobile collapse
+ * behavior depends on, and Dashicons for its optional icon field.
  *
- * This block does not register anything with the DarkMode service.
- * Its dark-mode appearance is handled entirely in
- * accordion-item/style.scss, via `currentColor` and `color-mix()`
- * rather than a literal light/dark color pair scoped by a theme
- * selector — see that file's docblock for the reasoning, and TOC
- * (includes/Blocks/Toc/Toc.php) for the first block migrated to this
- * approach.
+ * Dark mode needs no rules registered here — accordion-item/style.scss
+ * handles it via `currentColor`/`color-mix()`, not a per-block service.
  *
  * @since 1.2.0
- * @since 1.7.0 No longer registers dark-mode rules with the DarkMode
- *              service — see the class docblock.
  */
 final class Accordion {
 

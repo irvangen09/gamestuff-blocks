@@ -12,23 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Single entry point for everything the TOC block needs beyond its
- * own block.json / render.php registration (handled generically by
- * BlockRegistry): the heading anchor injector, and invalidating
- * HeadingCollector's cached heading scan whenever a post is saved.
+ * Single entry point for everything the TOC block needs beyond plain
+ * block.json/render.php registration: the heading anchor injector,
+ * and invalidating HeadingCollector's cached heading scan on save.
  *
- * As blocks grow more complex than "just render.php", each one gets a
- * bootstrap class following this same shape, called once from
- * Plugin::register_services() — see includes/Core/Plugin.php.
- *
- * This block does not register anything with the DarkMode service.
- * Its dark-mode appearance is handled entirely in style.scss, via
- * CSS system colors (Canvas/CanvasText) and color-mix() rather than a
- * literal light/dark color pair scoped by a theme selector — see that
- * file's docblock for the reasoning. Timeline was the first block to
- * need no bootstrap-registered dark-mode rules at all (it needs no
- * dark-mode styling whatsoever); TOC is the first to need dark-mode
- * styling but resolve it without this service.
+ * Dark mode needs no rules registered here — style.scss handles it
+ * via `currentColor`/`color-mix()`, not a per-block service.
  *
  * @since 1.1.0
  */

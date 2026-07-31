@@ -101,16 +101,9 @@ final class SettingsRegistry {
 				'label'       => __( 'Color Scheme', 'gamestuff-blocks' ),
 				'type'        => 'select',
 				/*
-				 * "Auto" means the block never reads this setting at
-				 * all at render time in a way that adds any override
-				 * markup — its CSS is authored to look correct in
-				 * both light and dark automatically (currentColor,
-				 * color-mix(), and CSS system colors like Canvas/
-				 * CanvasText), inheriting whatever the surrounding
-				 * theme is already doing. "Light"/"Dark" force a
-				 * specific look regardless of the theme, for site
-				 * owners who want one fixed appearance or whose theme
-				 * produces an unexpected result under Auto.
+				 * "Auto" adds no override — every block's CSS already
+				 * adapts via currentColor/color-mix(). "Light"/"Dark"
+				 * force one fixed look regardless of the theme.
 				 */
 				'default'     => 'auto',
 				'options'     => array(
@@ -156,19 +149,15 @@ final class SettingsRegistry {
 	 *                                override, e.g.:
 	 *                                [ [ 'selector' => '.gs-character',
 	 *                                    'property' => '--gs-accent' ] ]
-	 *                                Currently all declared centrally in
-	 *                                boot(), one setting registration
-	 *                                listing every block target at once —
-	 *                                with only a handful of targets total,
-	 *                                this is simpler than having each
-	 *                                block's bootstrap class register its
-	 *                                own target separately. Worth
-	 *                                revisiting once a new block that
-	 *                                genuinely needs a site-wide accent
-	 *                                color target is added; until then,
-	 *                                a decentralized mechanism would be
-	 *                                solving a problem this setting
-	 *                                doesn't have yet.
+	 *                                All declared centrally here in
+	 *                                boot() rather than per-block, since
+	 *                                there are only a handful total.
+	 *                                Revisit (decentralize to each
+	 *                                block's own bootstrap class) once a
+	 *                                new block genuinely needs a
+	 *                                site-wide accent target — not
+	 *                                before, per ENGINEERING_PRINCIPLES
+	 *                                on premature abstraction.
 	 *     @type string $group        Section grouping on the admin page,
 	 *                                e.g. 'appearance'.
 	 *     @type string $description  Short help text shown under the field

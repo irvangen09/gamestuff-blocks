@@ -3,15 +3,9 @@
 /* ======================================================
    Character Infobox — Frontend Styles
    ------------------------------------------------------
-   Visuals match the block's previous production styling exactly.
-   One change from that version, required by locked project decisions
-   rather than a style preference: the accent color is read from the
-   `--gs-accent` custom property instead of a fixed SCSS value, so it
-   participates in the plugin-wide Primary Color setting (see
-   includes/Settings/SettingsRegistry.php). The value declared here is
-   only the fallback used before any setting CSS loads (and matches
-   that setting's own default), not a second source of truth for the
-   color itself.
+   Accent color reads from `--gs-accent` (Primary Color setting, see
+   includes/Settings/SettingsRegistry.php); the value here is only the
+   pre-setting-CSS fallback.
 
    Structure:
    .gs-character
@@ -34,37 +28,22 @@
    missing file — if this stylesheet ever fails to load, infobox-field
    has no fallback styling of its own.
 
-   Dark mode support here works differently from how it did before:
-   there is no separate light/dark color pair, and no dependency on
-   includes/Services/DarkMode.php or the "Dark Mode Selector" setting.
-   Instead, every token below that reasonably can be is expressed
-   relative to `currentColor` (the text color this element inherits
-   from its surroundings) via `color-mix()` — see src/toc/style.scss
-   for the first block migrated to this approach, and its docblock for
-   why a literal light/dark pair doesn't reliably track a theme's own
-   dark mode toggle. Accent-tinted tokens (`--gs-card-border`,
-   `--gs-accent-soft`, `--gs-accent-softer`) are instead derived from
-   `--gs-accent` itself, since that color is deliberately constant
-   across modes (see includes/Settings/SettingsRegistry.php) rather
-   than something that should track the surrounding text color.
+   Dark mode needs no config: neutral tokens are relative to
+   `currentColor`, accent-tinted tokens (`--gs-card-border`,
+   `--gs-accent-soft`, `--gs-accent-softer`) to `--gs-accent` instead
+   since that color is deliberately constant across modes — both via
+   `color-mix()` (see src/toc/style.scss for why a literal color pair
+   doesn't reliably track a theme's dark mode toggle).
 
-   One token could not be converted this way: `--gs-shadow`. A shadow
-   needs to stay dark regardless of mode — mixing it from `currentColor`
-   would make it a light, barely-visible smear in dark mode instead of
-   a shadow. Rather than guess a single compromise value, it's `none`
-   under Auto (the card relies on `--gs-card-border` alone for
-   separation) and only becomes a real shadow again under an explicit
-   Light/Dark override below, matching this block's historical values
-   exactly.
+   `--gs-shadow` is the one exception: a shadow must stay dark
+   regardless of mode, so it's `none` under Auto (the card relies on
+   `--gs-card-border` alone) and only returns under an explicit
+   Light/Dark override below.
 
-   A site owner can still force one specific, solid look regardless of
-   the theme via the "Color Scheme" setting
-   (includes/Settings/SettingsRegistry.php) — see the
-   `body.gs-color-scheme-light` / `body.gs-color-scheme-dark` rules
-   near the bottom of this file, and includes/Settings/SettingsCss.php
-   for where that body class comes from. Left on "Auto" (the default),
-   no body class is added at all and everything above applies
-   unconditionally.
+   A site owner can force a solid Light/Dark look via the "Color
+   Scheme" setting — see the `body.gs-color-scheme-*` rules near the
+   bottom of this file, and includes/Settings/SettingsCss.php for the
+   body class.
 ====================================================== */
 
 .gs-character {
@@ -452,14 +431,9 @@
 }
 
 /*
- * Explicit overrides for the "Color Scheme" setting's Light/Dark
- * options — inert under "Auto", the default, since SettingsCss only
- * adds one of these body classes when a site owner has explicitly
- * chosen Light or Dark. Values match this block's historical
- * production colors exactly (the same pairs
- * Services/DarkMode.php used to output for this block before this
- * file took over its own dark-mode styling), including the shadow
- * that Auto deliberately omits — see the class docblock.
+ * Forced Light/Dark from "Color Scheme" — inert under "Auto".
+ * Matches this block's historical values exactly, including the
+ * shadow that Auto omits.
  */
 body.gs-color-scheme-light .gs-character {
 	--gs-accent-soft: rgba(254, 111, 34, 0.08);

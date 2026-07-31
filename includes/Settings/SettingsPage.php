@@ -183,12 +183,8 @@ final class SettingsPage {
 		}
 
 		if ( 'select' === $type ) {
-			// Anything other than one of the registered option
-			// values is rejected outright (falls back to the
-			// setting's default via get_value()) rather than saved
-			// as-is — this field's own <select> never submits
-			// anything else, so a value that doesn't match can only
-			// come from a crafted request.
+			// Reject anything outside the registered options — falls
+			// back to the default via get_value().
 			$value = sanitize_key( $value );
 			return array_key_exists( $value, $setting['options'] ) ? $value : '';
 		}

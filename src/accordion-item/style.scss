@@ -1,36 +1,18 @@
 /**
  * Frontend styling for Accordion Item.
  *
- * Visuals match the block's previous production styling in light
- * mode, with one deliberate change: the background is now
- * `transparent` in light mode too, not just dark. The old plugin's
- * `#fff` in light mode assumed the surrounding article background is
- * always white — the same kind of theme assumption that caused
- * problems for TOC (see that block's Decision Log entry). This
- * block's own dark-mode rule already treated `transparent` as the
- * correct answer for exactly this reason ("this item has no surface
- * of its own"); light mode now follows the same logic instead of
- * contradicting it.
+ * Background is `transparent` in both modes now (previously solid
+ * `#fff` in light) — this item has no surface of its own, so it
+ * blends into whatever the theme's own background is.
  *
- * Dark mode support here works differently from most other blocks in
- * this plugin: there is no separate light/dark color pair, and no
- * dependency on includes/Services/DarkMode.php or the
- * "Dark Mode Selector" setting. Instead, colors that do need to
- * change between modes are expressed relative to `currentColor` (the
- * text color this element inherits from its surroundings) via
- * `color-mix()`, rather than a literal hex pair scoped by a theme
- * selector — see src/toc/style.scss for the first block migrated to
- * this approach, and its docblock for why a literal pair doesn't
- * reliably track a theme's own dark mode toggle.
+ * Dark mode needs no config: border/chevron colors are relative to
+ * `currentColor` via `color-mix()`, so they always match the theme's
+ * own text color (see src/toc/style.scss for why a literal light/dark
+ * pair doesn't reliably track a theme's dark mode toggle).
  *
- * A site owner can still force one specific, solid look regardless of
- * the theme via the "Color Scheme" setting
- * (includes/Settings/SettingsRegistry.php) — see the
- * `body.gs-color-scheme-light` / `body.gs-color-scheme-dark` rules
- * near the bottom of this file, and
- * includes/Settings/SettingsCss.php for where that body class comes
- * from. Left on "Auto" (the default), no body class is added at all
- * and everything above applies unconditionally.
+ * A site owner can force a solid Light/Dark look via the "Color
+ * Scheme" setting — see the `body.gs-color-scheme-*` rules below, and
+ * includes/Settings/SettingsCss.php for the body class.
  */
 
 @use "../shared/tokens" as *;
@@ -274,15 +256,9 @@
 }
 
 /*
- * Explicit overrides for the "Color Scheme" setting's Light/Dark
- * options — inert under "Auto", the default, since SettingsCss only
- * adds one of these body classes when a site owner has explicitly
- * chosen Light or Dark. Background stays `transparent` in both —
- * that part of this block's look was never mode-dependent even
- * before this migration (see the class docblock). Only the border and
- * chevron, both previously registered with Services/DarkMode.php as a
- * literal light/dark pair, need restating here for anyone who forces
- * one mode.
+ * Forced Light/Dark from the "Color Scheme" setting — inert under
+ * "Auto". Background stays transparent in both; only border/chevron
+ * need restating as literal colors here.
  */
 body.gs-color-scheme-light .gs-accordion-item {
 	--gs-accordion-border: #dcdcde;

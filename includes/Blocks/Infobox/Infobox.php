@@ -16,21 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Single entry point for everything the Character Infobox block
  * family (Character Infobox + Infobox Field) needs beyond plain
- * block.json registration, handled generically by BlockRegistry: the
- * custom portrait image size its upload control depends on, and the
- * Dashicons stylesheet its portrait empty-state and optional field
- * icons rely on.
+ * block.json registration: the custom portrait image size its upload
+ * control depends on, and Dashicons for its empty-state/field icons.
  *
- * This block does not register anything with the DarkMode service.
- * Its dark-mode appearance is handled entirely in style.scss, via
- * `currentColor`/`color-mix()` rather than a literal light/dark color
- * pair scoped by a theme selector — see that file's docblock for the
- * reasoning, and TOC (includes/Blocks/Toc/Toc.php) for the first
- * block migrated to this approach.
+ * Dark mode needs no rules registered here — style.scss handles it
+ * via `currentColor`/`color-mix()`, not a per-block service.
  *
  * @since 1.5.0
- * @since 1.7.0 No longer registers dark-mode rules with the DarkMode
- *              service — see the class docblock.
  */
 final class Infobox {
 
