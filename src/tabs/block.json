@@ -1,0 +1,35 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gamestuff/tabs",
+	"title": "Tabs",
+	"category": "gamestuff",
+	"description": "Display content in multiple panels that visitors switch between using tabs.",
+	"keywords": [ "tab", "tabs", "panel" ],
+	"textdomain": "gamestuff-blocks",
+	"example": {},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"attributes": {
+		"style": {
+			"type": "string",
+			"enum": [ "underline", "sidebar" ],
+			"default": "underline"
+		},
+		"activeTab": {
+			"type": "number",
+			"default": 0
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.scss",
+	"style": "file:./style.scss",
+	"viewScript": "file:./view.js",
+	"render": "file:./render.php"
+}
