@@ -1,0 +1,161 @@
+/* ======================================================
+   GameStuff Info List — Editor Styles
+   ------------------------------------------------------
+   Mirrors style.scss structure so the wp-admin preview closely
+   matches the front-end. Uses fixed literal colors (not
+   currentColor/color-mix) since the editor canvas background is not
+   theme-dependent the same way the front-end is — same approach as
+   src/infobox/editor.scss.
+
+   Also covers Info List Field, Info List Requirements, and Info List
+   Requirement — none of them have an editor.scss of their own, same
+   dependency note as style.scss.
+====================================================== */
+
+.gs-info-list {
+
+	margin: 0;
+
+	--gs-accent: #fe6f22;
+
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+
+	overflow: hidden;
+	background: #fff;
+
+}
+
+/* ======================================================
+   Field Rows
+====================================================== */
+
+.gs-info-list-row {
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+
+	padding: 12px 18px;
+
+}
+
+.gs-info-list-row + .gs-info-list-row,
+.gs-info-list-requirements {
+	border-top: 1px solid #efefef;
+}
+
+.gs-info-list-row-label {
+
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	font-weight: 700;
+	font-size: 15px;
+
+	color: #1e1e1e;
+
+}
+
+.gs-info-list-row-label .dashicons {
+
+	flex-shrink: 0;
+
+	width: 17px;
+	height: 17px;
+	font-size: 17px;
+	line-height: 1;
+
+	color: var(--gs-accent);
+
+}
+
+.gs-info-list-row-label input[type="text"] {
+	min-width: 120px;
+}
+
+.gs-info-list-row-value {
+
+	flex-grow: 1;
+
+	font-size: 15px;
+	text-align: right;
+
+	color: #646970;
+
+}
+
+/* ======================================================
+   Requirements Section
+====================================================== */
+
+.gs-info-list-requirements {
+	padding: 12px 18px 16px;
+}
+
+.gs-info-list-requirements-title {
+
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
+	margin-bottom: 8px;
+
+	font-weight: 700;
+	font-size: 15px;
+
+	color: #1e1e1e;
+
+}
+
+.gs-info-list-requirements-title .dashicons {
+
+	width: 17px;
+	height: 17px;
+	font-size: 17px;
+	line-height: 1;
+
+	color: var(--gs-accent);
+
+}
+
+.gs-info-list-requirements-list {
+
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+
+	margin: 0;
+	padding: 0;
+
+	list-style: none;
+
+}
+
+.gs-info-list-requirement {
+
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+
+	font-size: 14px;
+
+	color: #646970;
+
+}
+
+.gs-info-list-requirement .dashicons {
+
+	flex-shrink: 0;
+	margin-top: 2px;
+
+	width: 14px;
+	height: 14px;
+	font-size: 14px;
+	line-height: 1;
+
+	color: var(--gs-accent);
+
+}
