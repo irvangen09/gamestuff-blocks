@@ -89,6 +89,10 @@ final class SettingsRegistry {
 						'selector' => '.gs-character',
 						'property' => '--gs-accent',
 					),
+					array(
+						'selector' => '.gs-info-list',
+						'property' => '--gs-accent',
+					),
 				),
 				'group'       => 'appearance',
 				'description' => __( 'Accent color used across every GameStuff block.', 'gamestuff-blocks' ),
@@ -152,12 +156,16 @@ final class SettingsRegistry {
 	 *                                All declared centrally here in
 	 *                                boot() rather than per-block, since
 	 *                                there are only a handful total.
-	 *                                Revisit (decentralize to each
-	 *                                block's own bootstrap class) once a
-	 *                                new block genuinely needs a
-	 *                                site-wide accent target — not
-	 *                                before, per ENGINEERING_PRINCIPLES
-	 *                                on premature abstraction.
+	 *                                Re-evaluated when Info List (the
+	 *                                first new block since this trigger
+	 *                                was documented) needed a target —
+	 *                                affirmed to stay centralized here,
+	 *                                since the list is still small and
+	 *                                every entry is static. Revisit again
+	 *                                if this array starts feeling
+	 *                                unmanageable, or a block needs
+	 *                                conditional/dynamic registration
+	 *                                (not just another static entry).
 	 *     @type string $group        Section grouping on the admin page,
 	 *                                e.g. 'appearance'.
 	 *     @type string $description  Short help text shown under the field
