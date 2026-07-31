@@ -32,9 +32,9 @@
 
 .gs-info-list-row {
 
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	display: grid;
+	grid-template-columns: minmax(90px, max-content) minmax(0, 1fr);
+	align-items: baseline;
 	gap: 16px;
 
 	padding: 12px 18px;
@@ -72,18 +72,12 @@
 
 }
 
-.gs-info-list-row-label input[type="text"] {
-	min-width: 120px;
-}
-
 .gs-info-list-row-value {
-
-	flex-grow: 1;
 
 	font-size: 15px;
 	text-align: right;
 
-	color: #646970;
+	color: #3c434a;
 
 }
 
@@ -142,7 +136,7 @@
 
 	font-size: 14px;
 
-	color: #646970;
+	color: #3c434a;
 
 }
 
@@ -158,4 +152,17 @@
 
 	color: var(--gs-accent);
 
+}
+
+.gs-info-list-requirement strong {
+	font-weight: 700;
+}
+
+.gs-info-list-requirement em {
+	font-style: italic;
+}
+
+.gs-info-list-requirement a {
+	color: var(--gs-accent);
+	font-weight: 600;
 }

@@ -25,7 +25,7 @@
 	"attributes": {
 		"icon": {
 			"type": "string",
-			"default": ""
+			"default": "dashicons-arrow-right"
 		},
 
 		"text": {

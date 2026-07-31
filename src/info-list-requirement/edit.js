@@ -59,7 +59,11 @@ export default function Edit( { attributes, setAttributes } ) {
 						'Requirement…',
 						'gamestuff-blocks'
 					) }
-					allowedFormats={ [] }
+					allowedFormats={ [
+						'core/bold',
+						'core/italic',
+						'core/link',
+					] }
 				/>
 			</li>
 		</>

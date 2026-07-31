@@ -27,6 +27,15 @@
    the box is a plain bordered container that shows the theme's own
    background through it, not a card.
 
+   Field rows use CSS Grid (not flex) so the label column stays
+   consistent across rows regardless of value length — confirmed
+   needed after real-site testing showed proportion drifting between
+   short and long values under flex's justify-content: space-between.
+
+   Requirement item text allows bold/italic/link formatting (see
+   info-list-requirement/edit.js) — the .dashicons/strong/em/a rules
+   below style that.
+
    Dark mode needs no config: neutral tokens are relative to
    `currentColor` via `color-mix()` — no historical literal values to
    match since this is a new block (see src/toc/style.scss or
@@ -46,7 +55,12 @@
 	--gs-accent: #fe6f22;
 	--gs-border: color-mix( in srgb, currentColor 14%, transparent );
 	--gs-hairline: color-mix( in srgb, currentColor 8%, transparent );
-	--gs-value-color: color-mix( in srgb, currentColor 65%, transparent );
+	/*
+	 * 82%, not a heavier mute like 65% — a value column that reads as
+	 * "barely there" against the label defeats the point of showing
+	 * it at all. Confirmed too faint at 65% during real-site testing.
+	 */
+	--gs-value-color: color-mix( in srgb, currentColor 82%, transparent );
 
 	color: inherit;
 	margin: 16px 0;
@@ -74,9 +88,14 @@
 
 .gs-info-list-row {
 
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	display: grid;
+	// Label column sizes to its own content (short labels like
+	// "Cuaca" stay narrow) with a floor so it never gets crushed by a
+	// long value — value column takes the rest. Flex without a fixed
+	// column previously let row proportions drift row to row when
+	// values varied a lot in length.
+	grid-template-columns: minmax(90px, max-content) minmax(0, 1fr);
+	align-items: baseline;
 	gap: 16px;
 
 	padding: 12px 18px;
@@ -205,6 +224,32 @@
 
 }
 
+.gs-info-list-requirement strong {
+	font-weight: 700;
+}
+
+.gs-info-list-requirement em {
+	font-style: italic;
+}
+
+.gs-info-list-requirement a {
+
+	color: var(--gs-accent);
+	font-weight: 600;
+	text-decoration: none;
+
+	transition: color 0.2s ease, text-decoration 0.2s ease;
+
+}
+
+.gs-info-list-requirement a:hover {
+	text-decoration: underline;
+}
+
+.gs-info-list-requirement a:visited {
+	color: var(--gs-accent);
+}
+
 /* ======================================================
    Mobile (≤ 480px)
 ====================================================== */
@@ -240,13 +285,13 @@
 body.gs-color-scheme-light .gs-info-list {
 	--gs-border: rgba(20, 20, 23, 0.14);
 	--gs-hairline: rgba(20, 20, 23, 0.08);
-	--gs-value-color: #595e63;
+	--gs-value-color: #3c434a;
 	color: #1d2327;
 }
 
 body.gs-color-scheme-dark .gs-info-list {
 	--gs-border: rgba(255, 255, 255, 0.14);
 	--gs-hairline: rgba(255, 255, 255, 0.08);
-	--gs-value-color: #b7b9bc;
+	--gs-value-color: #d5d5d7;
 	color: #f2f2f3;
 }
