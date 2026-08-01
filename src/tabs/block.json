@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "gamestuff/tabs",
-	"title": "Tabs",
+	"title": "GameStuff Tabs",
 	"category": "gamestuff",
 	"description": "Display content in multiple panels that visitors switch between using tabs.",
 	"keywords": [ "tab", "tabs", "panel" ],
