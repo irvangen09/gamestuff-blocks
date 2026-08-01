@@ -1,5 +1,6 @@
 .wp-block-gamestuff-tabs {
 	--gs-tabs-text-soft: color-mix( in srgb, currentColor 60%, transparent );
+	--gs-tabs-border: color-mix( in srgb, currentColor 15%, transparent );
 
 	// ===== Before view.js runs =====
 	// Every label sits directly above its own content, all items shown
@@ -16,25 +17,32 @@
 	// ===== After view.js runs (.gs-tabs--enhanced) =====
 	// Labels have been moved into .gs-tabs__nav, contents into
 	// .gs-tabs__panels — see view.js.
+	//
+	// Revised per explicit decision: nav divider + active-tab underline
+	// reinstated (adapted from Lunar Core's reference styling) — the
+	// earlier "no border at all" approach left labels too visually
+	// close to body content.
 	.gs-tabs__nav {
 		display: flex;
 		gap: 24px;
-		margin-bottom: 16px;
+		margin-bottom: 20px;
+		border-bottom: 1px solid var( --gs-tabs-border );
 		overflow-x: auto;
 	}
 
-	// No reset needed here for theme button styling — the tab control
-	// is a plain element (the label's own tag), never a <button>.
 	.gs-tabs__tab {
 		cursor: pointer;
 		white-space: nowrap;
+		padding: 0 0 10px;
+		margin-bottom: -1px;
+		border-bottom: 2px solid transparent;
 		color: var( --gs-tabs-text-soft );
+		transition: color 0.15s ease, border-color 0.15s ease;
 
-		// No border-based indicator by design — active state relies on
-		// color plus weight only (accessible without relying on color alone).
 		&[aria-selected="true"] {
 			color: var( --gs-accent, currentColor );
 			font-weight: 600;
+			border-bottom-color: var( --gs-accent, currentColor );
 		}
 
 		&:focus-visible {
@@ -47,6 +55,12 @@
 		display: none;
 	}
 
+	@media ( prefers-reduced-motion: reduce ) {
+		.gs-tabs__tab {
+			transition: none;
+		}
+	}
+
 	&[data-style="sidebar"].gs-tabs--enhanced {
 		display: flex;
 		gap: 24px;
@@ -56,10 +70,23 @@
 			width: 220px;
 			flex-shrink: 0;
 			margin-bottom: 0;
+			padding-right: 16px;
+			border-bottom: none;
+			border-right: 1px solid var( --gs-tabs-border );
 		}
 
 		.gs-tabs__tab {
 			text-align: left;
+			padding: 8px 0 8px 12px;
+			margin-bottom: 0;
+			margin-right: -1px;
+			border-bottom: none;
+			border-left: 2px solid transparent;
+
+			&[aria-selected="true"] {
+				border-left-color: var( --gs-accent, currentColor );
+				border-bottom-color: transparent;
+			}
 		}
 
 		.gs-tabs__panels {
