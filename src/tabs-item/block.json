@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "gamestuff/tabs-item",
+	"title": "Tab",
+	"category": "gamestuff",
+	"parent": [ "gamestuff/tabs" ],
+	"description": "A single tab inside the Tabs block, with its own label and content.",
+	"keywords": [ "tab", "panel" ],
+	"textdomain": "gamestuff-blocks",
+	"example": {},
+	"supports": {
+		"html": false,
+		"reusable": false
+	},
+	"attributes": {
+		"label": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"editorScript": "file:./index.js"
+}
