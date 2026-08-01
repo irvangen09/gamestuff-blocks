@@ -1,0 +1,60 @@
+.wp-block-gamestuff-tabs {
+	--gsb-tabs-text-soft: color-mix( in srgb, currentColor 60%, transparent );
+
+	.gsb-tabs__nav {
+		display: flex;
+		gap: 24px;
+		margin-bottom: 16px;
+		overflow-x: auto;
+	}
+
+	.gsb-tabs__tab {
+		background: none;
+		border: none;
+		padding: 0 0 8px;
+		font: inherit;
+		color: var( --gsb-tabs-text-soft );
+		cursor: pointer;
+		white-space: nowrap;
+
+		// No border-based indicator by design — active state relies on
+		// color plus weight only (accessible without relying on color alone).
+		&.is-active {
+			color: var( --gs-accent, currentColor );
+			font-weight: 600;
+		}
+
+		&:focus-visible {
+			outline: 2px solid var( --gs-accent, currentColor );
+			outline-offset: 2px;
+		}
+	}
+
+	&[data-style="sidebar"] {
+		display: flex;
+		gap: 24px;
+
+		.gsb-tabs__nav {
+			flex-direction: column;
+			width: 220px;
+			flex-shrink: 0;
+			margin-bottom: 0;
+		}
+
+		.gsb-tabs__tab {
+			text-align: left;
+			padding: 10px 0;
+		}
+
+		.gsb-tabs__panels {
+			flex: 1;
+			min-width: 0;
+		}
+	}
+
+	// Defensive: keeps panels hidden even if a theme resets the [hidden]
+	// attribute's default UA styling.
+	.gsb-tabs__panel[hidden] {
+		display: none;
+	}
+}
