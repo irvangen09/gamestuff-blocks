@@ -4,7 +4,10 @@
 
 	// ===== Before view.js runs =====
 	// Every label sits directly above its own content, all items shown
-	// in sequence — fully readable without JS.
+	// in sequence — fully readable without JS. These classes are
+	// removed by view.js once a label/panel is promoted into the
+	// enhanced nav/panels (see view.js) so none of this bleeds into
+	// the interactive widget below.
 	.gs-tabs-item {
 		margin-bottom: 1em;
 	}
@@ -15,13 +18,6 @@
 	}
 
 	// ===== After view.js runs (.gs-tabs--enhanced) =====
-	// Labels have been moved into .gs-tabs__nav, contents into
-	// .gs-tabs__panels — see view.js.
-	//
-	// Revised per explicit decision: nav divider + active-tab underline
-	// reinstated (adapted from Lunar Core's reference styling) — the
-	// earlier "no border at all" approach left labels too visually
-	// close to body content.
 	.gs-tabs__nav {
 		display: flex;
 		gap: 24px;
@@ -30,18 +26,25 @@
 		overflow-x: auto;
 	}
 
+	// Three-level hierarchy so the nav clearly reads as navigation
+	// rather than body text, even before a tab is activated:
+	// body copy (400) < inactive tab (500) < active tab (700 + accent).
 	.gs-tabs__tab {
 		cursor: pointer;
 		white-space: nowrap;
 		padding: 0 0 10px;
 		margin-bottom: -1px;
 		border-bottom: 2px solid transparent;
+		font-weight: 500;
 		color: var( --gs-tabs-text-soft );
 		transition: color 0.15s ease, border-color 0.15s ease;
+		// Removes the ~300ms tap delay some mobile browsers add before
+		// firing click, while it waits to rule out a double-tap zoom.
+		touch-action: manipulation;
 
 		&[aria-selected="true"] {
 			color: var( --gs-accent, currentColor );
-			font-weight: 600;
+			font-weight: 700;
 			border-bottom-color: var( --gs-accent, currentColor );
 		}
 
@@ -92,6 +95,41 @@
 		.gs-tabs__panels {
 			flex: 1;
 			min-width: 0;
+		}
+
+		// Fixed 220px sidebar leaves too little room for content on
+		// narrow screens (DESIGN_SYSTEM.md §12) — fall back to the
+		// same horizontal layout as the underline variant instead of
+		// squeezing both columns.
+		@media ( max-width: 480px ) {
+			flex-direction: column;
+
+			.gs-tabs__nav {
+				flex-direction: row;
+				width: 100%;
+				overflow-x: auto;
+				margin-bottom: 20px;
+				padding-right: 0;
+				border-right: none;
+				border-bottom: 1px solid var( --gs-tabs-border );
+			}
+
+			.gs-tabs__tab {
+				padding: 0 0 10px;
+				margin-right: 0;
+				margin-bottom: -1px;
+				border-left: none;
+				border-bottom: 2px solid transparent;
+
+				&[aria-selected="true"] {
+					border-left-color: transparent;
+					border-bottom-color: var( --gs-accent, currentColor );
+				}
+			}
+
+			.gs-tabs__panels {
+				min-width: auto;
+			}
 		}
 	}
 }
