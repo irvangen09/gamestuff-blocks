@@ -1,16 +1,35 @@
-import { InnerBlocks } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	useInnerBlocksProps,
+	RichText,
+} from '@wordpress/block-editor';
 
 /**
- * No wrapper element on purpose. The "label" attribute is intentionally
- * left out of the saved markup entirely (see edit.js) — TabsRenderer
- * (PHP) reads it directly from block data and builds the actual nav
- * button and <div role="tabpanel"> wrapper itself, with the id/aria
- * attributes that depend on this item's position among its siblings.
- *
- * Returning bare InnerBlocks.Content here means render_block() on this
- * block (called from TabsRenderer) yields exactly this tab's content,
- * with nothing extra to unwrap.
+ * Label is a plain <div>, not a <button> — this is what keeps the
+ * frontend free of theme-wide button styling (background, uppercase
+ * text, etc.). Without JS it's just a heading-like marker above the
+ * panel content; view.js relocates it into the tab strip and adds the
+ * interactive role/ARIA attributes at runtime.
  */
-export default function save() {
-	return <InnerBlocks.Content />;
+export default function save( { attributes } ) {
+	const { label } = attributes;
+
+	const blockProps = useBlockProps.save( {
+		className: 'gs-tabs-item',
+	} );
+
+	const innerBlocksProps = useInnerBlocksProps.save( {
+		className: 'gs-tabs-item__content',
+	} );
+
+	return (
+		<div { ...blockProps }>
+			<RichText.Content
+				tagName="div"
+				className="gs-tabs-item__label"
+				value={ label }
+			/>
+			<div { ...innerBlocksProps } />
+		</div>
+	);
 }

@@ -1,25 +1,38 @@
 .wp-block-gamestuff-tabs {
-	--gsb-tabs-text-soft: color-mix( in srgb, currentColor 60%, transparent );
+	--gs-tabs-text-soft: color-mix( in srgb, currentColor 60%, transparent );
 
-	.gsb-tabs__nav {
+	// ===== Before view.js runs =====
+	// Every label sits directly above its own content, all items shown
+	// in sequence — fully readable without JS.
+	.gs-tabs-item {
+		margin-bottom: 1em;
+	}
+
+	.gs-tabs-item__label {
+		margin-bottom: 6px;
+		font-weight: 600;
+	}
+
+	// ===== After view.js runs (.gs-tabs--enhanced) =====
+	// Labels have been moved into .gs-tabs__nav, contents into
+	// .gs-tabs__panels — see view.js.
+	.gs-tabs__nav {
 		display: flex;
 		gap: 24px;
 		margin-bottom: 16px;
 		overflow-x: auto;
 	}
 
-	.gsb-tabs__tab {
-		background: none;
-		border: none;
-		padding: 0 0 8px;
-		font: inherit;
-		color: var( --gsb-tabs-text-soft );
+	// No reset needed here for theme button styling — the tab control
+	// is a plain element (the label's own tag), never a <button>.
+	.gs-tabs__tab {
 		cursor: pointer;
 		white-space: nowrap;
+		color: var( --gs-tabs-text-soft );
 
 		// No border-based indicator by design — active state relies on
 		// color plus weight only (accessible without relying on color alone).
-		&.is-active {
+		&[aria-selected="true"] {
 			color: var( --gs-accent, currentColor );
 			font-weight: 600;
 		}
@@ -30,31 +43,28 @@
 		}
 	}
 
-	&[data-style="sidebar"] {
+	.gs-tabs__panel[hidden] {
+		display: none;
+	}
+
+	&[data-style="sidebar"].gs-tabs--enhanced {
 		display: flex;
 		gap: 24px;
 
-		.gsb-tabs__nav {
+		.gs-tabs__nav {
 			flex-direction: column;
 			width: 220px;
 			flex-shrink: 0;
 			margin-bottom: 0;
 		}
 
-		.gsb-tabs__tab {
+		.gs-tabs__tab {
 			text-align: left;
-			padding: 10px 0;
 		}
 
-		.gsb-tabs__panels {
+		.gs-tabs__panels {
 			flex: 1;
 			min-width: 0;
 		}
-	}
-
-	// Defensive: keeps panels hidden even if a theme resets the [hidden]
-	// attribute's default UA styling.
-	.gsb-tabs__panel[hidden] {
-		display: none;
 	}
 }

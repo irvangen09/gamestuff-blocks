@@ -94,7 +94,7 @@ final class SettingsRegistry {
 						'property' => '--gs-accent',
 					),
 					array(
-						'selector' => '.gsb-tabs',
+						'selector' => '.gs-tabs',
 						'property' => '--gs-accent',
 					),
 				),

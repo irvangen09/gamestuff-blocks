@@ -1,0 +1,21 @@
+.wp-block-gamestuff-tabs {
+	// The editor never shows the interactive tab widget (see edit.js) —
+	// a dashed border per item helps the author see where each Tab Item
+	// starts and ends while all of them are shown stacked.
+	.gs-tabs-item {
+		padding: 10px 4px;
+		margin-bottom: 12px;
+		border: 1px dashed color-mix( in srgb, currentColor 25%, transparent );
+		border-radius: 4px;
+	}
+
+	.gs-tabs-item__label {
+		margin-bottom: 6px;
+		font-weight: 600;
+
+		&[data-rich-text-placeholder]::before {
+			color: color-mix( in srgb, currentColor 60%, transparent );
+			opacity: 0.75;
+		}
+	}
+}

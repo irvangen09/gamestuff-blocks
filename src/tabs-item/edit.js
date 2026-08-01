@@ -5,31 +5,35 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 
-const ALLOWED_FORMATS = [ 'core/bold', 'core/italic' ];
+const LABEL_FORMATS = [ 'core/bold', 'core/italic' ];
+const CONTENT_TEMPLATE = [ [ 'core/paragraph' ] ];
 
 /**
- * The label edited here is what the parent "Tabs" block reads (via
- * getBlocks) to build its nav preview and, on the frontend, what
- * TabsRenderer reads to build the actual <button> label. It is not part
- * of this block's own saved markup — see save.js.
+ * One deliberate difference from the adopted Lunar Core reference:
+ * its label disallows all formatting (allowedFormats: []), while ours
+ * keeps bold/italic per spec-block-tabs.md §4.
  */
 export default function Edit( { attributes, setAttributes } ) {
 	const { label } = attributes;
 
-	const blockProps = useBlockProps();
-	const innerBlocksProps = useInnerBlocksProps( {
-		className: 'gsb-tabs-item__content',
+	const blockProps = useBlockProps( {
+		className: 'gs-tabs-item',
 	} );
+
+	const innerBlocksProps = useInnerBlocksProps(
+		{ className: 'gs-tabs-item__content' },
+		{ template: CONTENT_TEMPLATE }
+	);
 
 	return (
 		<div { ...blockProps }>
 			<RichText
 				tagName="div"
-				style={ { fontWeight: 600, marginBottom: '12px' } }
+				className="gs-tabs-item__label"
+				placeholder={ __( 'Tab label…', 'gamestuff-blocks' ) }
 				value={ label }
 				onChange={ ( value ) => setAttributes( { label: value } ) }
-				placeholder={ __( 'Tab label…', 'gamestuff-blocks' ) }
-				allowedFormats={ ALLOWED_FORMATS }
+				allowedFormats={ LABEL_FORMATS }
 			/>
 			<div { ...innerBlocksProps } />
 		</div>

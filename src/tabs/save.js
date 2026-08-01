@@ -1,16 +1,20 @@
-import { useInnerBlocksProps } from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 /**
- * This is a dynamic block — render.php is what actually generates the
- * nav + panels markup shown to visitors (see PHP class TabsRenderer).
- *
- * save() still needs to output the serialized inner blocks, otherwise the
- * "tabs-item" children would never be stored in post_content at all. The
- * wrapper element below is only a carrier for that serialized content and
- * is never what gets displayed on the frontend.
+ * Fully static now — no render.php, no PHP class. The wrapper carries
+ * only the "style" variant as a data attribute; view.js reads it at
+ * runtime to decide nav orientation and keyboard direction. Nothing
+ * about tab/panel roles or IDs is baked in here — see view.js for why.
  */
-export default function save() {
-	const innerBlocksProps = useInnerBlocksProps.save();
+export default function save( { attributes } ) {
+	const { style } = attributes;
+
+	const blockProps = useBlockProps.save( {
+		className: 'gs-tabs',
+		'data-style': style,
+	} );
+
+	const innerBlocksProps = useInnerBlocksProps.save( blockProps );
 
 	return <div { ...innerBlocksProps } />;
 }

@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "gamestuff/tabs-item",
-	"title": "Tab",
+	"title": "Tab Item",
 	"category": "gamestuff",
 	"parent": [ "gamestuff/tabs" ],
 	"description": "A single tab inside the Tabs block, with its own label and content.",
@@ -15,8 +15,9 @@
 	},
 	"attributes": {
 		"label": {
-			"type": "string",
-			"default": ""
+			"type": "rich-text",
+			"source": "rich-text",
+			"selector": ".gs-tabs-item__label"
 		}
 	},
 	"editorScript": "file:./index.js"
