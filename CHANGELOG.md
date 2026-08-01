@@ -5,6 +5,20 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.9.0] - 2026-08-01
+
+### Added
+
+- **GameStuff Tabs** and **Tab Item** blocks: content split into
+  multiple panels that visitors switch between, with Underline and
+  Sidebar style variants. The block is fully static — the tab strip,
+  ARIA roles (following the WAI-ARIA Tabs Pattern), and switching
+  behavior are all built at runtime on the front end, so a tab's
+  content stays fully readable even if JavaScript fails to load.
+- Tabs' accent color follows the "Primary Color" setting (Settings >
+  GameStuff Blocks > Appearance), consistent with every other
+  GameStuff block.
+
 ## [1.8.0] - 2026-07-31
 
 ### Added

@@ -18,13 +18,15 @@ No jQuery or other legacy front-end libraries are used — blocks are built with
 - **Content Scroll** — a navigation grid on desktop that becomes a native horizontal scroll on mobile, with an overflow-aware "more content" hint.
 - **Timeline** — a vertical timeline for sequential content (events, walkthroughs, quests, etc.), with a Numbered Timeline variant.
 - **Character Infobox** — a portrait + key/value information card, e.g. for character profiles, item stats, or quest summaries.
+- **Info List** — a compact box of key-value attributes with an optional Requirements checklist, e.g. for an event's trigger conditions.
+- **Tabs** — displays content in multiple panels that visitors switch between, with Underline and Sidebar style variants.
 
 ## Settings
 
 Available under **Settings → GameStuff Blocks**:
 
 - **Primary Color** — accent color shared across every block that uses a site-wide accent.
-- **Dark Mode Selector** — the CSS selector your theme applies when its own dark mode is active (e.g. `.dark-mode`). Left empty, blocks instead follow the visitor's OS/browser dark mode preference.
+- **Color Scheme** — Auto (default), Light, or Dark. Auto follows the visitor's theme automatically, with no configuration needed; Light/Dark force one fixed appearance for every block regardless of the theme.
 
 ## Installation
 
