@@ -93,6 +93,10 @@ final class SettingsRegistry {
 						'selector' => '.gs-info-list',
 						'property' => '--gs-accent',
 					),
+					array(
+						'selector' => '.gsb-tabs',
+						'property' => '--gs-accent',
+					),
 				),
 				'group'       => 'appearance',
 				'description' => __( 'Accent color used across every GameStuff block.', 'gamestuff-blocks' ),
