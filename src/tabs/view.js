@@ -50,6 +50,7 @@
 			var panelId = 'gs-tabs-' + tabsIndex + '-panel-' + itemIndex;
 			var isActive = 0 === itemIndex;
 
+			label.classList.remove( 'gs-tabs-item__label' );
 			label.classList.add( 'gs-tabs__tab' );
 			label.setAttribute( 'role', 'tab' );
 			label.setAttribute( 'id', tabId );
@@ -57,6 +58,7 @@
 			label.setAttribute( 'aria-selected', isActive ? 'true' : 'false' );
 			label.setAttribute( 'tabindex', isActive ? '0' : '-1' );
 
+			panel.classList.remove( 'gs-tabs-item__content' );
 			panel.classList.add( 'gs-tabs__panel' );
 			panel.setAttribute( 'role', 'tabpanel' );
 			panel.setAttribute( 'id', panelId );
