@@ -27,6 +27,7 @@ Available under **Settings → GameStuff Blocks**:
 
 - **Primary Color** — accent color shared across every block that uses a site-wide accent.
 - **Color Scheme** — Auto (default), Light, or Dark. Auto follows the visitor's theme automatically, with no configuration needed; Light/Dark force one fixed appearance for every block regardless of the theme.
+- **Blocks** — enable or disable individual blocks. A disabled block is not registered, and loads no styles or scripts on the front end. Parent/child block pairs (e.g. Accordion and Accordion Item) share a single toggle.
 
 ## Installation
 
