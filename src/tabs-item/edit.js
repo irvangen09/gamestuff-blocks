@@ -11,7 +11,9 @@ const CONTENT_TEMPLATE = [ [ 'core/paragraph' ] ];
 /**
  * One deliberate difference from the adopted Lunar Core reference:
  * its label disallows all formatting (allowedFormats: []), while ours
- * keeps bold/italic per spec-block-tabs.md §4.
+ * keeps bold/italic — a small amount of inline emphasis in a tab
+ * label is still useful, and doesn't risk the layout issues that
+ * unrestricted formatting (links, headings, etc.) would.
  */
 export default function Edit( { attributes, setAttributes } ) {
 	const { label } = attributes;
