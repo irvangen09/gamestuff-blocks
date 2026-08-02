@@ -148,10 +148,11 @@ final class Plugin {
 	}
 
 	/**
-	 * Initialize shared services: the settings registry and CSS
-	 * output, the dark mode CSS service, the settings page (wp-admin
-	 * only), and each block's own bootstrap (beyond plain block.json
-	 * registration, handled separately by BlockRegistry).
+	 * Initialize shared services: SettingsRegistry and SettingsCss
+	 * (which also outputs the dark-mode "Color Scheme" body class),
+	 * the settings page (wp-admin only), and each block's own
+	 * bootstrap (beyond plain block.json registration, handled
+	 * separately by BlockRegistry).
 	 *
 	 * Runs before register_blocks() so that any setting a block
 	 * relies on (e.g. Primary Color) is already registered by the
