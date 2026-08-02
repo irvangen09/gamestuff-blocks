@@ -459,47 +459,52 @@ final class SettingsPage {
 		$blocks      = BlockRegistry::all();
 		$top_level   = array_intersect_key( $blocks, array_flip( BlockRegistry::toggleable_slugs() ) );
 		?>
-		<p class="description">
-			<?php esc_html_e( 'Disabled blocks are not registered at all: they are removed from the block inserter and their CSS/JavaScript are never loaded on the front end.', 'gamestuff-blocks' ); ?>
-		</p>
-		<input type="hidden" name="<?php echo esc_attr( $option_name ); ?>[_submitted]" value="1" />
-		<table class="form-table" role="presentation">
-			<tbody>
-				<?php foreach ( $top_level as $slug => $block ) : ?>
-					<?php $children = self::child_titles( $slug, $blocks ); ?>
-					<tr>
-						<th scope="row">
-							<label for="<?php echo esc_attr( 'block-' . $slug ); ?>">
-								<?php echo esc_html( $block['title'] ); ?>
-							</label>
-						</th>
-						<td>
-							<label>
-								<input
-									type="checkbox"
-									id="<?php echo esc_attr( 'block-' . $slug ); ?>"
-									name="<?php echo esc_attr( $option_name ); ?>[active][]"
-									value="<?php echo esc_attr( $slug ); ?>"
-									<?php checked( BlockRegistry::is_active( $slug ) ); ?>
-								/>
-								<?php esc_html_e( 'Active', 'gamestuff-blocks' ); ?>
-							</label>
-							<?php if ( array() !== $children ) : ?>
-								<p class="description">
-									<?php
-									printf(
-										/* translators: %s: comma-separated list of child block titles, e.g. "Accordion Item". */
-										esc_html__( 'Includes: %s (follows this toggle automatically).', 'gamestuff-blocks' ),
-										esc_html( implode( ', ', $children ) )
-									);
-									?>
-								</p>
-							<?php endif; ?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
+		<fieldset>
+			<legend class="screen-reader-text">
+				<?php esc_html_e( 'Enable or disable individual blocks', 'gamestuff-blocks' ); ?>
+			</legend>
+			<p class="description">
+				<?php esc_html_e( 'Disabled blocks are not registered at all: they are removed from the block inserter and their CSS/JavaScript are never loaded on the front end.', 'gamestuff-blocks' ); ?>
+			</p>
+			<input type="hidden" name="<?php echo esc_attr( $option_name ); ?>[_submitted]" value="1" />
+			<table class="form-table" role="presentation">
+				<tbody>
+					<?php foreach ( $top_level as $slug => $block ) : ?>
+						<?php $children = self::child_titles( $slug, $blocks ); ?>
+						<tr>
+							<th scope="row">
+								<label for="<?php echo esc_attr( 'block-' . $slug ); ?>">
+									<?php echo esc_html( $block['title'] ); ?>
+								</label>
+							</th>
+							<td>
+								<label>
+									<input
+										type="checkbox"
+										id="<?php echo esc_attr( 'block-' . $slug ); ?>"
+										name="<?php echo esc_attr( $option_name ); ?>[active][]"
+										value="<?php echo esc_attr( $slug ); ?>"
+										<?php checked( BlockRegistry::is_active( $slug ) ); ?>
+									/>
+									<?php esc_html_e( 'Active', 'gamestuff-blocks' ); ?>
+								</label>
+								<?php if ( array() !== $children ) : ?>
+									<p class="description">
+										<?php
+										printf(
+											/* translators: %s: comma-separated list of child block titles, e.g. "Accordion Item". */
+											esc_html__( 'Includes: %s (follows this toggle automatically).', 'gamestuff-blocks' ),
+											esc_html( implode( ', ', $children ) )
+										);
+										?>
+									</p>
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</fieldset>
 		<?php
 	}
 
