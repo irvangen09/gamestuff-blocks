@@ -98,9 +98,8 @@
 		}
 
 		// Fixed 220px sidebar leaves too little room for content on
-		// narrow screens (DESIGN_SYSTEM.md §12) — fall back to the
-		// same horizontal layout as the underline variant instead of
-		// squeezing both columns.
+		// narrow screens — fall back to the same horizontal layout
+		// as the underline variant instead of squeezing both columns.
 		@media ( max-width: 480px ) {
 			flex-direction: column;
 
