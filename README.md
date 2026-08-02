@@ -69,7 +69,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution workflow.
 
 ## Architecture
 
-Each block lives in its own folder under `src/`, follows the same internal structure, and does not depend on any other block. Plugin-wide concerns (settings, dark mode, block registration) live under `includes/` as small, single-purpose services rather than being scattered across individual blocks.
+Each top-level block lives in its own folder under `src/`, and does not depend on any other block. A block's child blocks (e.g. Accordion Item, Tabs Item) live nested inside their parent's own folder rather than as separate top-level folders, so everything belonging to one feature stays in one place. Plugin-wide concerns (settings, dark mode, block registration) live under `includes/` as small, single-purpose services rather than being scattered across individual blocks.
 
 ## Security
 

@@ -9,10 +9,10 @@
 
    Structure:
    ul/ol.gs-timeline (.gs-timeline--default | .gs-timeline--numbered)
-     li.gs-timeline-item   → see src/timeline-item/style.scss
+     li.gs-timeline-item   → see src/timeline/item/style.scss
 
    The custom properties here are the "contract" consumed by
-   timeline-item/style.scss. Adding a new variant (e.g. a
+   timeline/item/style.scss. Adding a new variant (e.g. a
    different node size) only needs a new modifier selector
    like .gs-timeline--numbered below, without changing the
    structure.
@@ -44,7 +44,7 @@
 	 * so `inherit` is what actually applies out of the box: same as
 	 * today, following whatever the theme's own typography sets.
 	 * Cascades down to every Timeline Item automatically -- no need
-	 * to repeat this in timeline-item/style.scss.
+	 * to repeat this in timeline/item/style.scss.
 	 */
 	font-family: var(--gs-font-family, inherit);
 
@@ -54,7 +54,7 @@
    Variant: Numbered Timeline
    Only the node size changes here -- the connecting line
    and marker position adjust automatically via the CSS
-   calculations in timeline-item/style.scss (no hardcoded
+   calculations in timeline/item/style.scss (no hardcoded
    values there).
 ------------------------------------------------------ */
 
