@@ -14,15 +14,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Discovers built blocks and registers only the ones that are active.
  *
- * Blocks are discovered directly from build/ (one subfolder per
- * block, each with its own block.json) rather than through a single
- * bulk manifest call, because a disabled block must not be
- * registered at all — not registering it is what keeps it out of the
- * inserter and stops WordPress from auto-loading its declared style
- * and script assets. A bulk-then-unregister approach would leave
- * that guarantee weaker for statically saved content.
+ * Blocks are discovered by recursively scanning build/ for every
+ * block.json found, at any depth, rather than through a single bulk
+ * manifest call, because a disabled block must not be registered at
+ * all — not registering it is what keeps it out of the inserter and
+ * stops WordPress from auto-loading its declared style and script
+ * assets. A bulk-then-unregister approach would leave that guarantee
+ * weaker for statically saved content.
+ *
+ * Discovery is recursive (not a single-level scan) because parent
+ * and child blocks live under one shared folder since the
+ * parent-child directory refactor — e.g. build/accordion/block.json
+ * (parent) and build/accordion/item/block.json (child) both need to
+ * be found, at whatever depth a block's own block.json happens to
+ * sit relative to build/. Some block families nest three levels deep
+ * (e.g. info-list → info-list/requirements → info-list/requirements/
+ * requirement), so the scan has no fixed depth limit.
  *
  * @since 1.0.0
+ * @since 1.10.0 Discovery changed from a one-level scan to a
+ *               recursive scan of build/, to support the nested
+ *               parent-child directory structure. Version pending
+ *               final confirmation once the whole refactor is
+ *               complete.
  */
 final class BlockRegistry {
 
@@ -161,6 +175,19 @@ final class BlockRegistry {
 	 *              block. Read directly from block.json's own
 	 *              "parent" declaration, so nothing needs to be kept
 	 *              in sync by hand as blocks are added.
+	 * @since 1.10.0 Scan changed from one level deep to fully
+	 *               recursive (parent-child directory refactor — see
+	 *               class docblock). Slug source changed from the
+	 *               block's folder name to its block.json "name"
+	 *               (prefix stripped), because folder names are no
+	 *               longer guaranteed unique on their own — several
+	 *               child blocks share the folder name "item" under
+	 *               different parents. Deriving the slug from the
+	 *               block name instead keeps every existing slug
+	 *               identical to before the refactor (e.g.
+	 *               "accordion-item" stays "accordion-item"), so the
+	 *               gamestuff_blocks_active_blocks option and every
+	 *               caller of these slugs needed no migration.
 	 *
 	 * @return array<string, array<string, mixed>> Discovered blocks,
 	 *         keyed by slug, each with 'name', 'title', 'path', and
@@ -180,31 +207,59 @@ final class BlockRegistry {
 			return self::$blocks;
 		}
 
-		foreach ( (array) glob( $build_dir . '/*', GLOB_ONLYDIR ) as $dir ) {
+		$iterator = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator( $build_dir, \FilesystemIterator::SKIP_DOTS )
+		);
 
-			$manifest_file = $dir . '/block.json';
+		foreach ( $iterator as $file ) {
 
-			if ( ! file_exists( $manifest_file ) ) {
+			if ( 'block.json' !== $file->getFilename() ) {
 				continue;
 			}
 
-			$metadata = json_decode( (string) file_get_contents( $manifest_file ), true );
+			$metadata = json_decode( (string) file_get_contents( $file->getPathname() ), true );
 
 			if ( ! is_array( $metadata ) || empty( $metadata['name'] ) ) {
 				continue;
 			}
 
-			$slug = basename( $dir );
+			$slug = self::slug_from_name( $metadata['name'] );
 
 			self::$blocks[ $slug ] = array(
 				'name'   => $metadata['name'],
 				'title'  => $metadata['title'] ?? $slug,
-				'path'   => $dir,
+				'path'   => $file->getPath(),
 				'parent' => $metadata['parent'][0] ?? null,
 			);
 		}
 
 		return self::$blocks;
+	}
+
+	/**
+	 * Derive a block's internal registry slug from its block.json
+	 * "name", by stripping the "gamestuff/" namespace prefix.
+	 *
+	 * Kept as its own method (rather than an inline str_replace() at
+	 * the call site) because it is the single place that defines what
+	 * a "slug" means in this registry — every other method that reads
+	 * or writes a slug (is_active(), toggleable_slugs(), the disabled-
+	 * blocks option) relies on this definition staying consistent.
+	 *
+	 * @since 1.10.0
+	 *
+	 * @param string $block_name Full block name, e.g. 'gamestuff/accordion-item'.
+	 * @return string Slug, e.g. 'accordion-item'.
+	 */
+	private static function slug_from_name( string $block_name ): string {
+
+		$prefix = 'gamestuff/';
+
+		if ( str_starts_with( $block_name, $prefix ) ) {
+			return substr( $block_name, strlen( $prefix ) );
+		}
+
+		return $block_name;
 	}
 
 	/**
