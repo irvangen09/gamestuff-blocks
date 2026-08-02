@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * registration: the progressive-enhancement flag its mobile collapse
  * behavior depends on, and Dashicons for its optional icon field.
  *
- * Dark mode needs no rules registered here — accordion-item/style.scss
+ * Dark mode needs no rules registered here — accordion/item/style.scss
  * handles it via `currentColor`/`color-mix()`, not a per-block service.
  *
  * @since 1.2.0
@@ -52,7 +52,7 @@ final class Accordion {
 	 * Print a tiny, synchronous inline script as early as possible in
 	 * <head> that adds a `js` class to <html>.
 	 *
-	 * The mobile collapse rules in accordion-item/style.scss are
+	 * The mobile collapse rules in accordion/item/style.scss are
 	 * gated behind this class: when JavaScript runs normally the
 	 * class is present before first paint, so nothing visually
 	 * changes; if JavaScript fails to load or is disabled, the class

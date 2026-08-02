@@ -15,7 +15,7 @@
  * includes/Settings/SettingsCss.php for the body class.
  */
 
-@use "../shared/tokens" as *;
+@use "../../shared/tokens" as *;
 
 .gs-accordion-item {
 	--gs-accordion-border: color-mix( in srgb, currentColor 15%, transparent );
