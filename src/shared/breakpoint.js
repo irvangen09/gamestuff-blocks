@@ -13,8 +13,8 @@
  * switch to their mobile layout.
  *
  * Must stay in sync with the `781px` breakpoint used in
- * accordion-item/style.scss, content-scroll/style.scss, and
- * content-scroll-item/style.scss (SCSS can't import a JS constant, so
+ * accordion/item/style.scss, content-scroll/style.scss, and
+ * content-scroll/item/style.scss (SCSS can't import a JS constant, so
  * those need to be updated by hand if this value ever changes — see
  * shared/tokens.scss for the SCSS-side equivalent).
  */

@@ -27,7 +27,7 @@ export default function save( { attributes } ) {
 			 * Safari drops the implicit "list" accessibility role
 			 * from a <ul> when list-style: none is applied. role="list"
 			 * restores it explicitly (paired with role="listitem" on
-			 * each child in content-scroll-item/save.js) so the
+			 * each child in content-scroll/item/save.js) so the
 			 * collection of cards keeps proper list semantics for
 			 * screen readers in every browser. ESLint's jsx-a11y
 			 * considers this role redundant because it doesn't account

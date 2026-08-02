@@ -17,7 +17,7 @@
      .gs-cs-arrow          (mobile-only "more content" hint)
 
    Item-level styles (.gs-cs-item, .gs-cs-thumb, .gs-cs-title)
-   live in content-scroll-item/style.scss, since that block is
+   live in content-scroll/item/style.scss, since that block is
    what actually renders them — including that block's own
    dark-mode handling (currentColor/color-mix, no service or
    setting dependency; see that file's docblock).
@@ -43,7 +43,7 @@
 	 * `inherit` is what actually applies out of the box: following
 	 * whatever the theme's own typography sets. Cascades down to
 	 * every Content Scroll Item automatically -- no need to repeat
-	 * this in content-scroll-item/style.scss.
+	 * this in content-scroll/item/style.scss.
 	 */
 	font-family: var(--gs-font-family, inherit);
 }

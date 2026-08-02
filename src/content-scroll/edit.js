@@ -49,7 +49,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 
 	/**
 	 * "Entire Card Clickable" changes which element becomes the <a>
-	 * in each item's frontend markup (see content-scroll-item/save.js),
+	 * in each item's frontend markup (see content-scroll/item/save.js),
 	 * so it has to live as an attribute on every child block — save()
 	 * only ever has access to its own block's attributes, never a
 	 * parent's. Pushing this single Inspector toggle down to every
