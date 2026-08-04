@@ -60,7 +60,7 @@ final class Infobox {
 	 * style.scss to keep every portrait fully visible.
 	 *
 	 * Must stay in sync with PORTRAIT_WIDTH / PORTRAIT_HEIGHT in
-	 * src/infobox/constants.js and the portrait frame dimensions in
+	 * src/character-infobox/constants.js and the portrait frame dimensions in
 	 * style.scss / editor.scss.
 	 *
 	 * @since 1.5.0

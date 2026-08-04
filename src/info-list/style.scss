@@ -21,11 +21,11 @@
    can only ever be inserted inside its declared parent (see their
    block.json "parent" restriction), and their markup is styled
    entirely from THIS file, same pattern as Character Infobox Field
-   relying on src/infobox/style.scss.
+   relying on src/character-infobox/style.scss.
 
-   No background/shadow by design (see info-list-block-spec.md §7) —
-   the box is a plain bordered container that shows the theme's own
-   background through it, not a card.
+   No background/shadow by design — the box is a plain bordered
+   container that shows the theme's own background through it, not
+   a card.
 
    Field rows use CSS Grid (not flex) so the label column stays
    consistent across rows regardless of value length — confirmed
@@ -39,7 +39,7 @@
    Dark mode needs no config: neutral tokens are relative to
    `currentColor` via `color-mix()` — no historical literal values to
    match since this is a new block (see src/toc/style.scss or
-   src/infobox/style.scss for why a literal color pair doesn't
+   src/character-infobox/style.scss for why a literal color pair doesn't
    reliably track a theme's dark mode toggle on its own).
 
    A site owner can force a solid Light/Dark look via the "Color
@@ -279,7 +279,7 @@
 /*
  * Forced Light/Dark from "Color Scheme" — inert under "Auto". No
  * historical value to match (new block); these literals intentionally
- * reuse Character Infobox's neutral palette (src/infobox/style.scss)
+ * reuse Character Infobox's neutral palette (src/character-infobox/style.scss)
  * for consistency across the plugin.
  */
 body.gs-color-scheme-light .gs-info-list {

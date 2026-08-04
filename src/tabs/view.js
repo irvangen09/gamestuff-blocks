@@ -32,9 +32,10 @@
 			isVertical ? 'vertical' : 'horizontal'
 		);
 
-		// Panels get their own wrapper (unlike Lunar Core's original,
-		// which leaves them as loose siblings) so the sidebar variant
-		// has a single element to lay out as the second flex column.
+		// Panels get their own wrapper (the reference implementation
+		// this was adapted from leaves them as loose siblings) so the
+		// sidebar variant has a single element to lay out as the
+		// second flex column.
 		var panelsWrap = document.createElement( 'div' );
 		panelsWrap.className = 'gs-tabs__panels';
 

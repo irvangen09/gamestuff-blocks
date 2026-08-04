@@ -5,7 +5,7 @@
    matches the front-end. Uses fixed literal colors (not
    currentColor/color-mix) since the editor canvas background is not
    theme-dependent the same way the front-end is — same approach as
-   src/infobox/editor.scss.
+   src/character-infobox/editor.scss.
 
    Also covers Info List Field, Info List Requirements, and Info List
    Requirement — none of them have an editor.scss of their own, same
