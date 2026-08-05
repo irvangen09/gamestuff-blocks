@@ -1,14 +1,7 @@
 import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 
-/**
- * v1: icon was a bare dashicon name (e.g. "media-document"), rendered
- * as `dashicons-${icon}`, and iconColor was never applied on the
- * frontend output.
- *
- * Kept so accordion items published before the icon field became a
- * free-text class name still validate correctly and don't show
- * "block contains invalid content" in the editor.
- */
+// v1: icon was a bare dashicon name (rendered as `dashicons-${icon}`);
+// iconColor was never applied on the frontend.
 const v1 = {
 	attributes: {
 		title: {
@@ -27,12 +20,8 @@ const v1 = {
 			type: 'string',
 			default: '#ff5a1f',
 		},
-		// Sourced from the already-saved markup, same as the active
-		// version — this lets pre-icon-rename content (which still
-		// has a clientId-based id literally baked into its stored
-		// HTML) validate correctly by reading that existing id back
-		// out, instead of trying to regenerate it from a fresh (and
-		// different) clientId.
+		// Read from existing markup so pre-icon-rename content's
+		// clientId-based id validates instead of regenerating a new one.
 		triggerId: {
 			type: 'string',
 			source: 'attribute',

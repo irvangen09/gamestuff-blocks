@@ -22,31 +22,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  * All saved values live in a single WordPress option rather than one
  * option per setting, which keeps this to one autoloaded row in the
  * options table no matter how many settings get registered later.
- *
- * @since 1.0.0
  */
 final class SettingsRegistry {
 
 	/**
 	 * Option name used to store every setting's saved value together,
 	 * as a single associative array ( setting id => value ).
-	 *
-	 * @since 1.0.0
 	 */
 	private const OPTION = 'gamestuff_blocks_settings';
 
 	/**
 	 * Registered settings, keyed by id.
 	 *
-	 * @since 1.0.0
 	 * @var array<string, array<string, mixed>>
 	 */
 	private static array $registry = array();
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __construct() {}
 
@@ -57,7 +50,6 @@ final class SettingsRegistry {
 	 * settings page or blocks are registered, so every setting a
 	 * block might rely on already exists by the time it's needed.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -133,7 +125,6 @@ final class SettingsRegistry {
 	 * anywhere or output any CSS — SettingsPage and SettingsCss read
 	 * this registry to do that.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string               $id   Unique setting id, e.g. 'primary_color'.
 	 * @param array<string, mixed> $args {
@@ -157,15 +148,9 @@ final class SettingsRegistry {
 	 *                                override, e.g.:
 	 *                                [ [ 'selector' => '.gs-character',
 	 *                                    'property' => '--gs-accent' ] ]
-	 *                                All declared centrally here in
-	 *                                boot() rather than per-block, since
-	 *                                there are only a handful total.
-	 *                                Re-evaluated when Info List (the
-	 *                                first new block since this trigger
-	 *                                was documented) needed a target —
-	 *                                affirmed to stay centralized here,
-	 *                                since the list is still small and
-	 *                                every entry is static. Revisit again
+	 *                                Declared centrally here in boot()
+	 *                                rather than per-block, since the
+	 *                                list is small and static. Revisit
 	 *                                if this array starts feeling
 	 *                                unmanageable, or a block needs
 	 *                                conditional/dynamic registration
@@ -196,7 +181,6 @@ final class SettingsRegistry {
 	/**
 	 * Get every registered setting.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return array<string, array<string, mixed>> Registered settings, keyed by id.
 	 */
@@ -208,7 +192,6 @@ final class SettingsRegistry {
 	/**
 	 * Get the option name every setting's value is stored under.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return string
 	 */
@@ -225,7 +208,6 @@ final class SettingsRegistry {
 	 * defaults for settings that were registered but never saved. Use
 	 * get_value() instead for the effective value.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return array<string, string> Saved values, keyed by setting id.
 	 */
@@ -238,7 +220,6 @@ final class SettingsRegistry {
 	 * Get the effective value of one setting: the saved value if
 	 * present and non-empty, otherwise the registered default.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string $id Setting id, as passed to register().
 	 * @return string Effective value. Empty string if the setting was

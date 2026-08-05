@@ -38,14 +38,8 @@
 
 	list-style: none;
 
-	/*
-	 * Empty/unset by default (--gs-font-family is never declared
-	 * unless a future Typography setting has an actual value saved),
-	 * so `inherit` is what actually applies out of the box: same as
-	 * today, following whatever the theme's own typography sets.
-	 * Cascades down to every Timeline Item automatically -- no need
-	 * to repeat this in timeline/item/style.scss.
-	 */
+	// Falls back to inherit until Typography setting has a value;
+	// cascades to every Timeline Item automatically.
 	font-family: var(--gs-font-family, inherit);
 
 }

@@ -8,14 +8,8 @@ import {
 const LABEL_FORMATS = [ 'core/bold', 'core/italic' ];
 const CONTENT_TEMPLATE = [ [ 'core/paragraph' ] ];
 
-/**
- * One deliberate difference from the reference implementation this
- * was adapted from: its label disallows all formatting
- * (allowedFormats: []), while ours keeps bold/italic — a small
- * amount of inline emphasis in a tab label is still useful, and
- * doesn't risk the layout issues that unrestricted formatting
- * (links, headings, etc.) would.
- */
+// Label keeps bold/italic formatting (unlike the reference this was
+// adapted from) — useful for emphasis without risking layout issues.
 export default function Edit( { attributes, setAttributes } ) {
 	const { label } = attributes;
 

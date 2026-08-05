@@ -19,15 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * registration, etc.) lives in its own class under includes/, and
  * this class is only responsible for calling them in the right
  * sequence at the right time.
- *
- * @since 1.0.0
  */
 final class Plugin {
 
 	/**
 	 * Singleton instance.
 	 *
-	 * @since 1.0.0
 	 * @var self|null
 	 */
 	private static ?self $instance = null;
@@ -40,29 +37,23 @@ final class Plugin {
 	 * twice), which would otherwise register every hook, setting,
 	 * and block a second time.
 	 *
-	 * @since 1.0.0
 	 * @var bool
 	 */
 	private bool $booted = false;
 
 	/**
 	 * Private constructor — use instance() instead.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __construct() {}
 
 	/**
 	 * Prevent cloning of the singleton instance.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __clone() {}
 
 	/**
 	 * Get the shared Plugin instance.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return self
 	 */
@@ -83,7 +74,6 @@ final class Plugin {
 	 * misconfigured environment fails visibly rather than causing a
 	 * fatal error deeper in the code.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -107,8 +97,6 @@ final class Plugin {
 		 * Fires once the plugin has finished initializing: every
 		 * service is registered and every active block has been
 		 * registered with WordPress.
-		 *
-		 * @since 1.0.0
 		 */
 		do_action( 'gamestuff_blocks_ready' );
 	}
@@ -123,7 +111,6 @@ final class Plugin {
 	 * gracefully instead of allowing a fatal error further down the
 	 * boot sequence.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return bool
 	 */
@@ -135,7 +122,6 @@ final class Plugin {
 	/**
 	 * Render the admin notice shown when the environment check fails.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -165,7 +151,6 @@ final class Plugin {
 	 * succeeds or to render order — it needs to run regardless of
 	 * whether the block itself is present on the current page.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -187,7 +172,6 @@ final class Plugin {
 	/**
 	 * Register every active block with WordPress.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */

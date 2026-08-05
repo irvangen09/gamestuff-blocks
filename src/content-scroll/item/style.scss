@@ -30,14 +30,8 @@
 	text-decoration: none;
 }
 
-/*
- * Whole-card-link scenario (see save.js): .gs-cs-item is always the
- * <li> (for list semantics), so the actual <a> that needs the
- * layout/color/decoration treatment is this inner element instead.
- * Duplicated here deliberately rather than relied on inheriting from
- * .gs-cs-item, so the reset applies directly to the element that
- * actually carries the link's default browser styling.
- */
+// Whole-card-link scenario: .gs-cs-item is always the <li> (list
+// semantics), so this inner <a> carries the link styling instead.
 .gs-cs-item__link {
 	display: flex;
 	flex-direction: column;
@@ -83,19 +77,8 @@
 	text-decoration: none;
 }
 
-/*
- * When a title is a link — either as its own <a class="gs-cs-title">
- * (Entire Card Clickable off), or as a plain <div> living inside the
- * card's own <a> wrapper (Entire Card Clickable on) — the active
- * theme's own `a` color rules can cascade in and override the
- * plugin's `color: inherit`, the same class of specificity issue
- * already fixed for Accordion Item. Scoping to the block's own
- * wrapper class with !important guarantees GameStuff's brand color
- * wins regardless of the theme, in both markup variants, without
- * touching any other link on the site. Titles that are NOT links (no
- * URL set) are untouched — they never match either selector below, so
- * they keep `color: inherit`.
- */
+// !important defends against theme `a` color rules overriding this
+// title's color in both markup variants (link vs non-link title).
 .gs-cs-item__link .gs-cs-title,
 a.gs-cs-title {
 	color: #b86c3a !important;

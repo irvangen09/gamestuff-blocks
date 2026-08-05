@@ -1,25 +1,7 @@
-/**
- * Character Infobox — local SCSS partial.
- *
- * Kept local to this block (not in src/shared/) because this
- * placeholder is only reused between this block's own style.scss and
- * editor.scss, unlike src/shared/tokens.scss which is genuinely
- * shared across multiple blocks.
- */
+// Local to this block — reused only between its own style.scss/editor.scss.
 
-/**
- * Resets the properties a theme's own heading typography could
- * otherwise apply to this block's heading element, since it renders a
- * user-configurable heading level (h2-h6) that participates in the
- * page's real document outline -- not a custom non-heading tag a
- * theme would never target.
- *
- * Used by `.gs-character-summary .gs-character-name` in both
- * style.scss and editor.scss. Only the declarations that are
- * byte-for-byte identical in both files are included here; font-size,
- * text-align, padding, and the rest differ between the two contexts
- * and stay declared locally in each file.
- */
+// Resets theme heading styles for this user-configurable h2-h6 heading.
+// !important defends against the theme's own heading specificity.
 %gs-heading-reset {
 	display: block !important;
 

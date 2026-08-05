@@ -37,14 +37,8 @@
 
 	margin: 16px 0;
 
-	/*
-	 * Empty/unset by default (--gs-font-family is never declared
-	 * unless the Typography setting has an actual value saved), so
-	 * `inherit` is what actually applies out of the box: following
-	 * whatever the theme's own typography sets. Cascades down to
-	 * every Content Scroll Item automatically -- no need to repeat
-	 * this in content-scroll/item/style.scss.
-	 */
+	// Falls back to inherit until the Typography setting has a value;
+	// cascades to every Content Scroll Item automatically.
 	font-family: var(--gs-font-family, inherit);
 }
 
@@ -53,12 +47,8 @@
 	grid-template-columns: repeat(var(--gs-cs-cols), minmax(0, 1fr));
 	gap: var(--gs-cs-gap);
 
-	/*
-	 * .gs-cs-track is a <ul> for proper list semantics for screen
-	 * readers (see save.js), so the browser's default list
-	 * margin/padding/bullet need resetting to keep the exact same
-	 * visual output it would have as a plain <div>.
-	 */
+	// .gs-cs-track is a <ul> for list semantics — reset default list
+	// margin/padding/bullet to match a plain <div>'s visual output.
 	margin: 0;
 	padding: 0;
 	list-style: none;

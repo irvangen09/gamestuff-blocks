@@ -23,8 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Core plugin constants.
- *
- * @since 1.0.0
  */
 define( 'GAMESTUFF_BLOCKS_VERSION', '1.9.0' );
 define( 'GAMESTUFF_BLOCKS_FILE', __FILE__ );
@@ -41,7 +39,6 @@ define( 'GAMESTUFF_BLOCKS_BASENAME', plugin_basename( __FILE__ ) );
  * Composer-generated vendor/autoload.php so the plugin has no
  * runtime dependency on a build step for class loading.
  *
- * @since 1.0.0
  *
  * @param string $class Fully qualified class name being requested.
  * @return void
@@ -77,7 +74,6 @@ register_deactivation_hook( __FILE__, array( Core\Deactivator::class, 'deactivat
  * registered itself first, in case the plugin ever needs to check
  * for or interact with another plugin during initialization.
  *
- * @since 1.0.0
  *
  * @return void
  */

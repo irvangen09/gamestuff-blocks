@@ -21,24 +21,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Dark mode needs no rules registered here — style.scss handles it
  * via `currentColor`/`color-mix()`, not a per-block service.
- *
- * @since 1.5.0
  */
 final class Infobox {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.5.0
 	 */
 	private function __construct() {}
 
 	/**
 	 * Boot everything this block needs.
-	 *
-	 * @since 1.5.0
-	 * @since 1.7.0 No longer registers dark-mode rules — see the
-	 *              class docblock.
 	 *
 	 * @return void
 	 */
@@ -63,7 +55,6 @@ final class Infobox {
 	 * src/character-infobox/constants.js and the portrait frame dimensions in
 	 * style.scss / editor.scss.
 	 *
-	 * @since 1.5.0
 	 *
 	 * @return void
 	 */
@@ -83,7 +74,6 @@ final class Infobox {
 	 * ever be inserted as its child, so checking for the parent block
 	 * alone is enough).
 	 *
-	 * @since 1.5.0
 	 *
 	 * @return void
 	 */

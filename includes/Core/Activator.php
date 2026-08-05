@@ -18,23 +18,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  * one-time event triggered by WordPress itself (register_activation_hook),
  * with its own timing and failure handling (wp_die() is acceptable
  * here, unlike during a normal request boot).
- *
- * @since 1.0.0
  */
 final class Activator {
 
 	/**
 	 * Option name used to track the version that was last activated,
 	 * for future upgrade routines to compare against.
-	 *
-	 * @since 1.0.0
 	 */
 	private const VERSION_OPTION = 'gamestuff_blocks_version';
 
 	/**
 	 * Handle plugin activation.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -57,7 +52,6 @@ final class Activator {
 	 * to stop the plugin from activating at all rather than merely
 	 * showing a notice on an already-active plugin.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return bool
 	 */
@@ -71,7 +65,6 @@ final class Activator {
 	 * explanatory message, since the environment requirements were
 	 * not met at activation time.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */

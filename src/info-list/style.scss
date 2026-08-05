@@ -1,77 +1,21 @@
-/* ======================================================
-   GameStuff Info List — Frontend Styles
-   ------------------------------------------------------
-   Accent color reads from `--gs-accent` (Primary Color setting, see
-   includes/Settings/SettingsRegistry.php); the value here is only the
-   pre-setting-CSS fallback.
-
-   Structure:
-   .gs-info-list
-     .gs-info-list-row (× N)                        — Info List Field
-       .gs-info-list-row-label > icon? + label text
-       .gs-info-list-row-value
-     .gs-info-list-requirements (0–1)                — Info List Requirements
-       .gs-info-list-requirements-title > icon + fixed "Requirements" text
-       .gs-info-list-requirements-list
-         .gs-info-list-requirement (× N)             — Info List Requirement
-           icon? + text
-
-   Dependency note: Info List Field, Info List Requirements, and Info
-   List Requirement have no style.scss/editor.scss of their own — each
-   can only ever be inserted inside its declared parent (see their
-   block.json "parent" restriction), and their markup is styled
-   entirely from THIS file, same pattern as Character Infobox Field
-   relying on src/character-infobox/style.scss.
-
-   No background/shadow by design — the box is a plain bordered
-   container that shows the theme's own background through it, not
-   a card.
-
-   Field rows use CSS Grid (not flex) so the label column stays
-   consistent across rows regardless of value length — confirmed
-   needed after real-site testing showed proportion drifting between
-   short and long values under flex's justify-content: space-between.
-
-   Requirement item text allows bold/italic/link formatting (see
-   info-list/requirements/requirement/edit.js) — the .dashicons/strong/em/a rules
-   below style that.
-
-   Dark mode needs no config: neutral tokens are relative to
-   `currentColor` via `color-mix()` — no historical literal values to
-   match since this is a new block (see src/toc/style.scss or
-   src/character-infobox/style.scss for why a literal color pair doesn't
-   reliably track a theme's dark mode toggle on its own).
-
-   A site owner can force a solid Light/Dark look via the "Color
-   Scheme" setting — see the `body.gs-color-scheme-*` rules near the
-   bottom of this file, and includes/Settings/SettingsCss.php for the
-   body class. The neutral literal values used there intentionally
-   match Character Infobox's own forced-mode palette, for one
-   consistent neutral system across every block in the plugin.
-====================================================== */
+/*
+ * Field / Requirements / Requirement have no style.scss of their
+ * own — they only ever nest inside this block, so they're styled
+ * from here.
+ */
 
 .gs-info-list {
 
-	--gs-accent: #fe6f22;
+	--gs-accent: #fe6f22; // fallback before the Primary Color setting CSS loads
 	--gs-border: color-mix( in srgb, currentColor 14%, transparent );
 	--gs-hairline: color-mix( in srgb, currentColor 8%, transparent );
-	/*
-	 * 82%, not a heavier mute like 65% — a value column that reads as
-	 * "barely there" against the label defeats the point of showing
-	 * it at all. Confirmed too faint at 65% during real-site testing.
-	 */
+	// 82%, not a heavier mute — lower read as barely visible in testing
 	--gs-value-color: color-mix( in srgb, currentColor 82%, transparent );
 
 	color: inherit;
 	margin: 16px 0;
 
-	/*
-	 * Empty/unset by default (--gs-font-family is never declared
-	 * unless the Typography setting has an actual value saved — see
-	 * includes/Settings/SettingsCss.php), so `inherit` is what
-	 * actually applies out of the box: follows the theme's own
-	 * typography.
-	 */
+	// falls back to inherit until the Typography setting has a value
 	font-family: var(--gs-font-family, inherit);
 
 	border: 1px solid var(--gs-border);
@@ -89,11 +33,8 @@
 .gs-info-list-row {
 
 	display: grid;
-	// Label column sizes to its own content (short labels like
-	// "Cuaca" stay narrow) with a floor so it never gets crushed by a
-	// long value — value column takes the rest. Flex without a fixed
-	// column previously let row proportions drift row to row when
-	// values varied a lot in length.
+	// Grid (not flex) keeps the label column width stable regardless
+	// of value length.
 	grid-template-columns: minmax(90px, max-content) minmax(0, 1fr);
 	align-items: baseline;
 	gap: 16px;
@@ -224,6 +165,7 @@
 
 }
 
+// bold/italic/link formatting for requirement text
 .gs-info-list-requirement strong {
 	font-weight: 700;
 }
@@ -276,12 +218,7 @@
 
 }
 
-/*
- * Forced Light/Dark from "Color Scheme" — inert under "Auto". No
- * historical value to match (new block); these literals intentionally
- * reuse Character Infobox's neutral palette (src/character-infobox/style.scss)
- * for consistency across the plugin.
- */
+// Forced Light/Dark override from the Color Scheme setting; inert under Auto
 body.gs-color-scheme-light .gs-info-list {
 	--gs-border: rgba(20, 20, 23, 0.14);
 	--gs-hairline: rgba(20, 20, 23, 0.08);

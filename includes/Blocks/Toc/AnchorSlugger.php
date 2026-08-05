@@ -24,15 +24,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * document order using this exact same algorithm, so the anchors they
  * independently produce always agree without the two ever needing to
  * share a reference to one another.
- *
- * @since 1.0.0
  */
 final class AnchorSlugger {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __construct() {}
 
@@ -41,7 +37,6 @@ final class AnchorSlugger {
 	 * Anchor field) against the used-slugs pool, so later
 	 * auto-generated anchors don't collide with it.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string   $anchor     Manually-set anchor, as authored.
 	 * @param string[] $used_slugs Slugs already used, by reference.
@@ -68,7 +63,6 @@ final class AnchorSlugger {
 	/**
 	 * Generate a unique slug from heading text.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string   $text       Heading text (may contain HTML; stripped).
 	 * @param string[] $used_slugs Slugs already used, by reference.

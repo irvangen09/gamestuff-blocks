@@ -22,22 +22,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * No dark mode rules to register here — style.scss handles it via
  * currentColor/color-mix(), not a per-block service (same as Toc and
  * Infobox since the 1.7.0 Dark Mode Refactor).
- *
- * @since 1.8.0
  */
 final class InfoList {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.8.0
 	 */
 	private function __construct() {}
 
 	/**
 	 * Boot everything this block needs.
 	 *
-	 * @since 1.8.0
 	 *
 	 * @return void
 	 */
@@ -58,7 +53,6 @@ final class InfoList {
 	 * Requirements, so checking for the top-level block alone is
 	 * enough).
 	 *
-	 * @since 1.8.0
 	 *
 	 * @return void
 	 */

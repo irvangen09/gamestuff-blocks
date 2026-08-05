@@ -28,15 +28,8 @@ const TEMPLATE = [ [ 'gamestuff/character-infobox-field' ] ];
 export default function Edit( { attributes, setAttributes } ) {
 	const { characterName, headingLevel, portraitId, portraitUrl } = attributes;
 
-	/**
-	 * The portrait URL/alt are captured directly from the Media Library
-	 * selection (not looked up again later) so that save() stays a pure
-	 * function of attributes — required for a Static Block, since save()
-	 * cannot reach into the REST API / data store the way a dynamic
-	 * render.php could reach into wp_get_attachment_image().
-	 *
-	 * @param {Object} media Media object selected from the Media Library.
-	 */
+	// Captured directly from the Media Library selection so save()
+	// stays a pure function of attributes (required for a static block).
 	const onSelectImage = ( media ) => {
 		setAttributes( {
 			portraitId: media.id,

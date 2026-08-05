@@ -2,12 +2,8 @@
 	--gs-tabs-text-soft: color-mix( in srgb, currentColor 60%, transparent );
 	--gs-tabs-border: color-mix( in srgb, currentColor 15%, transparent );
 
-	// ===== Before view.js runs =====
-	// Every label sits directly above its own content, all items shown
-	// in sequence — fully readable without JS. These classes are
-	// removed by view.js once a label/panel is promoted into the
-	// enhanced nav/panels (see view.js) so none of this bleeds into
-	// the interactive widget below.
+	// Before view.js runs: items shown in sequence, readable without
+	// JS. view.js removes these classes once enhanced.
 	.gs-tabs-item {
 		margin-bottom: 1em;
 	}

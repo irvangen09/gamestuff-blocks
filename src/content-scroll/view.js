@@ -1,11 +1,5 @@
-/**
- * GameStuff Content Scroll — frontend behavior.
- *
- * Handles the mobile "more content" arrow: shows it only when the
- * track actually overflows and the user hasn't scrolled to the end
- * yet. The horizontal scroll itself is native (CSS overflow-x), this
- * script only toggles the hint on top of it.
- */
+// Shows the "more content" arrow only when the track overflows and
+// hasn't been scrolled to the end. Scroll itself is native CSS overflow-x.
 import { isMobileViewport, watchMobileBreakpoint } from '../shared/breakpoint';
 
 document.addEventListener( 'DOMContentLoaded', () => {

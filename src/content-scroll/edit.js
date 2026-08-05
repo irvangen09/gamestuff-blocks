@@ -47,16 +47,9 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
-	/**
-	 * "Entire Card Clickable" changes which element becomes the <a>
-	 * in each item's frontend markup (see content-scroll/item/save.js),
-	 * so it has to live as an attribute on every child block — save()
-	 * only ever has access to its own block's attributes, never a
-	 * parent's. Pushing this single Inspector toggle down to every
-	 * current child keeps it feeling like one setting from the
-	 * editor's point of view, while every item still produces valid,
-	 * self-contained static markup on its own.
-	 */
+	// "Entire Card Clickable" must live on every child (each item's
+	// save() only sees its own attributes), so this pushes the single
+	// Inspector toggle down to all current children.
 	useEffect( () => {
 		innerBlocks.forEach( ( block ) => {
 			if ( block.attributes.cardClickable !== cardClickable ) {
@@ -84,18 +77,9 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		},
 	} );
 
-	/**
-	 * Replaces the legacy <InnerBlocks /> component. That component
-	 * renders its own extra `.block-editor-inner-blocks` /
-	 * `.block-editor-block-list__layout` wrapper pair around the
-	 * child blocks, so `.gs-cs-track` was never the direct grid
-	 * parent of each card in the editor — only of that wrapper.
-	 * useInnerBlocksProps() merges the inner-blocks wrapper directly
-	 * onto `.gs-cs-track` itself instead of introducing a nested
-	 * wrapper, so each card becomes a direct child of `.gs-cs-track`
-	 * in the editor, matching the frontend markup produced by
-	 * `<InnerBlocks.Content />` in save.js exactly.
-	 */
+	// useInnerBlocksProps merges the inner-blocks wrapper directly onto
+	// .gs-cs-track (no nested wrapper like legacy <InnerBlocks />), so
+	// each card is a direct child, matching the frontend markup.
 	const innerBlocksProps = useInnerBlocksProps(
 		{ className: 'gs-cs-track' },
 		{

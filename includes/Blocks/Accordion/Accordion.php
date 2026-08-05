@@ -21,24 +21,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Dark mode needs no rules registered here — accordion/item/style.scss
  * handles it via `currentColor`/`color-mix()`, not a per-block service.
- *
- * @since 1.2.0
  */
 final class Accordion {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.2.0
 	 */
 	private function __construct() {}
 
 	/**
 	 * Boot everything this block needs.
-	 *
-	 * @since 1.2.0
-	 * @since 1.7.0 No longer registers dark-mode rules — see the
-	 *              class docblock.
 	 *
 	 * @return void
 	 */
@@ -61,7 +53,6 @@ final class Accordion {
 	 * desktop — instead of being stuck behind a non-functional
 	 * toggle button.
 	 *
-	 * @since 1.2.0
 	 *
 	 * @return void
 	 */
@@ -82,7 +73,6 @@ final class Accordion {
 	 * render a dashicon class in its saved markup, so it's enqueued
 	 * only when the page actually contains an Accordion.
 	 *
-	 * @since 1.2.0
 	 *
 	 * @return void
 	 */

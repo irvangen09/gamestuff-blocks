@@ -24,15 +24,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * reference, but process headings in the same document order with
  * the same slug algorithm (AnchorSlugger), so the anchors they
  * produce always agree.
- *
- * @since 1.0.0
  */
 final class HeadingAnchorInjector {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __construct() {}
 
@@ -44,7 +40,6 @@ final class HeadingAnchorInjector {
 	 * `the_content` and the `render_block_*` hooks it relies on only
 	 * ever fire on the front end anyway.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -67,7 +62,6 @@ final class HeadingAnchorInjector {
 	 * only rides along on the `the_content` filter for its side
 	 * effect.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string $content Content, passed through unmodified.
 	 * @return string
@@ -86,7 +80,6 @@ final class HeadingAnchorInjector {
 	 * a manually-set HTML Anchor, which WordPress core already
 	 * renders itself).
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string $block_content Rendered heading markup.
 	 * @param array  $block         Block data (attrs, etc).
@@ -136,7 +129,6 @@ final class HeadingAnchorInjector {
 	 * (`.gs-accordion-item__heading`), not the title span inside it,
 	 * so the id lands on the actual semantic heading element.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string $block_content Rendered Accordion Item markup.
 	 * @param array  $block         Block data (attrs, etc).
@@ -179,7 +171,6 @@ final class HeadingAnchorInjector {
 	 * static local variable serves the same purpose here without
 	 * introducing per-instance state to a static-only class.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return string[] Reference to the used-slugs pool.
 	 */

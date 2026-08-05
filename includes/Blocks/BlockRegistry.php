@@ -30,13 +30,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * sit relative to build/. Some block families nest three levels deep
  * (e.g. info-list → info-list/requirements → info-list/requirements/
  * requirement), so the scan has no fixed depth limit.
- *
- * @since 1.0.0
- * @since 1.10.0 Discovery changed from a one-level scan to a
- *               recursive scan of build/, to support the nested
- *               parent-child directory structure. Version pending
- *               final confirmation once the whole refactor is
- *               complete.
  */
 final class BlockRegistry {
 
@@ -46,23 +39,18 @@ final class BlockRegistry {
 	 * A slug's absence from this list means the block is active —
 	 * new blocks are active by default the moment they're built,
 	 * with no extra step required to "turn them on".
-	 *
-	 * @since 1.0.0
 	 */
 	private const OPTION = 'gamestuff_blocks_active_blocks';
 
 	/**
 	 * Cache of discovered blocks for the current request.
 	 *
-	 * @since 1.0.0
 	 * @var array<string, array<string, mixed>>|null
 	 */
 	private static ?array $blocks = null;
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __construct() {}
 
@@ -71,7 +59,6 @@ final class BlockRegistry {
 	 * "gamestuff" block category every block in this plugin groups
 	 * under via its own block.json.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -91,7 +78,6 @@ final class BlockRegistry {
 	 * doesn't need updating every time a new block is added — any
 	 * block declaring `category: gamestuff` is covered.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param array $categories Existing block categories.
 	 * @return array Block categories with "gamestuff" prepended.
@@ -113,7 +99,6 @@ final class BlockRegistry {
 	/**
 	 * Register each discovered block that is currently active.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -144,7 +129,6 @@ final class BlockRegistry {
 	 * covered automatically the moment they're discovered by all(),
 	 * with no extra step required.
 	 *
-	 * @since 1.5.1
 	 *
 	 * @param \WP_Block_Type|false $block_type Return value of
 	 *        register_block_type(), or false if registration failed.
@@ -168,26 +152,14 @@ final class BlockRegistry {
 	 * (Settings/SettingsPage.php), which needs to list every available
 	 * block along with its current active/disabled state.
 	 *
-	 * @since 1.0.0
-	 * @since 1.6.0 Added the 'parent' key — the full block name of a
-	 *              child block's parent (e.g. 'gamestuff/accordion'
-	 *              for accordion-item), or null for a standalone
-	 *              block. Read directly from block.json's own
-	 *              "parent" declaration, so nothing needs to be kept
-	 *              in sync by hand as blocks are added.
-	 * @since 1.10.0 Scan changed from one level deep to fully
-	 *               recursive (parent-child directory refactor — see
-	 *               class docblock). Slug source changed from the
-	 *               block's folder name to its block.json "name"
-	 *               (prefix stripped), because folder names are no
-	 *               longer guaranteed unique on their own — several
-	 *               child blocks share the folder name "item" under
-	 *               different parents. Deriving the slug from the
-	 *               block name instead keeps every existing slug
-	 *               identical to before the refactor (e.g.
-	 *               "accordion-item" stays "accordion-item"), so the
-	 *               gamestuff_blocks_active_blocks option and every
-	 *               caller of these slugs needed no migration.
+	 * The slug is derived from block.json's "name" (prefix stripped),
+	 * not the folder name, because folder names are not guaranteed
+	 * unique — several child blocks share the folder name "item"
+	 * under different parents. The 'parent' key is read directly from
+	 * block.json's own "parent" declaration (the full block name of
+	 * the parent, e.g. 'gamestuff/accordion' for accordion-item, or
+	 * null for a standalone block), so nothing needs to be kept in
+	 * sync by hand as blocks are added.
 	 *
 	 * @return array<string, array<string, mixed>> Discovered blocks,
 	 *         keyed by slug, each with 'name', 'title', 'path', and
@@ -246,7 +218,6 @@ final class BlockRegistry {
 	 * or writes a slug (is_active(), toggleable_slugs(), the disabled-
 	 * blocks option) relies on this definition staying consistent.
 	 *
-	 * @since 1.10.0
 	 *
 	 * @param string $block_name Full block name, e.g. 'gamestuff/accordion-item'.
 	 * @return string Slug, e.g. 'accordion-item'.
@@ -275,10 +246,7 @@ final class BlockRegistry {
 	 * only renders a checkbox for non-child blocks for this reason —
 	 * see Settings/SettingsPage.php.
 	 *
-	 * @since 1.0.0
-	 * @since 1.6.0 Cascades to the parent block's state for child blocks.
-	 *
-	 * @param string $slug Block folder slug, e.g. 'accordion'.
+	 * @param string $slug Block slug, e.g. 'accordion'.
 	 * @return bool
 	 */
 	public static function is_active( string $slug ): bool {
@@ -295,7 +263,6 @@ final class BlockRegistry {
 	/**
 	 * Resolve a block's parent slug, if it has one.
 	 *
-	 * @since 1.6.0
 	 *
 	 * @param string $slug Block folder slug.
 	 * @return string|null Parent's own folder slug, or null if this
@@ -329,7 +296,6 @@ final class BlockRegistry {
 	 * tab. Child blocks (accordion-item and similar) are excluded;
 	 * their state always follows their parent (see is_active()).
 	 *
-	 * @since 1.6.0
 	 *
 	 * @return string[]
 	 */
@@ -346,7 +312,6 @@ final class BlockRegistry {
 	/**
 	 * Get the option name the disabled-block list is stored under.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return string
 	 */
@@ -362,7 +327,6 @@ final class BlockRegistry {
 	 * Settings/SettingsPage.php) can read the current toggle state
 	 * to pre-check/uncheck each block's checkbox.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return string[]
 	 */
@@ -384,7 +348,6 @@ final class BlockRegistry {
 	 * conditional asset in the future can reuse it directly instead
 	 * of repeating the same `is_singular()` + `has_block()` pair.
 	 *
-	 * @since 1.5.1
 	 *
 	 * @param string $block_name Full block name, e.g. 'gamestuff/accordion'.
 	 * @return bool

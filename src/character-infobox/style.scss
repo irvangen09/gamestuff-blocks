@@ -60,13 +60,7 @@
 	color: inherit;
 	margin: 16px 0;
 
-	/*
-	 * Empty/unset by default (--gs-font-family is never declared
-	 * unless the Typography setting has an actual value saved — see
-	 * includes/Settings/SettingsCss.php), so `inherit` is what
-	 * actually applies out of the box: same as today, following
-	 * whatever the theme's own typography sets.
-	 */
+	// Falls back to inherit until the Typography setting has a value.
 	font-family: var(--gs-font-family, inherit);
 
 }
@@ -199,14 +193,8 @@
 
 }
 
-/*
- * characterName renders as a real heading (h2–h6) so it participates in
- * the page's document outline. That also means the active theme's own
- * heading typography can cascade onto it — width, margin, background,
- * border, etc. The extra specificity + !important below is a
- * defensive guard so the theme can't visually break out of the card,
- * keeping the pre-refactor look identical regardless of theme.
- */
+// !important defends against the theme's own heading typography
+// breaking the card layout on this h2-h6 heading.
 .gs-character-summary .gs-character-name {
 
 	@extend %gs-heading-reset;

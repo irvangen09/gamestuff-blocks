@@ -30,16 +30,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The tabbed layout replaces the single-section form this page used
  * to render before block enable/disable toggles existed — see the
  * previous docblock note here, which named this exact trigger.
- *
- * @since 1.0.0
  */
 final class SettingsPage {
 
 	/**
 	 * Slug used for both the admin page and the settings group passed
 	 * to register_setting() / settings_fields().
-	 *
-	 * @since 1.0.0
 	 */
 	private const PAGE_SLUG = 'gamestuff-blocks';
 
@@ -48,7 +44,6 @@ final class SettingsPage {
 	 * label. The first is the default when no ?tab= is present or an
 	 * unrecognized one is passed.
 	 *
-	 * @since 1.6.0
 	 * @var array<string, string>
 	 */
 	private const TABS = array(
@@ -58,15 +53,12 @@ final class SettingsPage {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __construct() {}
 
 	/**
 	 * Register the admin menu entry and both settings.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -79,7 +71,6 @@ final class SettingsPage {
 	/**
 	 * Add the settings page under Settings > GameStuff Blocks.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -98,10 +89,6 @@ final class SettingsPage {
 	 * Register both options this page saves — SettingsRegistry's
 	 * (Appearance tab) and BlockRegistry's (Blocks tab) — under the
 	 * same settings group, with the WordPress Settings API.
-	 *
-	 * @since 1.6.0 Renamed from register_setting() (singular) and
-	 *              extended to also register BlockRegistry's option,
-	 *              now that this page has more than one to save.
 	 *
 	 * @return void
 	 */
@@ -137,7 +124,6 @@ final class SettingsPage {
 	 * own form, but could from a crafted request) is silently
 	 * dropped rather than saved as-is.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param mixed $input Raw submitted value for the settings option.
 	 * @return array<string, string> Sanitized values, keyed by setting id.
@@ -162,11 +148,9 @@ final class SettingsPage {
 	/**
 	 * Sanitize a single value according to its setting type.
 	 *
-	 * @since 1.0.0
-	 * @since 1.7.0 Now takes the full setting config instead of just
-	 *              its type, so the 'select' type can validate the
-	 *              submitted value against its own registered
-	 *              'options' rather than accepting any string.
+	 * Takes the full setting config (not just the type) so the
+	 * 'select' type can validate the submitted value against its own
+	 * registered 'options' rather than accepting any string.
 	 *
 	 * @param mixed                $value   Raw value for this one field.
 	 * @param array<string, mixed> $setting Setting configuration, as registered.
@@ -212,7 +196,6 @@ final class SettingsPage {
 	 * options.php would silently leave the previous value in place
 	 * instead of saving "everything disabled".
 	 *
-	 * @since 1.6.0
 	 *
 	 * @param mixed $input Raw submitted value for BlockRegistry's option.
 	 * @return string[] Disabled block slugs.
@@ -239,7 +222,6 @@ final class SettingsPage {
 	 * Render the settings page: tab navigation, then the current
 	 * tab's form.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -275,7 +257,6 @@ final class SettingsPage {
 	 * Resolve the currently requested tab from `?tab=`, falling back
 	 * to the first entry in TABS for anything missing or unrecognized.
 	 *
-	 * @since 1.6.0
 	 *
 	 * @return string
 	 */
@@ -294,7 +275,6 @@ final class SettingsPage {
 	/**
 	 * Render the tab navigation.
 	 *
-	 * @since 1.6.0
 	 *
 	 * @param string $current_tab Currently active tab slug.
 	 * @return void
@@ -324,7 +304,6 @@ final class SettingsPage {
 	 * in the TABS constant, since constant expressions can't call
 	 * functions.
 	 *
-	 * @since 1.6.0
 	 *
 	 * @param string $slug          Tab slug.
 	 * @param string $fallback_label Untranslated fallback label.
@@ -347,7 +326,6 @@ final class SettingsPage {
 	 * Render one form field per registered setting belonging to the
 	 * given tab's group.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string $tab Current tab slug, matched against each
 	 *                    setting's registered 'group'.
@@ -393,9 +371,6 @@ final class SettingsPage {
 	 * script dependency at all — the browser provides the picker UI
 	 * itself. 'select' renders a plain `<select>` from the setting's
 	 * registered 'options', likewise with no script dependency.
-	 *
-	 * @since 1.0.0
-	 * @since 1.7.0 Added the 'select' type.
 	 *
 	 * @param string               $id          Setting id.
 	 * @param array<string, mixed> $setting     Setting configuration, as registered.
@@ -449,7 +424,6 @@ final class SettingsPage {
 	 * present in $_POST even if every checkbox ends up unchecked —
 	 * see sanitize_active_blocks() for why that matters.
 	 *
-	 * @since 1.6.0
 	 *
 	 * @return void
 	 */
@@ -513,7 +487,6 @@ final class SettingsPage {
 	 * any — used to explain in the Blocks tab why a block like
 	 * Accordion Item has no checkbox of its own.
 	 *
-	 * @since 1.6.0
 	 *
 	 * @param string                            $parent_slug Top-level block's slug.
 	 * @param array<string, array<string, mixed>> $blocks     Full result of BlockRegistry::all().

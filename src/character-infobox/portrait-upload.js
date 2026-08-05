@@ -1,12 +1,5 @@
-/**
- * Character Infobox — portrait upload control.
- *
- * Extracted from edit.js so the main Edit() function stays focused on
- * overall block layout, rather than the details of the Media Library
- * upload UI (click-to-open zone, empty-state placeholder, and the
- * Replace/Remove buttons). No behavior or markup change from the
- * previous inline version.
- */
+// Extracted from edit.js so it stays focused on overall block layout,
+// not Media Library upload UI details.
 import { __ } from '@wordpress/i18n';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { Button, ResponsiveWrapper } from '@wordpress/components';

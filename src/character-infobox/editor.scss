@@ -128,15 +128,8 @@
 
 }
 
-/*
- * characterName renders as a real heading (h2-h6) in the editor
- * too, so the same theme-heading-cascade concern documented in
- * style.scss for this element applies here: the extra
- * specificity + !important below is a deliberate defense
- * against the active theme's own heading typography leaking
- * into the editor summary row, not a shortcut around this
- * plugin's own selector specificity.
- */
+// !important defends against the theme's own heading typography
+// leaking into the editor summary row (see style.scss).
 .gs-character-summary .gs-character-name {
 
 	@extend %gs-heading-reset;

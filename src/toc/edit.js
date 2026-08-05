@@ -1,10 +1,5 @@
-/**
- * Editor view for GameStuff TOC — a static placeholder only, not a
- * live preview of the actual table of contents. This is a dynamic
- * block (see render.php); a real live preview would need
- * ServerSideRender, adding an extra request and complexity this block
- * doesn't need.
- */
+// Static placeholder only — this is a dynamic block (see render.php),
+// so no live preview to avoid the extra ServerSideRender request.
 
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, PlainText } from '@wordpress/block-editor';

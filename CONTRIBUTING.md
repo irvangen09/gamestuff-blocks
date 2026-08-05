@@ -28,7 +28,7 @@ See [README.md](README.md) for the full list of available scripts.
 
 ## Block Structure
 
-Each block lives in its own folder under `src/`, does not depend on any other block, and follows the same internal file layout (`block.json`, `edit.*`, `save.*`, `render.*`/`view.*` where applicable, `style.*`, `editor.*`). Non-trivial PHP logic for a block (anything beyond rendering markup) lives in its own namespaced class under `includes/Blocks/{BlockName}/`, not as procedural functions.
+Each top-level block lives in its own folder under `src/`; a block's child blocks (e.g. Accordion Item, Tabs Item) live nested inside their parent's own folder rather than as separate top-level folders. Every block does not depend on any other block, and follows the same internal file layout (`block.json`, `edit.*`, `save.*`, `render.*`/`view.*` where applicable, `style.*`, `editor.*`). Non-trivial PHP logic for a block (anything beyond rendering markup) lives in its own namespaced class under `includes/Blocks/{BlockName}/`, not as procedural functions.
 
 Before adding a new shared utility under `src/shared/` or `includes/Services/`, make sure it's genuinely needed by more than one block — utilities that only serve a single block should stay local to that block's own folder.
 

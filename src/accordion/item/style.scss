@@ -1,18 +1,6 @@
 /**
- * Frontend styling for Accordion Item.
- *
- * Background is `transparent` in both modes now (previously solid
- * `#fff` in light) — this item has no surface of its own, so it
- * blends into whatever the theme's own background is.
- *
- * Dark mode needs no config: border/chevron colors are relative to
- * `currentColor` via `color-mix()`, so they always match the theme's
- * own text color (see src/toc/style.scss for why a literal light/dark
- * pair doesn't reliably track a theme's dark mode toggle).
- *
- * A site owner can force a solid Light/Dark look via the "Color
- * Scheme" setting — see the `body.gs-color-scheme-*` rules below, and
- * includes/Settings/SettingsCss.php for the body class.
+ * Frontend styling for Accordion Item. Background stays transparent
+ * in both modes — no surface of its own, blends into the theme.
  */
 
 @use "../../shared/tokens" as *;
@@ -224,13 +212,9 @@
 		display: block;
 	}
 
-	// Progressive enhancement: collapsing content on mobile is only
-	// safe once the `js` class confirms the toggle script is
-	// actually running — added synchronously in <head> before first
-	// paint (see includes/Blocks/Accordion/Accordion.php). If JS
-	// fails to load or is disabled, this class is never added, these
-	// rules never apply, and content simply stays visible on mobile,
-	// the same baseline as desktop.
+	// Progressive enhancement: collapsing only applies once the `js`
+	// class confirms the toggle script is running; without it, content
+	// stays visible on mobile, same as desktop.
 	.js .gs-accordion-item__content {
 		max-height: 0;
 		padding-top: 0;
@@ -255,11 +239,7 @@
 	}
 }
 
-/*
- * Forced Light/Dark from the "Color Scheme" setting — inert under
- * "Auto". Background stays transparent in both; only border/chevron
- * need restating as literal colors here.
- */
+// Forced Light/Dark override from the Color Scheme setting; inert under Auto
 body.gs-color-scheme-light .gs-accordion-item {
 	--gs-accordion-border: #dcdcde;
 	--gs-accordion-chevron: #666;

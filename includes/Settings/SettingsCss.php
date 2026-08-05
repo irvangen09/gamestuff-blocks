@@ -22,9 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * site owner has forced Light or Dark rather than leaving it on Auto
  * — see add_color_scheme_body_class() for why this is a body class
  * rather than a per-block wrapper attribute.
- *
- * @since 1.0.0
- * @since 1.7.0 Added the Color Scheme body class.
  */
 final class SettingsCss {
 
@@ -33,15 +30,11 @@ final class SettingsCss {
 	 * is registered under this handle — see wp_register_style()'s
 	 * `$src = false` usage below, the standard WordPress pattern for
 	 * arbitrary generated inline CSS.
-	 *
-	 * @since 1.0.0
 	 */
 	private const HANDLE = 'gamestuff-blocks-settings-inline';
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __construct() {}
 
@@ -49,9 +42,6 @@ final class SettingsCss {
 	 * Hook the generated CSS into both the front end and the editor,
 	 * and the Color Scheme body class into the front end only (no
 	 * body_class() equivalent exists inside the editor iframe).
-	 *
-	 * @since 1.0.0
-	 * @since 1.7.0 Added the body_class filter.
 	 *
 	 * @return void
 	 */
@@ -66,7 +56,6 @@ final class SettingsCss {
 	 * Print the generated settings CSS as an inline style, if there's
 	 * anything to print.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -96,7 +85,6 @@ final class SettingsCss {
 	 * setting's registered `targets` is used instead, matching (or
 	 * exceeding) the specificity of the original declaration.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return string CSS, or an empty string if there's nothing to
 	 *                override (e.g. no setting has both a registered
@@ -156,7 +144,6 @@ final class SettingsCss {
 	 * post_content, no render step to re-check this setting), and
 	 * `body_class()` is regenerated every request regardless.
 	 *
-	 * @since 1.7.0
 	 *
 	 * @param array<int, string> $classes Existing body classes.
 	 * @return array<int, string> Body classes, with the color scheme

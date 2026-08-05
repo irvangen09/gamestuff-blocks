@@ -21,15 +21,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * fixed extension point for anything that genuinely is
  * deactivation-scoped (e.g. clearing a scheduled cron event), even
  * though nothing needs that yet.
- *
- * @since 1.0.0
  */
 final class Deactivator {
 
 	/**
 	 * Handle plugin deactivation.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */
@@ -37,8 +34,6 @@ final class Deactivator {
 
 		/**
 		 * Fires after the plugin has been deactivated.
-		 *
-		 * @since 1.0.0
 		 */
 		do_action( 'gamestuff_blocks_deactivated' );
 	}

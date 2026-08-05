@@ -18,24 +18,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Dark mode needs no rules registered here — style.scss handles it
  * via `currentColor`/`color-mix()`, not a per-block service.
- *
- * @since 1.1.0
  */
 final class Toc {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.1.0
 	 */
 	private function __construct() {}
 
 	/**
 	 * Boot everything this block needs.
-	 *
-	 * @since 1.1.0
-	 * @since 1.7.0 No longer registers dark-mode rules with the
-	 *              DarkMode service — see the class docblock.
 	 *
 	 * @return void
 	 */

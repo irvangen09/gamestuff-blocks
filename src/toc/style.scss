@@ -1,30 +1,9 @@
 /**
  * Frontend styling for GameStuff TOC.
- *
- * Accent color reads from `--gs-accent` (see
- * includes/Settings/SettingsRegistry.php's Primary Color setting);
- * the value here is only the pre-setting-CSS fallback.
- *
- * Dark mode needs no config: every color is relative to `currentColor`
- * (`color: inherit`, `color-mix( in srgb, currentColor N%, transparent )`
- * for background/border), so the block always matches whatever text
- * color the theme has already applied. A solid fill would need to know
- * the real background color, which isn't reliably knowable — a
- * literal color pair or a CSS system color like `Canvas` only tracks a
- * theme's *manual* dark mode toggle if that theme also sets the
- * `color-scheme` CSS property, which most don't.
- *
- * A site owner can force a solid Light/Dark look via the "Color
- * Scheme" setting — see the `body.gs-color-scheme-*` rules below, and
- * includes/Settings/SettingsCss.php for the body class. It's a body
- * class rather than a wrapper attribute because most other blocks in
- * this plugin are static (no render step to add one on each page
- * load); a body class works for both. Left on "Auto" (default), none
- * of this applies.
  */
 
 .gs-toc {
-	--gs-accent: #fe6f22;
+	--gs-accent: #fe6f22; // fallback before the Primary Color setting CSS loads
 	--gs-toc-border: color-mix( in srgb, currentColor 15%, transparent );
 
 	margin: 1.5em 0;
@@ -109,11 +88,7 @@
 	}
 }
 
-/*
- * Forced Light/Dark from the "Color Scheme" setting — inert under
- * "Auto". Solid fills here, unlike the translucent Auto values above,
- * since the site owner has opted out of following the theme.
- */
+// Forced Light/Dark override from the Color Scheme setting; inert under Auto
 body.gs-color-scheme-light .gs-toc {
 	background-color: #fff;
 	color: #1e1e1e;

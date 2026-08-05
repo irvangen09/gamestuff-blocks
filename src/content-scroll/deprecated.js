@@ -1,16 +1,7 @@
 import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 
-/**
- * v1: the track wrapper was a plain <div class="gs-cs-track">.
- *
- * Kept so Content Scroll blocks published before the accessibility
- * revision (track changed to <ul role="list">, so the collection of
- * cards gets proper list semantics for screen readers, matching
- * content-scroll-item's matching <li> change) still validate
- * correctly and don't show "block contains invalid content" in the
- * editor. Attributes are unchanged from the active version — only the
- * saved markup shape differs.
- */
+// v1: track wrapper was a plain <div class="gs-cs-track"> (pre-<ul
+// role="list"> markup). Attributes unchanged from active version.
 const v1 = {
 	attributes: {
 		desktopColumns: {

@@ -21,7 +21,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 /**
  * Delete every option this plugin stores, on the current site.
  *
- * @since 1.0.0
  *
  * @return void
  */

@@ -1,15 +1,5 @@
-/**
- * Progressive enhancement for the Tabs block.
- *
- * Saved markup is plain and fully readable without JS: every Tab
- * Item's label sits as a heading-like marker directly above its own
- * content, all shown in sequence. This script turns that into an
- * interactive tab widget with full ARIA (WAI-ARIA Tabs Pattern) —
- * if it fails to load, visitors still get all the content, just
- * without the ability to switch panels.
- *
- * Only loaded on the frontend (viewScript in block.json).
- */
+// Progressive enhancement — saved markup is plain and readable without
+// JS; this builds the interactive tab widget with full ARIA at runtime.
 ( function () {
 	function initTabs( tabsEl, tabsIndex ) {
 		var items = Array.prototype.slice.call(

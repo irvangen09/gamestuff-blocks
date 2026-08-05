@@ -20,14 +20,8 @@ const TEMPLATE = [
 	[ 'gamestuff/tabs-item' ],
 ];
 
-/**
- * In the editor every Tab Item is shown in full, in sequence — not as
- * an interactive tab widget. Real tab switching (nav strip, hidden
- * panels, ARIA roles) only exists on the frontend, built by view.js.
- * This mirrors Accordion's editor UX and avoids maintaining a second,
- * hand-synced "live preview" of tab-switching behavior inside the
- * editor.
- */
+// Editor shows every Tab Item in full sequence, not as a live tab
+// widget — real switching only exists on the frontend (view.js).
 export default function Edit( { attributes, setAttributes } ) {
 	const { style } = attributes;
 

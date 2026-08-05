@@ -24,19 +24,10 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	const { title, icon, iconColor, headingLevel, triggerId, panelId } =
 		attributes;
 
-	/**
-	 * Detect a colliding id inherited from another Accordion Item in
-	 * the same post. This happens when a block is duplicated or
-	 * copy-pasted: Gutenberg clones attributes verbatim (including
-	 * triggerId/panelId) but assigns a new clientId, so without this
-	 * check the clone would keep the exact same ids as its source,
-	 * producing duplicate `id` attributes on the rendered page.
-	 *
-	 * Scoped to the whole post, not just this item's siblings within
-	 * one Accordion, because a collision can also happen across two
-	 * different Accordion blocks on the same page (e.g. copy-pasting
-	 * an Accordion Item from one Accordion into another).
-	 */
+	// Detects an id inherited from another Accordion Item via
+	// duplicate/copy-paste (Gutenberg clones attributes but assigns a
+	// new clientId). Scoped to the whole post since a collision can
+	// span two different Accordion blocks.
 	const hasIdCollision = useSelect(
 		( select ) => {
 			if ( ! triggerId && ! panelId ) {
@@ -70,19 +61,9 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		[ clientId, triggerId, panelId ]
 	);
 
-	/**
-	 * Bootstrap a stable, persisted id the first time this block is
-	 * created (nothing saved yet to extract triggerId/panelId from),
-	 * or regenerate it if a collision with a sibling was detected
-	 * (duplicate/copy-paste case above).
-	 *
-	 * `clientId` is only used here as a convenient, already-unique
-	 * seed for that generation — it is never referenced again after
-	 * this. From the next save onward, triggerId and panelId are
-	 * read back from the stored markup itself (see block.json
-	 * `source: "attribute"`), so they stay identical every time the
-	 * post is reopened, unlike clientId.
-	 */
+	// Bootstraps a persisted id on first create or id collision.
+	// clientId is only a seed here — after save, ids are read back
+	// from the stored markup (block.json source: "attribute").
 	useEffect( () => {
 		if ( ! triggerId || ! panelId || hasIdCollision ) {
 			const seed = `${ clientId.slice( 0, 8 ) }-${ Math.random()

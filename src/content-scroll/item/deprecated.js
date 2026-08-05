@@ -2,20 +2,8 @@ import { RichText, useBlockProps } from '@wordpress/block-editor';
 
 import { getRatioValue } from './utils';
 
-/**
- * v1: root element was <a class="gs-cs-item"> (whole card clickable)
- * or <div class="gs-cs-item"> (title-only link), matching whatever
- * .gs-cs-track (the parent) rendered as at the time — a plain <div>.
- *
- * Kept so Content Scroll Items published before the accessibility
- * revision (root changed to <li>, with an inner
- * <a class="gs-cs-item__link"> for the whole-card-link case, to give
- * the collection of cards proper list semantics for screen readers,
- * matching content-scroll's matching <ul role="list"> change) still
- * validate correctly and don't show "block contains invalid content"
- * in the editor. Attributes are unchanged from the active version —
- * only the saved markup shape differs.
- */
+// v1: root was <a>/<div class="gs-cs-item"> (pre-<li> markup, before
+// the list-semantics revision). Attributes unchanged from active version.
 const v1 = {
 	attributes: {
 		imageId: {
@@ -149,16 +137,7 @@ const v1 = {
 	},
 };
 
-/**
- * v2: identical to the active version, except the thumbnail <img>
- * has no loading="lazy" attribute.
- *
- * Kept so Content Scroll Items published before lazy loading was
- * added still validate correctly and don't show "block contains
- * invalid content" in the editor. Attributes and structure are
- * otherwise unchanged from the active version — only this one
- * attribute on the <img> differs.
- */
+// v2: identical to active version, minus loading="lazy" on the <img>.
 const v2 = {
 	attributes: {
 		imageId: {

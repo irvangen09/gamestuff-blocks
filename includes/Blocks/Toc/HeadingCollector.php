@@ -20,15 +20,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * run standalone from render.php regardless of render order. See
  * HeadingAnchorInjector for the separate job of writing matching `id`
  * attributes onto the real headings in the article body.
- *
- * @since 1.0.0
  */
 final class HeadingCollector {
 
 	/**
 	 * Static-only class — not meant to be instantiated.
-	 *
-	 * @since 1.0.0
 	 */
 	private function __construct() {}
 
@@ -42,7 +38,6 @@ final class HeadingCollector {
 	 * would repeat on every single page view. See clear_cache() for
 	 * invalidation.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param int $post_id Post to scan.
 	 * @return array<int, array{level:int, text:string, anchor:string}>
@@ -69,7 +64,6 @@ final class HeadingCollector {
 	 *
 	 * Intended to run on `save_post` — see Toc::boot().
 	 *
-	 * @since 1.5.1
 	 *
 	 * @param int $post_id Post whose cache should be cleared.
 	 * @return void
@@ -81,7 +75,6 @@ final class HeadingCollector {
 	/**
 	 * Build the transient key used to cache a post's heading scan.
 	 *
-	 * @since 1.5.1
 	 *
 	 * @param int $post_id Post the cache belongs to.
 	 * @return string
@@ -94,7 +87,6 @@ final class HeadingCollector {
 	 * Actually perform the heading scan — the expensive part that
 	 * get_headings() caches the result of.
 	 *
-	 * @since 1.5.1
 	 *
 	 * @param int $post_id Post to scan.
 	 * @return array<int, array{level:int, text:string, anchor:string}>
@@ -166,7 +158,6 @@ final class HeadingCollector {
 	 * fine, this only matches a block name string already present in
 	 * parsed content and has no dependency on the block being active.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param array $blocks  Block array (from parse_blocks() or innerBlocks).
 	 * @param array $results Collected by reference, not by return value.
@@ -219,7 +210,6 @@ final class HeadingCollector {
 	 * extraction against already-rendered markup rather than parsed
 	 * block data.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param string $html Accordion Item block's innerHTML (or rendered markup).
 	 * @return string
@@ -237,7 +227,6 @@ final class HeadingCollector {
 	 * Turn a flat heading list into a nested tree by level — an H3
 	 * automatically becomes a child of the preceding H2, and so on.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param array $headings Result of get_headings().
 	 * @return array Tree structure: each node has 'text', 'anchor', 'children'.
@@ -283,7 +272,6 @@ final class HeadingCollector {
 	/**
 	 * Render a heading tree as nested <ul><li> markup.
 	 *
-	 * @since 1.0.0
 	 *
 	 * @param array $nodes Tree structure from build_tree().
 	 * @return string

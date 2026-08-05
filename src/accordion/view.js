@@ -1,10 +1,5 @@
-/**
- * GameStuff Accordion — frontend behavior.
- *
- * Collapses each Accordion Item into a toggleable panel on mobile
- * viewports only. On desktop every item stays open and this script
- * has no visible effect.
- */
+// Collapses each Accordion Item into a toggleable panel on mobile
+// only; desktop stays open and this script has no effect there.
 import { isMobileViewport, watchMobileBreakpoint } from '../shared/breakpoint';
 
 document.addEventListener( 'DOMContentLoaded', () => {

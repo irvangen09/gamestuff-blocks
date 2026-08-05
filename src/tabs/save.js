@@ -1,11 +1,7 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
-/**
- * Fully static now — no render.php, no PHP class. The wrapper carries
- * only the "style" variant as a data attribute; view.js reads it at
- * runtime to decide nav orientation and keyboard direction. Nothing
- * about tab/panel roles or IDs is baked in here — see view.js for why.
- */
+// Fully static — no render.php/PHP class. Wrapper only carries the
+// "style" variant; view.js reads it and owns all tab/panel roles/IDs.
 export default function save( { attributes } ) {
 	const { style } = attributes;
 
