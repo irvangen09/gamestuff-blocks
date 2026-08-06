@@ -30,6 +30,14 @@
 		"columnId": {
 			"type": "string",
 			"default": ""
+		},
+		"rowIndex": {
+			"type": "number",
+			"default": 0
+		},
+		"columnIndex": {
+			"type": "number",
+			"default": 0
 		}
 	},
 
