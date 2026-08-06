@@ -1,0 +1,43 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/table-cell",
+
+	"version": "1.0.0",
+
+	"title": "Table Cell",
+
+	"category": "gamestuff",
+
+	"parent": [ "gamestuff/table" ],
+
+	"icon": "editor-table",
+
+	"description": "Internal rich-content container for a single Table cell. Not meant to be inserted directly.",
+
+	"keywords": [ "table", "cell", "gamestuff" ],
+
+	"example": {},
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"rowId": {
+			"type": "string",
+			"default": ""
+		},
+		"columnId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"inserter": false
+	},
+
+	"editorScript": "file:./index.js"
+}
