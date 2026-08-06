@@ -1,0 +1,58 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+
+	"name": "gamestuff/table",
+
+	"version": "1.0.0",
+
+	"title": "GameStuff Table",
+
+	"category": "gamestuff",
+
+	"icon": "editor-table",
+
+	"description": "Displays data as an adaptive documentation table: a full grid on desktop and a grouped, expandable list on mobile.",
+
+	"keywords": [ "table", "data", "grid", "comparison", "gamestuff" ],
+
+	"example": {},
+
+	"textdomain": "gamestuff-blocks",
+
+	"attributes": {
+		"preset": {
+			"type": "string",
+			"enum": [ "standard", "compact", "comparison", "schedule", "database" ],
+			"default": "standard"
+		},
+		"columns": {
+			"type": "array",
+			"default": [
+				{ "id": "col-1", "label": "Column 1", "isMobilePrimary": false },
+				{ "id": "col-2", "label": "Column 2", "isMobilePrimary": true }
+			]
+		},
+		"rows": {
+			"type": "array",
+			"default": []
+		}
+	},
+
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+
+	"editorScript": "file:./index.js",
+
+	"editorStyle": "file:./index.css",
+
+	"style": "file:./style-index.css",
+
+	"viewScript": "file:./view.js"
+}
