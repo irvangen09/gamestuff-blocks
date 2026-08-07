@@ -14,6 +14,7 @@ export default function save( { attributes } ) {
 			<div
 				className="gs-table__grid"
 				role="table"
+				data-column-count={ columnCount }
 				style={ { '--gs-table-columns': columnCount } }
 			>
 				<div className="gs-table__row gs-table__row--header" role="row">
@@ -25,6 +26,11 @@ export default function save( { attributes } ) {
 								( columnIndex === 0 ? ' gs-table__col-sticky' : '' )
 							}
 							role="columnheader"
+							data-column-id={ column.id }
+							data-column-index={ columnIndex }
+							data-mobile-primary={
+								column.isMobilePrimary ? 'true' : 'false'
+							}
 							style={ { gridRow: 1, gridColumn: columnIndex + 1 } }
 						>
 							{ column.label }
@@ -42,6 +48,7 @@ export default function save( { attributes } ) {
 								key={ row.id }
 								className="gs-table__divider"
 								role="row"
+								data-row-id={ row.id }
 								data-default-collapsed={
 									row.defaultCollapsed ? 'true' : 'false'
 								}
@@ -61,7 +68,12 @@ export default function save( { attributes } ) {
 					}
 
 					return (
-						<div key={ row.id } className="gs-table__row" role="row">
+						<div
+							key={ row.id }
+							className="gs-table__row"
+							role="row"
+							data-row-id={ row.id }
+						>
 							{ columns.map( ( column, columnIndex ) => {
 								const cell = row.cells?.[ column.id ];
 
@@ -71,20 +83,45 @@ export default function save( { attributes } ) {
 									return null;
 								}
 
+								const cellClassName =
+									'gs-table__cell' +
+									( columnIndex === 0
+										? ' gs-table__col-sticky'
+										: '' );
+								const cellStyle = {
+									gridRow: gridLine,
+									gridColumn: columnIndex + 1,
+								};
+
+								if ( cell?.mode === 'image' ) {
+									return (
+										<div
+											key={ column.id }
+											className={ cellClassName }
+											role="cell"
+											data-column-id={ column.id }
+											data-column-index={ columnIndex }
+											style={ cellStyle }
+										>
+											{ cell.imageUrl && (
+												<img
+													src={ cell.imageUrl }
+													alt={ cell.imageAlt || '' }
+													className="gs-table__cell-image"
+												/>
+											) }
+										</div>
+									);
+								}
+
 								return (
 									<div
 										key={ column.id }
-										className={
-											'gs-table__cell' +
-											( columnIndex === 0
-												? ' gs-table__col-sticky'
-												: '' )
-										}
+										className={ cellClassName }
 										role="cell"
-										style={ {
-											gridRow: gridLine,
-											gridColumn: columnIndex + 1,
-										} }
+										data-column-id={ column.id }
+										data-column-index={ columnIndex }
+										style={ cellStyle }
 									>
 										<RichText.Content
 											tagName="span"
