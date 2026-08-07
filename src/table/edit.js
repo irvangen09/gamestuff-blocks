@@ -16,7 +16,6 @@ import {
 	ToolbarGroup,
 	ToolbarButton,
 } from '@wordpress/components';
-import { moreVertical, plus } from '@wordpress/icons';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
@@ -378,7 +377,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	function cellModeMenu( row, column, cell ) {
 		return (
 			<DropdownMenu
-				icon={ moreVertical }
+				icon="ellipsis"
 				label={ __( 'Cell type', 'gamestuff-blocks' ) }
 				className="gs-table__cell-menu"
 				controls={ [
@@ -444,7 +443,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 								{ columnIndex > 0 && (
 									<Button
 										className="gs-table__insert-column"
-										icon={ plus }
+										icon="plus"
 										label={ __(
 											'Insert column left',
 											'gamestuff-blocks'
@@ -471,7 +470,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 									</span>
 								) }
 								<DropdownMenu
-									icon={ moreVertical }
+									icon="ellipsis"
 									label={ __(
 										'Column options',
 										'gamestuff-blocks'
@@ -514,7 +513,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 								>
 									<Button
 										className="gs-table__insert-row"
-										icon={ plus }
+										icon="plus"
 										label={ __(
 											'Insert row above',
 											'gamestuff-blocks'
@@ -535,7 +534,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 										) }
 									/>
 									<DropdownMenu
-										icon={ moreVertical }
+										icon="ellipsis"
 										label={ __(
 											'Divider options',
 											'gamestuff-blocks'
@@ -575,7 +574,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 							>
 								<Button
 									className="gs-table__insert-row"
-									icon={ plus }
+									icon="plus"
 									label={ __(
 										'Insert row above',
 										'gamestuff-blocks'
@@ -584,7 +583,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 									onClick={ () => addDataRow( rowIndex ) }
 								/>
 								<DropdownMenu
-									icon={ moreVertical }
+									icon="ellipsis"
 									label={ __( 'Row options', 'gamestuff-blocks' ) }
 									className="gs-table__row-menu"
 									controls={ [
