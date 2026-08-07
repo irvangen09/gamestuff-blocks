@@ -12,7 +12,7 @@
 
 	"icon": "editor-table",
 
-	"description": "Displays data as an adaptive documentation table: a full grid on desktop and a grouped, expandable list on mobile.",
+	"description": "A documentation table with grouped rows, optional sort and search, and an automatic card layout on mobile.",
 
 	"keywords": [ "table", "data", "grid", "comparison", "gamestuff" ],
 
@@ -29,13 +29,24 @@
 		"columns": {
 			"type": "array",
 			"default": [
-				{ "id": "col-1", "label": "Column 1", "isMobilePrimary": false },
-				{ "id": "col-2", "label": "Column 2", "isMobilePrimary": true }
+				{ "key": "col-1", "label": "Column 1", "type": "text" },
+				{ "key": "col-2", "label": "Column 2", "type": "text" }
 			]
 		},
 		"rows": {
 			"type": "array",
-			"default": []
+			"default": [
+				{ "isDivider": false, "col-1": "", "col-2": "" },
+				{ "isDivider": false, "col-1": "", "col-2": "" }
+			]
+		},
+		"enableSort": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableFilter": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 
