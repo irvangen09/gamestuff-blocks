@@ -1,201 +1,172 @@
-// Progressive enhancement — the saved markup is a plain, readable
-// CSS Grid (works with zero JS). This builds a second, mobile-only
-// structure (grouped, expandable rows) from the same source data by
-// reading it back out of the DOM via data-* attributes, then clones
-// each cell's live content into it. Which structure is visible is
-// decided entirely by CSS media query — this script never toggles
-// visibility itself, so there's no resize listener to keep in sync.
-document.addEventListener( 'DOMContentLoaded', () => {
-	document.querySelectorAll( '.gs-table' ).forEach( initTable );
-} );
-
-function initTable( tableEl ) {
-	const grid = tableEl.querySelector( ':scope > .gs-table__grid' );
-	if ( ! grid ) {
-		return;
+// Sort and search for Table on the frontend. Without this file the
+// table still renders fully and stays readable — just without these
+// two interactions. Mobile layout itself needs no JS at all (see
+// style.scss); this file only ever runs on the frontend (viewScript).
+( function () {
+	function getCellText( row, key ) {
+		var cell = row.querySelector( '[data-key="' + key + '"]' );
+		return cell ? cell.textContent.trim() : '';
 	}
 
-	const columns = readColumns( grid );
-	if ( columns.length === 0 ) {
-		return;
+	function isDividerRow( row ) {
+		return row.classList.contains( 'gs-table__row--divider' );
 	}
 
-	const identityColumn = columns[ 0 ];
-	const primaryColumn = columns.find(
-		( c ) => c.isPrimary && c.id !== identityColumn.id
-	);
+	// Splits tbody rows into groups at each Divider boundary, so sort
+	// stays scoped within a group instead of scrambling the sections
+	// a Divider was meant to keep apart.
+	function groupRowsByDivider( rows ) {
+		var groups = [];
+		var currentGroup = [];
 
-	const cellsByRow = groupCellsByRow( grid );
+		rows.forEach( function ( row ) {
+			if ( isDividerRow( row ) ) {
+				groups.push( { divider: null, rows: currentGroup } );
+				groups.push( { divider: row, rows: [] } );
+				currentGroup = [];
+			} else {
+				currentGroup.push( row );
+			}
+		} );
 
-	const rowEls = Array.from( grid.children ).filter( ( el ) =>
-		el.matches( '.gs-table__divider, .gs-table__row:not(.gs-table__row--header)' )
-	);
+		groups.push( { divider: null, rows: currentGroup } );
 
-	const mobileWrap = document.createElement( 'div' );
-	mobileWrap.className = 'gs-table__mobile';
+		return groups;
+	}
 
-	let currentGroupRows = null;
+	function compareRows( a, b, key, type, direction ) {
+		var aText = getCellText( a, key );
+		var bText = getCellText( b, key );
+		var result;
 
-	rowEls.forEach( ( rowEl ) => {
-		if ( rowEl.classList.contains( 'gs-table__divider' ) ) {
-			currentGroupRows = buildGroup( rowEl, mobileWrap );
+		if ( 'number' === type ) {
+			result = parseFloat( aText || '0' ) - parseFloat( bText || '0' );
+		} else {
+			result = aText.localeCompare( bText, undefined, { numeric: true, sensitivity: 'base' } );
+		}
+
+		return 'desc' === direction ? -result : result;
+	}
+
+	function sortRows( tableEl, key, type, direction ) {
+		var tbody = tableEl.querySelector( 'tbody' );
+		var allRows = Array.prototype.slice.call( tbody.querySelectorAll( 'tr' ) );
+		var groups = groupRowsByDivider( allRows );
+
+		groups.forEach( function ( group ) {
+			group.rows.sort( function ( a, b ) {
+				return compareRows( a, b, key, type, direction );
+			} );
+		} );
+
+		// Dividers never move — each group's rows are re-appended in
+		// their new order, followed by the divider that closes it.
+		groups.forEach( function ( group ) {
+			group.rows.forEach( function ( row ) {
+				tbody.appendChild( row );
+			} );
+
+			if ( group.divider ) {
+				tbody.appendChild( group.divider );
+			}
+		} );
+	}
+
+	function initSort( tableEl ) {
+		var headers = Array.prototype.slice.call( tableEl.querySelectorAll( 'thead th' ) );
+
+		headers.forEach( function ( th ) {
+			var direction = null;
+
+			th.classList.add( 'gs-table__sortable' );
+			th.setAttribute( 'role', 'button' );
+			th.setAttribute( 'tabindex', '0' );
+
+			function activateSort() {
+				headers.forEach( function ( other ) {
+					if ( other !== th ) {
+						other.removeAttribute( 'data-sort-direction' );
+					}
+				} );
+
+				direction = 'asc' === direction ? 'desc' : 'asc';
+				th.setAttribute( 'data-sort-direction', direction );
+
+				sortRows( tableEl, th.getAttribute( 'data-key' ), th.getAttribute( 'data-type' ), direction );
+			}
+
+			th.addEventListener( 'click', activateSort );
+
+			th.addEventListener( 'keydown', function ( event ) {
+				if ( 'Enter' === event.key || ' ' === event.key ) {
+					event.preventDefault();
+					activateSort();
+				}
+			} );
+		} );
+	}
+
+	function rowMatchesQuery( row, query ) {
+		var text = row.textContent.toLowerCase();
+		return '' === query || -1 !== text.indexOf( query );
+	}
+
+	function applyFilter( tableEl, query ) {
+		var tbody = tableEl.querySelector( 'tbody' );
+		var allRows = Array.prototype.slice.call( tbody.querySelectorAll( 'tr' ) );
+		var groups = groupRowsByDivider( allRows );
+
+		groups.forEach( function ( group ) {
+			var groupHasMatch = false;
+
+			group.rows.forEach( function ( row ) {
+				var matches = rowMatchesQuery( row, query );
+				row.toggleAttribute( 'hidden', ! matches );
+
+				if ( matches ) {
+					groupHasMatch = true;
+				}
+			} );
+
+			if ( group.divider ) {
+				// Hide an empty section heading rather than leaving a
+				// Divider with nothing matching underneath it.
+				group.divider.toggleAttribute( 'hidden', '' !== query && ! groupHasMatch );
+			}
+		} );
+	}
+
+	function initFilter( wrapperEl, tableEl ) {
+		var searchWrap = document.createElement( 'div' );
+		searchWrap.className = 'gs-table__filter';
+
+		var input = document.createElement( 'input' );
+		input.type = 'search';
+		input.className = 'gs-table__filter-input';
+		input.setAttribute( 'placeholder', 'Search this table…' );
+		input.setAttribute( 'aria-label', 'Search within this table' );
+
+		searchWrap.appendChild( input );
+		wrapperEl.insertBefore( searchWrap, tableEl );
+
+		input.addEventListener( 'input', function () {
+			applyFilter( tableEl, input.value.trim().toLowerCase() );
+		} );
+	}
+
+	document.querySelectorAll( '.gs-table' ).forEach( function ( wrapperEl ) {
+		var tableEl = wrapperEl.querySelector( '.gs-table__table' );
+
+		if ( ! tableEl ) {
 			return;
 		}
 
-		const rowId = rowEl.dataset.rowId;
-		const cells = ( cellsByRow[ rowId ] || [] ).sort(
-			( a, b ) => Number( a.dataset.columnIndex ) - Number( b.dataset.columnIndex )
-		);
-
-		const rowMobileEl = buildRow( cells, identityColumn, primaryColumn, columns );
-		( currentGroupRows || mobileWrap ).appendChild( rowMobileEl );
-	} );
-
-	tableEl.appendChild( mobileWrap );
-}
-
-function readColumns( grid ) {
-	return Array.from(
-		grid.querySelectorAll( ':scope > .gs-table__row--header > [role="columnheader"]' )
-	)
-		.map( ( headerCell ) => ( {
-			id: headerCell.dataset.columnId,
-			index: Number( headerCell.dataset.columnIndex ),
-			label: headerCell.textContent.trim(),
-			isPrimary: headerCell.dataset.mobilePrimary === 'true',
-		} ) )
-		.sort( ( a, b ) => a.index - b.index );
-}
-
-// Cells belonging to a row aren't always its DOM children — richCell
-// cells are rendered as siblings of the row wrapper (see save.js) —
-// so cells are matched to a row via the closest ancestor (or itself)
-// carrying data-row-id, not via direct DOM nesting.
-function groupCellsByRow( grid ) {
-	const cellEls = Array.from( grid.querySelectorAll( '[data-column-id]' ) ).filter(
-		( el ) => ! el.classList.contains( 'gs-table__col-header' )
-	);
-
-	const cellsByRow = {};
-	cellEls.forEach( ( cellEl ) => {
-		const rowHost = cellEl.closest( '[data-row-id]' );
-		if ( ! rowHost ) {
-			return;
+		if ( 'true' === wrapperEl.getAttribute( 'data-sort' ) ) {
+			initSort( tableEl );
 		}
-		const rowId = rowHost.dataset.rowId;
-		( cellsByRow[ rowId ] ||= [] ).push( cellEl );
+
+		if ( 'true' === wrapperEl.getAttribute( 'data-filter' ) ) {
+			initFilter( wrapperEl, tableEl );
+		}
 	} );
-
-	return cellsByRow;
-}
-
-function buildGroup( dividerEl, mobileWrap ) {
-	const titleCell = dividerEl.querySelector( ':scope > .gs-table__divider-cell' );
-	const title = titleCell ? titleCell.textContent.trim() : '';
-	const defaultCollapsed = dividerEl.dataset.defaultCollapsed === 'true';
-
-	const groupEl = document.createElement( 'div' );
-	groupEl.className = 'gs-table__group';
-
-	const toggle = document.createElement( 'button' );
-	toggle.type = 'button';
-	toggle.className = 'gs-table__group-toggle';
-	toggle.setAttribute( 'aria-expanded', defaultCollapsed ? 'false' : 'true' );
-
-	const titleSpan = document.createElement( 'span' );
-	titleSpan.textContent = title;
-
-	const chevron = document.createElement( 'span' );
-	chevron.className = 'gs-table__chevron';
-	chevron.setAttribute( 'aria-hidden', 'true' );
-
-	toggle.append( titleSpan, chevron );
-
-	const rowsWrap = document.createElement( 'div' );
-	rowsWrap.className = 'gs-table__group-rows';
-	rowsWrap.hidden = defaultCollapsed;
-
-	toggle.addEventListener( 'click', () => {
-		const isHidden = rowsWrap.hidden;
-		rowsWrap.hidden = ! isHidden;
-		toggle.setAttribute( 'aria-expanded', isHidden ? 'true' : 'false' );
-	} );
-
-	groupEl.append( toggle, rowsWrap );
-	mobileWrap.appendChild( groupEl );
-
-	return rowsWrap;
-}
-
-function buildRow( cells, identityColumn, primaryColumn, columns ) {
-	const identityCell = cells.find( ( c ) => c.dataset.columnId === identityColumn.id );
-	const primaryCell = primaryColumn
-		? cells.find( ( c ) => c.dataset.columnId === primaryColumn.id )
-		: null;
-	const detailCells = cells.filter(
-		( c ) =>
-			c.dataset.columnId !== identityColumn.id &&
-			( ! primaryColumn || c.dataset.columnId !== primaryColumn.id )
-	);
-
-	const toggle = document.createElement( 'button' );
-	toggle.type = 'button';
-	toggle.className = 'gs-table__row-toggle';
-	toggle.setAttribute( 'aria-expanded', 'false' );
-
-	const identitySpan = document.createElement( 'span' );
-	identitySpan.className = 'gs-table__row-identity';
-	if ( identityCell ) {
-		identitySpan.appendChild( cloneCellContent( identityCell ) );
-	}
-
-	const primarySpan = document.createElement( 'span' );
-	primarySpan.className = 'gs-table__row-primary';
-	if ( primaryCell ) {
-		primarySpan.appendChild( cloneCellContent( primaryCell ) );
-	}
-
-	toggle.append( identitySpan, primarySpan );
-
-	const detailWrap = document.createElement( 'div' );
-	detailWrap.className = 'gs-table__row-detail';
-	detailWrap.hidden = true;
-
-	detailCells.forEach( ( cellEl ) => {
-		const columnMeta = columns.find( ( c ) => c.id === cellEl.dataset.columnId );
-
-		const line = document.createElement( 'div' );
-		line.className = 'gs-table__row-detail-line';
-
-		const label = document.createElement( 'span' );
-		label.className = 'gs-table__row-detail-label';
-		label.textContent = columnMeta ? columnMeta.label : '';
-
-		const value = document.createElement( 'span' );
-		value.className = 'gs-table__row-detail-value';
-		value.appendChild( cloneCellContent( cellEl ) );
-
-		line.append( label, value );
-		detailWrap.appendChild( line );
-	} );
-
-	toggle.addEventListener( 'click', () => {
-		const isHidden = detailWrap.hidden;
-		detailWrap.hidden = ! isHidden;
-		toggle.setAttribute( 'aria-expanded', isHidden ? 'true' : 'false' );
-	} );
-
-	const rowWrap = document.createElement( 'div' );
-	rowWrap.className = 'gs-table__mobile-row';
-	rowWrap.append( toggle, detailWrap );
-
-	return rowWrap;
-}
-
-function cloneCellContent( cellEl ) {
-	const frag = document.createDocumentFragment();
-	Array.from( cellEl.childNodes ).forEach( ( node ) => {
-		frag.appendChild( node.cloneNode( true ) );
-	} );
-	return frag;
-}
+} )();
