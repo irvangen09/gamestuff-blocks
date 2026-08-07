@@ -1,19 +1,111 @@
 @use "../shared/tokens" as *;
 
-.wp-block-gamestuff-table.gs-table {
+.wp-block-gamestuff-table.gs-table.gs-table--is-editing {
+
+	// Editor grid: same engine as the frontend (see style.scss), but
+	// cells rely on normal grid auto-flow instead of explicit
+	// grid-row/grid-column — editor content is always shown fully
+	// expanded, so there's no divider-spanning or richCell-position
+	// math to account for here.
+	.gs-table__grid--editor {
+		display: grid;
+		grid-template-columns: repeat( var( --gs-table-columns ), minmax( 160px, 1fr ) );
+	}
+
+	.gs-table__row--header,
+	.gs-table__row--editable,
+	.gs-table__divider--editable {
+		display: contents;
+	}
 
 	.gs-table__col-header--editable,
-	.gs-table__cell--editable,
-	.gs-table__divider--editable {
+	.gs-table__cell--editable {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
-		white-space: normal;
-		min-width: 140px;
+		padding: 10px 12px;
+		border: 1px solid var(--gs-border, color-mix( in srgb, currentColor 15%, transparent ));
 	}
 
-	.gs-table__cell-mode {
-		font-size: 11px;
+	.gs-table__col-header--editable {
+		background: var(--gs-header-bg, color-mix( in srgb, var(--gs-accent, #fe6f22) 12%, transparent ));
+		font-weight: 600;
+	}
+
+	.gs-table__divider--editable {
+		grid-column: 1 / -1;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 8px 12px;
+		background: var(--gs-divider-bg, color-mix( in srgb, var(--gs-accent, #fe6f22) 10%, transparent ));
+		font-weight: 600;
+	}
+
+	.gs-table__divider-label {
+		flex: 1;
+		text-align: center;
+	}
+
+	.gs-table__col-badge {
+		align-self: flex-start;
+		font-size: 10px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: var(--gs-accent, #fe6f22);
+	}
+
+	// Insert/menu controls stay in the DOM (keyboard-reachable) but
+	// visually fade in only on hover or keyboard focus, so the grid
+	// isn't cluttered with permanent buttons in every cell.
+	.gs-table__insert-row,
+	.gs-table__insert-column,
+	.gs-table__col-menu,
+	.gs-table__cell-menu,
+	.gs-table__row-menu {
+		opacity: 0;
+		transition: opacity 0.1s ease;
+	}
+
+	.gs-table__col-header--editable:hover .gs-table__insert-column,
+	.gs-table__col-header--editable:focus-within .gs-table__insert-column,
+	.gs-table__col-header--editable:hover .gs-table__col-menu,
+	.gs-table__col-header--editable:focus-within .gs-table__col-menu,
+	.gs-table__cell--editable:hover .gs-table__cell-menu,
+	.gs-table__cell--editable:focus-within .gs-table__cell-menu,
+	.gs-table__row--editable:hover .gs-table__insert-row,
+	.gs-table__row--editable:focus-within .gs-table__insert-row,
+	.gs-table__row--editable:hover .gs-table__row-menu,
+	.gs-table__row--editable:focus-within .gs-table__row-menu,
+	.gs-table__divider--editable:hover .gs-table__insert-row,
+	.gs-table__divider--editable:focus-within .gs-table__insert-row {
+		opacity: 1;
+	}
+
+	.gs-table__insert-column {
+		position: absolute;
+		top: -10px;
+		left: -10px;
+		z-index: 1;
+	}
+
+	.gs-table__insert-row {
+		position: absolute;
+		top: -10px;
+		left: 8px;
+		z-index: 1;
+	}
+
+	.gs-table__row--editable {
+		position: relative;
+	}
+
+	.gs-table__cell-menu,
+	.gs-table__col-menu,
+	.gs-table__row-menu {
+		align-self: flex-end;
 	}
 
 	.gs-table__cell-placeholder {
@@ -27,21 +119,9 @@
 		cursor: pointer;
 	}
 
-	.gs-table__insert-row,
-	.gs-table__insert-column {
-		align-self: flex-start;
-	}
-
-	.gs-table__row-remove {
-		align-self: flex-end;
-	}
-
-	// The mobile-only structure is never built in the editor (view.js
-	// only runs on the frontend) — nothing to hide here.
-
 	.gs-table__rich-cells {
 		margin-top: 16px;
-		border-top: 1px dashed var(--gs-border);
+		border-top: 1px dashed var(--gs-border, color-mix( in srgb, currentColor 15%, transparent ));
 		padding-top: 12px;
 	}
 

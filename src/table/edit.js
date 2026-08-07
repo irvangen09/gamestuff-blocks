@@ -12,9 +12,11 @@ import {
 	PanelBody,
 	SelectControl,
 	Button,
+	DropdownMenu,
 	ToolbarGroup,
 	ToolbarButton,
 } from '@wordpress/components';
+import { moreVertical, plus } from '@wordpress/icons';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
@@ -25,12 +27,6 @@ const PRESET_OPTIONS = [
 	{ label: __( 'Comparison', 'gamestuff-blocks' ), value: 'comparison' },
 	{ label: __( 'Schedule', 'gamestuff-blocks' ), value: 'schedule' },
 	{ label: __( 'Database', 'gamestuff-blocks' ), value: 'database' },
-];
-
-const CELL_MODE_OPTIONS = [
-	{ label: __( 'Text', 'gamestuff-blocks' ), value: 'text' },
-	{ label: __( 'Image', 'gamestuff-blocks' ), value: 'image' },
-	{ label: __( 'Rich Cell', 'gamestuff-blocks' ), value: 'richCell' },
 ];
 
 let idCounter = 0;
@@ -377,6 +373,36 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ rows, columns ] );
 
+	// --- Cell mode menu (hidden until hover/focus — see editor.scss) ---
+
+	function cellModeMenu( row, column, cell ) {
+		return (
+			<DropdownMenu
+				icon={ moreVertical }
+				label={ __( 'Cell type', 'gamestuff-blocks' ) }
+				className="gs-table__cell-menu"
+				controls={ [
+					{
+						title: __( 'Text', 'gamestuff-blocks' ),
+						isDisabled: cell.mode === 'text',
+						onClick: () => setCellMode( row.id, column.id, 'text' ),
+					},
+					{
+						title: __( 'Image', 'gamestuff-blocks' ),
+						isDisabled: cell.mode === 'image',
+						onClick: () => setCellMode( row.id, column.id, 'image' ),
+					},
+					{
+						title: __( 'Rich Cell', 'gamestuff-blocks' ),
+						isDisabled: cell.mode === 'richCell',
+						onClick: () =>
+							setCellMode( row.id, column.id, 'richCell' ),
+					},
+				] }
+			/>
+		);
+	}
+
 	return (
 		<>
 			<InspectorControls>
@@ -418,7 +444,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 								{ columnIndex > 0 && (
 									<Button
 										className="gs-table__insert-column"
-										icon="plus"
+										icon={ plus }
 										label={ __(
 											'Insert column left',
 											'gamestuff-blocks'
@@ -429,6 +455,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 								) }
 								<RichText
 									tagName="span"
+									className="gs-table__col-header-label"
 									value={ column.label }
 									onChange={ ( value ) =>
 										updateColumnLabel( column.id, value )
@@ -438,26 +465,42 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 										'gamestuff-blocks'
 									) }
 								/>
-								<Button
-									variant="tertiary"
-									size="small"
-									isPressed={ column.isMobilePrimary }
-									onClick={ () =>
-										toggleMobilePrimary( column.id )
-									}
-								>
-									{ __( 'Mobile primary', 'gamestuff-blocks' ) }
-								</Button>
-								{ columnIndex > 0 && (
-									<Button
-										variant="tertiary"
-										size="small"
-										isDestructive
-										onClick={ () => removeColumn( column.id ) }
-									>
-										{ __( 'Remove', 'gamestuff-blocks' ) }
-									</Button>
+								{ column.isMobilePrimary && (
+									<span className="gs-table__col-badge">
+										{ __( 'Mobile primary', 'gamestuff-blocks' ) }
+									</span>
 								) }
+								<DropdownMenu
+									icon={ moreVertical }
+									label={ __(
+										'Column options',
+										'gamestuff-blocks'
+									) }
+									className="gs-table__col-menu"
+									controls={ [
+										{
+											title: column.isMobilePrimary
+												? __(
+														'Unset as mobile primary',
+														'gamestuff-blocks'
+												  )
+												: __(
+														'Set as mobile primary',
+														'gamestuff-blocks'
+												  ),
+											onClick: () =>
+												toggleMobilePrimary( column.id ),
+										},
+										columnIndex > 0 && {
+											title: __(
+												'Remove column',
+												'gamestuff-blocks'
+											),
+											onClick: () =>
+												removeColumn( column.id ),
+										},
+									].filter( Boolean ) }
+								/>
 							</div>
 						) ) }
 					</div>
@@ -471,7 +514,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 								>
 									<Button
 										className="gs-table__insert-row"
-										icon="plus"
+										icon={ plus }
 										label={ __(
 											'Insert row above',
 											'gamestuff-blocks'
@@ -481,6 +524,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 									/>
 									<RichText
 										tagName="span"
+										className="gs-table__divider-label"
 										value={ row.title }
 										onChange={ ( value ) =>
 											updateGroupTitle( row.id, value )
@@ -490,27 +534,36 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 											'gamestuff-blocks'
 										) }
 									/>
-									<Button
-										variant="tertiary"
-										size="small"
-										isPressed={ row.defaultCollapsed }
-										onClick={ () =>
-											toggleDefaultCollapsed( row.id )
-										}
-									>
-										{ __(
-											'Collapsed on mobile by default',
+									<DropdownMenu
+										icon={ moreVertical }
+										label={ __(
+											'Divider options',
 											'gamestuff-blocks'
 										) }
-									</Button>
-									<Button
-										variant="tertiary"
-										size="small"
-										isDestructive
-										onClick={ () => removeRow( row.id ) }
-									>
-										{ __( 'Remove', 'gamestuff-blocks' ) }
-									</Button>
+										className="gs-table__row-menu"
+										controls={ [
+											{
+												title: row.defaultCollapsed
+													? __(
+															'Expanded on mobile by default',
+															'gamestuff-blocks'
+													  )
+													: __(
+															'Collapsed on mobile by default',
+															'gamestuff-blocks'
+													  ),
+												onClick: () =>
+													toggleDefaultCollapsed( row.id ),
+											},
+											{
+												title: __(
+													'Remove',
+													'gamestuff-blocks'
+												),
+												onClick: () => removeRow( row.id ),
+											},
+										] }
+									/>
 								</div>
 							);
 						}
@@ -522,13 +575,27 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 							>
 								<Button
 									className="gs-table__insert-row"
-									icon="plus"
+									icon={ plus }
 									label={ __(
 										'Insert row above',
 										'gamestuff-blocks'
 									) }
 									size="small"
 									onClick={ () => addDataRow( rowIndex ) }
+								/>
+								<DropdownMenu
+									icon={ moreVertical }
+									label={ __( 'Row options', 'gamestuff-blocks' ) }
+									className="gs-table__row-menu"
+									controls={ [
+										{
+											title: __(
+												'Remove row',
+												'gamestuff-blocks'
+											),
+											onClick: () => removeRow( row.id ),
+										},
+									] }
 								/>
 								{ columns.map( ( column ) => {
 									const cell = row.cells?.[ column.id ] || emptyCell();
@@ -538,18 +605,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 											key={ column.id }
 											className="gs-table__cell gs-table__cell--editable"
 										>
-											<SelectControl
-												className="gs-table__cell-mode"
-												value={ cell.mode }
-												options={ CELL_MODE_OPTIONS }
-												onChange={ ( mode ) =>
-													setCellMode(
-														row.id,
-														column.id,
-														mode
-													)
-												}
-											/>
+											{ cellModeMenu( row, column, cell ) }
 
 											{ cell.mode === 'text' && (
 												<RichText
@@ -632,15 +688,6 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 										</div>
 									);
 								} ) }
-								<Button
-									variant="tertiary"
-									size="small"
-									isDestructive
-									className="gs-table__row-remove"
-									onClick={ () => removeRow( row.id ) }
-								>
-									{ __( 'Remove row', 'gamestuff-blocks' ) }
-								</Button>
 							</div>
 						);
 					} ) }
