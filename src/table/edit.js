@@ -307,8 +307,11 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	useMemo( () => {
 		const expected = [];
 		let gridLine = 2; // line 1 is the header row.
+		let dataRowCount = 0;
 		rows.forEach( ( row ) => {
 			if ( row.type === 'data' ) {
+				dataRowCount += 1;
+				const rowParity = dataRowCount % 2 === 0 ? 'even' : 'odd';
 				columns.forEach( ( column, columnIndex ) => {
 					const cell = row.cells?.[ column.id ];
 					if ( cell?.mode === 'richCell' ) {
@@ -317,6 +320,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 							columnId: column.id,
 							rowIndex: gridLine,
 							columnIndex,
+							rowParity,
 						} );
 					}
 				} );
@@ -344,11 +348,13 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 			if ( existing ) {
 				if (
 					existing.attributes.rowIndex !== e.rowIndex ||
-					existing.attributes.columnIndex !== e.columnIndex
+					existing.attributes.columnIndex !== e.columnIndex ||
+					existing.attributes.rowParity !== e.rowParity
 				) {
 					updateBlockAttributes( existing.clientId, {
 						rowIndex: e.rowIndex,
 						columnIndex: e.columnIndex,
+						rowParity: e.rowParity,
 					} );
 				}
 			} else {
@@ -358,6 +364,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						columnId: e.columnId,
 						rowIndex: e.rowIndex,
 						columnIndex: e.columnIndex,
+						rowParity: e.rowParity,
 					} ),
 					innerBlocks.length,
 					clientId,

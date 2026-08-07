@@ -1,0 +1,227 @@
+@use "../shared/tokens" as *;
+
+// Accent reads from --gs-accent (Primary Color setting); value here is
+// only the pre-setting-CSS fallback. Sticky column uses Canvas as an
+// accepted exception (see body.gs-color-scheme-* below) — currentColor
+// tints can't reach true opacity, needed here to occlude scrolled
+// content underneath. Auto mode may not track a theme's own custom
+// dark-mode toggle for that one property; forced Light/Dark always will.
+.gs-table {
+
+	--gs-accent: #fe6f22;
+	--gs-header-bg: color-mix( in srgb, var(--gs-accent) 12%, transparent );
+	--gs-divider-bg: color-mix( in srgb, var(--gs-accent) 10%, transparent );
+	--gs-border: color-mix( in srgb, currentColor 15%, transparent );
+	--gs-zebra-bg: color-mix( in srgb, currentColor 4%, transparent );
+
+	color: inherit;
+	border: 1px solid var(--gs-border);
+	overflow-x: auto;
+
+	// --- Grid engine ---
+	// Row/divider wrappers exist for ARIA semantics only — display:
+	// contents unboxes them so their cells become direct grid items,
+	// positioned entirely via inline grid-row/grid-column (see save.js).
+	.gs-table__grid {
+		display: grid;
+		grid-template-columns: repeat( var( --gs-table-columns ), minmax( 140px, 1fr ) );
+		font-size: 14px;
+	}
+
+	.gs-table__row,
+	.gs-table__row--header,
+	.gs-table__divider {
+		display: contents;
+	}
+
+	[role="cell"],
+	[role="columnheader"] {
+		padding: 10px 14px;
+		border: 1px solid var(--gs-border);
+		white-space: nowrap;
+	}
+
+	[role="columnheader"] {
+		background: var(--gs-header-bg);
+		font-weight: 600;
+		text-align: left;
+	}
+
+	.gs-table__divider-cell {
+		background: var(--gs-divider-bg);
+		font-weight: 600;
+		text-align: center;
+	}
+
+	// Sticky column — see file header note on the Canvas exception.
+	.gs-table__col-sticky {
+		position: sticky;
+		left: 0;
+		z-index: 1;
+		background: Canvas;
+	}
+
+	[data-row-parity="even"] {
+		background: var(--gs-zebra-bg);
+	}
+
+	// Sticky column keeps its own opaque background even on zebra rows,
+	// or scrolled content would show through it.
+	.gs-table__col-sticky[data-row-parity="even"] {
+		background: Canvas;
+	}
+
+	.gs-table__cell-image {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+
+	.gs-table__cell--rich {
+		white-space: normal;
+	}
+
+	// --- Editor-only affordances ---
+	&.gs-table--is-editing {
+		.gs-table__col-header--editable,
+		.gs-table__cell--editable,
+		.gs-table__divider--editable {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+			white-space: normal;
+		}
+
+		.gs-table__cell-mode {
+			font-size: 11px;
+		}
+
+		.gs-table__cell-placeholder {
+			font-style: italic;
+			color: color-mix( in srgb, currentColor 55%, transparent );
+		}
+
+		.gs-table__insert-row,
+		.gs-table__insert-column {
+			align-self: flex-start;
+		}
+
+		.gs-table__rich-cells {
+			margin-top: 16px;
+			border-top: 1px dashed var(--gs-border);
+			padding-top: 12px;
+		}
+
+		.gs-table__rich-cells-label {
+			font-size: 12px;
+			font-weight: 600;
+			text-transform: uppercase;
+			opacity: 0.7;
+		}
+	}
+
+	// --- Mobile structure (built by view.js); hidden on desktop ---
+	.gs-table__mobile {
+		display: none;
+	}
+
+	.gs-table__group-toggle,
+	.gs-table__row-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		border: 1px solid var(--gs-border);
+		background: none;
+		font: inherit;
+		color: inherit;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	.gs-table__group-toggle {
+		background: var(--gs-divider-bg);
+		font-weight: 600;
+		padding: 10px 12px;
+	}
+
+	.gs-table__row-toggle {
+		padding: 8px 12px;
+		border-top: none;
+	}
+
+	.gs-table__chevron {
+		transition: transform 0.15s ease;
+	}
+
+	.gs-table__group-toggle[ aria-expanded="true" ] .gs-table__chevron,
+	.gs-table__row-toggle[ aria-expanded="true" ] .gs-table__chevron {
+		transform: rotate( 90deg );
+	}
+
+	.gs-table__row-primary {
+		color: color-mix( in srgb, currentColor 70%, transparent );
+	}
+
+	.gs-table__row-detail {
+		border: 1px solid var(--gs-border);
+		border-top: none;
+		padding: 8px 12px;
+		font-size: 13px;
+		line-height: 1.7;
+	}
+
+	.gs-table__row-detail-label {
+		font-weight: 600;
+		margin-right: 4px;
+	}
+
+	@media ( max-width: $gs-mobile-breakpoint ) {
+		.gs-table__grid {
+			display: none;
+		}
+
+		.gs-table__mobile {
+			display: block;
+		}
+	}
+
+	// --- Presets (styling only — see spec §8) ---
+	&[ data-preset="compact" ] [role="cell"],
+	&[ data-preset="compact" ] [role="columnheader"] {
+		padding: 6px 10px;
+		font-size: 13px;
+	}
+
+	&[ data-preset="comparison" ] .gs-table__grid {
+		grid-template-columns: repeat( var( --gs-table-columns ), minmax( 180px, 1fr ) );
+	}
+
+	&[ data-preset="schedule" ] [role="cell"],
+	&[ data-preset="schedule" ] [role="columnheader"] {
+		padding: 6px 10px;
+		font-size: 13px;
+	}
+}
+
+// Forced Light/Dark from "Color Scheme" — inert under "Auto". Restores
+// a real opaque sticky-column color instead of the Canvas fallback.
+body.gs-color-scheme-light .gs-table {
+	--gs-border: rgba(20, 20, 23, 0.12);
+	--gs-zebra-bg: rgba(20, 20, 23, 0.03);
+	color: #1d2327;
+
+	.gs-table__col-sticky {
+		background: #fff;
+	}
+}
+
+body.gs-color-scheme-dark .gs-table {
+	--gs-border: rgba(255, 255, 255, 0.14);
+	--gs-zebra-bg: rgba(255, 255, 255, 0.05);
+	color: #f2f2f3;
+
+	.gs-table__col-sticky {
+		background: #1c1c1d;
+	}
+}

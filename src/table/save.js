@@ -9,6 +9,22 @@ export default function save( { attributes } ) {
 		'data-preset': preset,
 	} );
 
+	// Precomputed once, outside JSX: each row's grid-row line (offset
+	// for the header) and, for data rows only, odd/even parity used
+	// for zebra striping (divider rows don't count toward parity).
+	let dataRowCount = 0;
+	const rowsWithMeta = rows.map( ( row, rowIndex ) => {
+		const gridLine = rowIndex + 2;
+		if ( row.type === 'data' ) {
+			dataRowCount += 1;
+		}
+		return {
+			row,
+			gridLine,
+			rowParity: dataRowCount % 2 === 0 ? 'even' : 'odd',
+		};
+	} );
+
 	return (
 		<div { ...blockProps }>
 			<div
@@ -38,10 +54,7 @@ export default function save( { attributes } ) {
 					) ) }
 				</div>
 
-				{ rows.map( ( row, rowIndex ) => {
-					// Row 1 is the header; data/group rows start from grid line 2.
-					const gridLine = rowIndex + 2;
-
+				{ rowsWithMeta.map( ( { row, gridLine, rowParity } ) => {
 					if ( row.type === 'group' ) {
 						return (
 							<div
@@ -92,6 +105,11 @@ export default function save( { attributes } ) {
 									gridRow: gridLine,
 									gridColumn: columnIndex + 1,
 								};
+								const cellDataProps = {
+									'data-column-id': column.id,
+									'data-column-index': columnIndex,
+									'data-row-parity': rowParity,
+								};
 
 								if ( cell?.mode === 'image' ) {
 									return (
@@ -99,8 +117,7 @@ export default function save( { attributes } ) {
 											key={ column.id }
 											className={ cellClassName }
 											role="cell"
-											data-column-id={ column.id }
-											data-column-index={ columnIndex }
+											{ ...cellDataProps }
 											style={ cellStyle }
 										>
 											{ cell.imageUrl && (
@@ -119,8 +136,7 @@ export default function save( { attributes } ) {
 										key={ column.id }
 										className={ cellClassName }
 										role="cell"
-										data-column-id={ column.id }
-										data-column-index={ columnIndex }
+										{ ...cellDataProps }
 										style={ cellStyle }
 									>
 										<RichText.Content

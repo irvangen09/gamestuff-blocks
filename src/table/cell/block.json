@@ -38,6 +38,11 @@
 		"columnIndex": {
 			"type": "number",
 			"default": 0
+		},
+		"rowParity": {
+			"type": "string",
+			"enum": [ "odd", "even" ],
+			"default": "odd"
 		}
 	},
 
