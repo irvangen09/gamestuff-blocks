@@ -6,10 +6,10 @@
 .gs-table {
 
 	--gs-accent: #fe6f22;
-	--gs-border: color-mix( in srgb, currentColor 15%, transparent );
+	--gs-border: color-mix( in srgb, currentColor 24%, transparent );
 	--gs-header-bg: color-mix( in srgb, var(--gs-accent) 12%, transparent );
 	--gs-divider-bg: color-mix( in srgb, var(--gs-accent) 10%, transparent );
-	--gs-zebra-bg: color-mix( in srgb, currentColor 4%, transparent );
+	--gs-zebra-bg: color-mix( in srgb, currentColor 5%, transparent );
 
 	margin: 1.5em 0;
 	overflow-x: auto;
@@ -60,7 +60,9 @@
 
 		thead th {
 			background: var(--gs-header-bg);
-			font-weight: 600;
+			font-size: 1.02rem;
+			font-weight: 700;
+			letter-spacing: 0.01em;
 			border-bottom: 2px solid var(--gs-accent);
 		}
 
@@ -148,18 +150,20 @@
 		}
 
 		.gs-table__table tbody tr {
-			display: grid;
-			grid-template-columns: 1fr;
-			gap: 1px;
+			display: block;
 			margin-bottom: 10px;
-			background: var(--gs-border);
 			border: 1px solid var(--gs-border);
 		}
 
 		.gs-table__table td {
-			background: color-mix( in srgb, currentColor 2%, transparent );
+			background: none;
 			padding: 6px 12px;
 			border: none;
+			border-bottom: 1px solid var(--gs-border);
+
+			&:last-child {
+				border-bottom: none;
+			}
 
 			&::before {
 				content: attr( data-label );
@@ -185,6 +189,9 @@
 		.gs-table__table tr.gs-table__row--divider td {
 			display: block;
 			width: 100%;
+			background: none;
+			border-left: 3px solid var(--gs-accent);
+			text-align: left;
 
 			&::before {
 				content: none;
