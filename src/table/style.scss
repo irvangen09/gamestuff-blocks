@@ -81,45 +81,6 @@
 		white-space: normal;
 	}
 
-	// --- Editor-only affordances ---
-	&.gs-table--is-editing {
-		.gs-table__col-header--editable,
-		.gs-table__cell--editable,
-		.gs-table__divider--editable {
-			display: flex;
-			flex-direction: column;
-			gap: 4px;
-			white-space: normal;
-		}
-
-		.gs-table__cell-mode {
-			font-size: 11px;
-		}
-
-		.gs-table__cell-placeholder {
-			font-style: italic;
-			color: color-mix( in srgb, currentColor 55%, transparent );
-		}
-
-		.gs-table__insert-row,
-		.gs-table__insert-column {
-			align-self: flex-start;
-		}
-
-		.gs-table__rich-cells {
-			margin-top: 16px;
-			border-top: 1px dashed var(--gs-border);
-			padding-top: 12px;
-		}
-
-		.gs-table__rich-cells-label {
-			font-size: 12px;
-			font-weight: 600;
-			text-transform: uppercase;
-			opacity: 0.7;
-		}
-	}
-
 	// --- Mobile structure (built by view.js); hidden on desktop ---
 	.gs-table__mobile {
 		display: none;
