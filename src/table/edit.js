@@ -1,24 +1,20 @@
-import { useMemo, useCallback } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 import {
 	useBlockProps,
 	InspectorControls,
-	BlockControls,
-	RichText,
 	MediaUpload,
 	MediaUploadCheck,
-	InnerBlocks,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	SelectControl,
+	ToggleControl,
+	TextControl,
+	TextareaControl,
 	Button,
-	DropdownMenu,
-	ToolbarGroup,
-	ToolbarButton,
 } from '@wordpress/components';
-import { useSelect, useDispatch } from '@wordpress/data';
-import { createBlock } from '@wordpress/blocks';
-import { __ } from '@wordpress/i18n';
+import TableToolbar from './table-toolbar';
 
 const PRESET_OPTIONS = [
 	{ label: __( 'Standard', 'gamestuff-blocks' ), value: 'standard' },
@@ -28,382 +24,174 @@ const PRESET_OPTIONS = [
 	{ label: __( 'Database', 'gamestuff-blocks' ), value: 'database' },
 ];
 
-let idCounter = 0;
-function generateId( prefix ) {
-	idCounter += 1;
-	return `${ prefix }-${ Date.now().toString( 36 ) }-${ idCounter }`;
+const DEFAULT_IMAGE_WIDTH = 48;
+
+function generateColumnKey() {
+	return 'col_' + Math.random().toString( 36 ).slice( 2, 8 );
 }
 
-function emptyCell() {
-	return { mode: 'text', content: '' };
+function buildEmptyRow( columns ) {
+	const row = { isDivider: false };
+	columns.forEach( ( col ) => {
+		row[ col.key ] = '';
+	} );
+	return row;
 }
 
-function emptyColumn() {
-	return {
-		id: generateId( 'col' ),
-		label: __( 'New column', 'gamestuff-blocks' ),
-		isMobilePrimary: false,
-	};
-}
+export default function Edit( { attributes, setAttributes } ) {
+	const { preset, columns, rows, enableSort, enableFilter } = attributes;
 
-export default function Edit( { attributes, setAttributes, clientId } ) {
-	const { preset, columns, rows } = attributes;
+	// { rowIndex, colIndex } of the last-focused cell — decides which
+	// action in TableToolbar is enabled. rowIndex -1 means the header
+	// row (column label) is focused.
+	const [ focusedCell, setFocusedCell ] = useState( { rowIndex: null, colIndex: null } );
+
+	const [ pendingColumnCount, setPendingColumnCount ] = useState( '3' );
+	const [ pendingRowCount, setPendingRowCount ] = useState( '3' );
 
 	const blockProps = useBlockProps( {
-		className: 'gs-table gs-table--is-editing',
+		className: 'gs-table-editor',
 	} );
 
-	// --- Column mutations ---
-
-	const addColumn = useCallback(
-		( atIndex ) => {
-			const newColumn = emptyColumn();
-			const newColumns = [ ...columns ];
-			newColumns.splice( atIndex, 0, newColumn );
-
-			const newRows = rows.map( ( row ) => {
-				if ( row.type !== 'data' ) {
-					return row;
-				}
-				return {
-					...row,
-					cells: { ...row.cells, [ newColumn.id ]: emptyCell() },
-				};
-			} );
-
-			setAttributes( { columns: newColumns, rows: newRows } );
-		},
-		[ columns, rows, setAttributes ]
-	);
-
-	const removeColumn = useCallback(
-		( columnId ) => {
-			const newColumns = columns.filter( ( c ) => c.id !== columnId );
-			const newRows = rows.map( ( row ) => {
-				if ( row.type !== 'data' ) {
-					return row;
-				}
-				const cells = { ...row.cells };
-				delete cells[ columnId ];
-				return { ...row, cells };
-			} );
-			setAttributes( { columns: newColumns, rows: newRows } );
-		},
-		[ columns, rows, setAttributes ]
-	);
-
-	const updateColumnLabel = useCallback(
-		( columnId, label ) => {
-			setAttributes( {
-				columns: columns.map( ( c ) =>
-					c.id === columnId ? { ...c, label } : c
-				),
-			} );
-		},
-		[ columns, setAttributes ]
-	);
-
-	// Only one column may be the mobile-primary attribute at a time.
-	const toggleMobilePrimary = useCallback(
-		( columnId ) => {
-			setAttributes( {
-				columns: columns.map( ( c ) => ( {
-					...c,
-					isMobilePrimary:
-						c.id === columnId ? ! c.isMobilePrimary : false,
-				} ) ),
-			} );
-		},
-		[ columns, setAttributes ]
-	);
-
-	// --- Row mutations ---
-
-	const addDataRow = useCallback(
-		( atIndex ) => {
-			const cells = {};
-			columns.forEach( ( c ) => {
-				cells[ c.id ] = emptyCell();
-			} );
-			const newRow = { type: 'data', id: generateId( 'row' ), cells };
-			const newRows = [ ...rows ];
-			newRows.splice( atIndex, 0, newRow );
-			setAttributes( { rows: newRows } );
-		},
-		[ columns, rows, setAttributes ]
-	);
-
-	const addGroupRow = useCallback(
-		( atIndex ) => {
-			const newRow = {
-				type: 'group',
-				id: generateId( 'group' ),
-				title: __( 'Group title', 'gamestuff-blocks' ),
-				defaultCollapsed: false,
-			};
-			const newRows = [ ...rows ];
-			newRows.splice( atIndex, 0, newRow );
-			setAttributes( { rows: newRows } );
-		},
-		[ rows, setAttributes ]
-	);
-
-	const removeRow = useCallback(
-		( rowId ) => {
-			setAttributes( { rows: rows.filter( ( r ) => r.id !== rowId ) } );
-		},
-		[ rows, setAttributes ]
-	);
-
-	const updateGroupTitle = useCallback(
-		( rowId, title ) => {
-			setAttributes( {
-				rows: rows.map( ( r ) =>
-					r.id === rowId ? { ...r, title } : r
-				),
-			} );
-		},
-		[ rows, setAttributes ]
-	);
-
-	const toggleDefaultCollapsed = useCallback(
-		( rowId ) => {
-			setAttributes( {
-				rows: rows.map( ( r ) =>
-					r.id === rowId
-						? { ...r, defaultCollapsed: ! r.defaultCollapsed }
-						: r
-				),
-			} );
-		},
-		[ rows, setAttributes ]
-	);
-
-	// --- Cell mutations ---
-
-	const updateCell = useCallback(
-		( rowId, columnId, patch ) => {
-			setAttributes( {
-				rows: rows.map( ( r ) => {
-					if ( r.id !== rowId || r.type !== 'data' ) {
-						return r;
-					}
-					return {
-						...r,
-						cells: {
-							...r.cells,
-							[ columnId ]: { ...r.cells[ columnId ], ...patch },
-						},
-					};
-				} ),
-			} );
-		},
-		[ rows, setAttributes ]
-	);
-
-	// Switching mode resets the cell — text/image/richCell store incompatible shapes.
-	const setCellMode = useCallback(
-		( rowId, columnId, mode ) => {
-			if ( mode === 'text' ) {
-				updateCell( rowId, columnId, { mode: 'text', content: '' } );
-			} else if ( mode === 'image' ) {
-				updateCell( rowId, columnId, {
-					mode: 'image',
-					imageId: 0,
-					imageUrl: '',
-					imageAlt: '',
-				} );
-			} else {
-				updateCell( rowId, columnId, { mode: 'richCell' } );
-			}
-		},
-		[ updateCell ]
-	);
-
-	// --- Paste from spreadsheet (text cells only) ---
-
-	const handlePaste = useCallback(
-		( event, startRowId, startColumnId ) => {
-			const text = event.clipboardData?.getData( 'text/plain' );
-			if ( ! text || ( ! text.includes( '\t' ) && ! text.includes( '\n' ) ) ) {
-				return; // single value — let RichText handle its own paste.
-			}
-			event.preventDefault();
-
-			const grid = text
-				.replace( /\r/g, '' )
-				.split( '\n' )
-				.filter( ( line ) => line.length > 0 )
-				.map( ( line ) => line.split( '\t' ) );
-
-			const startRowIndex = rows.findIndex( ( r ) => r.id === startRowId );
-			const startColIndex = columns.findIndex(
-				( c ) => c.id === startColumnId
-			);
-			if ( startRowIndex === -1 || startColIndex === -1 ) {
-				return;
-			}
-
-			const newColumns = [ ...columns ];
-			const neededColumns =
-				startColIndex + Math.max( ...grid.map( ( line ) => line.length ) );
-			while ( newColumns.length < neededColumns ) {
-				newColumns.push( emptyColumn() );
-			}
-
-			const newRows = [ ...rows ];
-			grid.forEach( ( line, lineOffset ) => {
-				const targetRowIndex = startRowIndex + lineOffset;
-				let targetRow = newRows[ targetRowIndex ];
-
-				if ( ! targetRow ) {
-					const cells = {};
-					newColumns.forEach( ( c ) => {
-						cells[ c.id ] = emptyCell();
-					} );
-					targetRow = { type: 'data', id: generateId( 'row' ), cells };
-					newRows.push( targetRow );
-				}
-
-				if ( targetRow.type !== 'data' ) {
-					return;
-				}
-
-				const updatedCells = { ...targetRow.cells };
-				line.forEach( ( value, colOffset ) => {
-					const column = newColumns[ startColIndex + colOffset ];
-					if ( ! column ) {
-						return;
-					}
-					const existing = updatedCells[ column.id ];
-					if ( existing && existing.mode !== 'text' ) {
-						return; // don't overwrite an image/richCell with pasted text.
-					}
-					updatedCells[ column.id ] = { mode: 'text', content: value };
-				} );
-
-				newRows[ targetRowIndex ] = { ...targetRow, cells: updatedCells };
-			} );
-
-			setAttributes( { columns: newColumns, rows: newRows } );
-		},
-		[ rows, columns, setAttributes ]
-	);
-
-	// --- Sync table-cell (richCell) child blocks with rows/columns ---
-
-	const innerBlocks = useSelect(
-		( select ) => select( 'core/block-editor' ).getBlocks( clientId ),
-		[ clientId ]
-	);
-	const { insertBlock, removeBlock, updateBlockAttributes } =
-		useDispatch( 'core/block-editor' );
-
-	useMemo( () => {
-		const expected = [];
-		let gridLine = 2; // line 1 is the header row.
-		let dataRowCount = 0;
-		rows.forEach( ( row ) => {
-			if ( row.type === 'data' ) {
-				dataRowCount += 1;
-				const rowParity = dataRowCount % 2 === 0 ? 'even' : 'odd';
-				columns.forEach( ( column, columnIndex ) => {
-					const cell = row.cells?.[ column.id ];
-					if ( cell?.mode === 'richCell' ) {
-						expected.push( {
-							rowId: row.id,
-							columnId: column.id,
-							rowIndex: gridLine,
-							columnIndex,
-							rowParity,
-						} );
-					}
-				} );
-			}
-			gridLine += 1;
-		} );
-
-		innerBlocks.forEach( ( block ) => {
-			const stillNeeded = expected.some(
-				( e ) =>
-					e.rowId === block.attributes.rowId &&
-					e.columnId === block.attributes.columnId
-			);
-			if ( ! stillNeeded ) {
-				removeBlock( block.clientId, false );
-			}
-		} );
-
-		expected.forEach( ( e ) => {
-			const existing = innerBlocks.find(
-				( block ) =>
-					block.attributes.rowId === e.rowId &&
-					block.attributes.columnId === e.columnId
-			);
-			if ( existing ) {
-				if (
-					existing.attributes.rowIndex !== e.rowIndex ||
-					existing.attributes.columnIndex !== e.columnIndex ||
-					existing.attributes.rowParity !== e.rowParity
-				) {
-					updateBlockAttributes( existing.clientId, {
-						rowIndex: e.rowIndex,
-						columnIndex: e.columnIndex,
-						rowParity: e.rowParity,
-					} );
-				}
-			} else {
-				insertBlock(
-					createBlock( 'gamestuff/table-cell', {
-						rowId: e.rowId,
-						columnId: e.columnId,
-						rowIndex: e.rowIndex,
-						columnIndex: e.columnIndex,
-						rowParity: e.rowParity,
-					} ),
-					innerBlocks.length,
-					clientId,
-					false
-				);
-			}
-		} );
-		// Sync only reacts to data-shape changes, not to innerBlocks itself
-		// (avoids an infinite loop, since this effect writes to innerBlocks).
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [ rows, columns ] );
-
-	// --- Cell mode menu (hidden until hover/focus — see editor.scss) ---
-
-	function cellModeMenu( row, column, cell ) {
-		return (
-			<DropdownMenu
-				icon="ellipsis"
-				label={ __( 'Cell type', 'gamestuff-blocks' ) }
-				className="gs-table__cell-menu"
-				controls={ [
-					{
-						title: __( 'Text', 'gamestuff-blocks' ),
-						isDisabled: cell.mode === 'text',
-						onClick: () => setCellMode( row.id, column.id, 'text' ),
-					},
-					{
-						title: __( 'Image', 'gamestuff-blocks' ),
-						isDisabled: cell.mode === 'image',
-						onClick: () => setCellMode( row.id, column.id, 'image' ),
-					},
-					{
-						title: __( 'Rich Cell', 'gamestuff-blocks' ),
-						isDisabled: cell.mode === 'richCell',
-						onClick: () =>
-							setCellMode( row.id, column.id, 'richCell' ),
-					},
-				] }
-			/>
-		);
+	function resetFocus() {
+		setFocusedCell( { rowIndex: null, colIndex: null } );
 	}
+
+	function createTable() {
+		const columnCount = Math.max( 1, parseInt( pendingColumnCount, 10 ) || 1 );
+		const rowCount = Math.max( 1, parseInt( pendingRowCount, 10 ) || 1 );
+
+		const newColumns = [];
+		for ( let i = 0; i < columnCount; i++ ) {
+			newColumns.push( { key: generateColumnKey(), label: '', type: 'text' } );
+		}
+
+		const newRows = [];
+		for ( let i = 0; i < rowCount; i++ ) {
+			newRows.push( buildEmptyRow( newColumns ) );
+		}
+
+		setAttributes( { columns: newColumns, rows: newRows } );
+	}
+
+	function updateColumnLabel( colIndex, label ) {
+		const newColumns = columns.map( ( col, i ) => ( i === colIndex ? { ...col, label } : col ) );
+		setAttributes( { columns: newColumns } );
+	}
+
+	function setColumnType( type ) {
+		const colIndex = focusedCell.colIndex;
+
+		if ( null === colIndex ) {
+			return;
+		}
+
+		const changes = { type };
+
+		if ( 'image' === type && ! columns[ colIndex ]?.imageWidth ) {
+			changes.imageWidth = DEFAULT_IMAGE_WIDTH;
+		}
+
+		const newColumns = columns.map( ( col, i ) => ( i === colIndex ? { ...col, ...changes } : col ) );
+		setAttributes( { columns: newColumns } );
+	}
+
+	function setColumnImageWidth( colIndex, width ) {
+		const newColumns = columns.map( ( col, i ) => ( i === colIndex ? { ...col, imageWidth: width } : col ) );
+		setAttributes( { columns: newColumns } );
+	}
+
+	function insertColumn( atIndex ) {
+		const newColumn = { key: generateColumnKey(), label: '', type: 'text' };
+		const newColumns = [ ...columns ];
+		newColumns.splice( atIndex, 0, newColumn );
+
+		const newRows = rows.map( ( row ) => ( { ...row, [ newColumn.key ]: '' } ) );
+
+		setAttributes( { columns: newColumns, rows: newRows } );
+		resetFocus();
+	}
+
+	function deleteColumn() {
+		const colIndex = focusedCell.colIndex;
+
+		if ( null === colIndex ) {
+			return;
+		}
+
+		const key = columns[ colIndex ].key;
+		const newColumns = columns.filter( ( _col, i ) => i !== colIndex );
+		const newRows = rows.map( ( row ) => {
+			const updated = { ...row };
+			delete updated[ key ];
+			return updated;
+		} );
+
+		setAttributes( { columns: newColumns, rows: newRows } );
+		resetFocus();
+	}
+
+	function insertRow( atIndex ) {
+		const newRows = [ ...rows ];
+		newRows.splice( atIndex, 0, buildEmptyRow( columns ) );
+		setAttributes( { rows: newRows } );
+		resetFocus();
+	}
+
+	function deleteRow() {
+		const rowIndex = focusedCell.rowIndex;
+
+		if ( null === rowIndex || -1 === rowIndex ) {
+			return;
+		}
+
+		setAttributes( { rows: rows.filter( ( _row, i ) => i !== rowIndex ) } );
+		resetFocus();
+	}
+
+	function toggleDivider() {
+		const rowIndex = focusedCell.rowIndex;
+
+		if ( null === rowIndex || -1 === rowIndex ) {
+			return;
+		}
+
+		const newRows = rows.map( ( row, i ) => ( i === rowIndex ? { ...row, isDivider: ! row.isDivider } : row ) );
+		setAttributes( { rows: newRows } );
+	}
+
+	function updateRow( rowIndex, changes ) {
+		const newRows = rows.map( ( row, i ) => ( i === rowIndex ? { ...row, ...changes } : row ) );
+		setAttributes( { rows: newRows } );
+	}
+
+	function updateCell( rowIndex, key, value ) {
+		updateRow( rowIndex, { [ key ]: value } );
+	}
+
+	function updateCellImage( rowIndex, key, media ) {
+		updateCell( rowIndex, key, media ? { id: media.id, url: media.url, alt: media.alt || '' } : null );
+	}
+
+	const focusedColumn = null !== focusedCell.colIndex ? columns[ focusedCell.colIndex ] : null;
 
 	return (
 		<>
+			{ columns.length > 0 && (
+				<TableToolbar
+					focusedCell={ focusedCell }
+					rows={ rows }
+					onInsertRowBefore={ () => insertRow( focusedCell.rowIndex ) }
+					onInsertRowAfter={ () => insertRow( focusedCell.rowIndex + 1 ) }
+					onDeleteRow={ deleteRow }
+					onToggleDivider={ toggleDivider }
+					onInsertColumnBefore={ () => insertColumn( focusedCell.colIndex ) }
+					onInsertColumnAfter={ () => insertColumn( focusedCell.colIndex + 1 ) }
+					onDeleteColumn={ deleteColumn }
+					onSetColumnType={ setColumnType }
+				/>
+			) }
+
 			<InspectorControls>
 				<PanelBody title={ __( 'Table Settings', 'gamestuff-blocks' ) }>
 					<SelectControl
@@ -412,296 +200,161 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						options={ PRESET_OPTIONS }
 						onChange={ ( value ) => setAttributes( { preset: value } ) }
 					/>
+					<ToggleControl
+						label={ __( 'Sortable', 'gamestuff-blocks' ) }
+						checked={ enableSort }
+						onChange={ ( value ) => setAttributes( { enableSort: value } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Searchable', 'gamestuff-blocks' ) }
+						checked={ enableFilter }
+						onChange={ ( value ) => setAttributes( { enableFilter: value } ) }
+					/>
+
+					{ focusedColumn && 'image' === focusedColumn.type && (
+						<TextControl
+							label={ __( 'Image width — focused column (px)', 'gamestuff-blocks' ) }
+							help={ __( 'The focused column is whichever cell you last clicked.', 'gamestuff-blocks' ) }
+							type="number"
+							value={ focusedColumn.imageWidth ?? DEFAULT_IMAGE_WIDTH }
+							onChange={ ( value ) =>
+								setColumnImageWidth( focusedCell.colIndex, parseInt( value, 10 ) || DEFAULT_IMAGE_WIDTH )
+							}
+						/>
+					) }
 				</PanelBody>
 			</InspectorControls>
 
-			<BlockControls>
-				<ToolbarGroup>
-					<ToolbarButton onClick={ () => addDataRow( rows.length ) }>
-						{ __( 'Add row', 'gamestuff-blocks' ) }
-					</ToolbarButton>
-					<ToolbarButton onClick={ () => addColumn( columns.length ) }>
-						{ __( 'Add column', 'gamestuff-blocks' ) }
-					</ToolbarButton>
-					<ToolbarButton onClick={ () => addGroupRow( rows.length ) }>
-						{ __( 'Add divider', 'gamestuff-blocks' ) }
-					</ToolbarButton>
-				</ToolbarGroup>
-			</BlockControls>
-
 			<div { ...blockProps }>
-				<div
-					className="gs-table__grid gs-table__grid--editor"
-					style={ { '--gs-table-columns': columns.length } }
-				>
-					<div className="gs-table__row gs-table__row--header">
-						{ columns.map( ( column, columnIndex ) => (
-							<div
-								key={ column.id }
-								className="gs-table__col-header gs-table__col-header--editable"
-							>
-								{ columnIndex > 0 && (
-									<Button
-										className="gs-table__insert-column"
-										icon="plus"
-										label={ __(
-											'Insert column left',
-											'gamestuff-blocks'
-										) }
-										size="small"
-										onClick={ () => addColumn( columnIndex ) }
-									/>
-								) }
-								<RichText
-									tagName="span"
-									className="gs-table__col-header-label"
-									value={ column.label }
-									onChange={ ( value ) =>
-										updateColumnLabel( column.id, value )
-									}
-									placeholder={ __(
-										'Column label',
-										'gamestuff-blocks'
-									) }
-								/>
-								{ column.isMobilePrimary && (
-									<span className="gs-table__col-badge">
-										{ __( 'Mobile primary', 'gamestuff-blocks' ) }
-									</span>
-								) }
-								<DropdownMenu
-									icon="ellipsis"
-									label={ __(
-										'Column options',
-										'gamestuff-blocks'
-									) }
-									className="gs-table__col-menu"
-									controls={ [
-										{
-											title: column.isMobilePrimary
-												? __(
-														'Unset as mobile primary',
-														'gamestuff-blocks'
-												  )
-												: __(
-														'Set as mobile primary',
-														'gamestuff-blocks'
-												  ),
-											onClick: () =>
-												toggleMobilePrimary( column.id ),
-										},
-										columnIndex > 0 && {
-											title: __(
-												'Remove column',
-												'gamestuff-blocks'
-											),
-											onClick: () =>
-												removeColumn( column.id ),
-										},
-									].filter( Boolean ) }
-								/>
-							</div>
-						) ) }
+				{ 0 === columns.length ? (
+					<div className="gs-table-editor__empty">
+						<p>{ __( 'Create a new table.', 'gamestuff-blocks' ) }</p>
+						<div className="gs-table-editor__empty-fields">
+							<TextControl
+								label={ __( 'Number of columns', 'gamestuff-blocks' ) }
+								type="number"
+								min="1"
+								value={ pendingColumnCount }
+								onChange={ setPendingColumnCount }
+							/>
+							<TextControl
+								label={ __( 'Number of rows', 'gamestuff-blocks' ) }
+								type="number"
+								min="1"
+								value={ pendingRowCount }
+								onChange={ setPendingRowCount }
+							/>
+						</div>
+						<Button variant="primary" onClick={ createTable }>
+							{ __( 'Create Table', 'gamestuff-blocks' ) }
+						</Button>
 					</div>
-
-					{ rows.map( ( row, rowIndex ) => {
-						if ( row.type === 'group' ) {
-							return (
-								<div
-									key={ row.id }
-									className="gs-table__divider gs-table__divider--editable"
+				) : (
+					<table className="gs-table-editor__grid">
+						<thead>
+							<tr>
+								{ columns.map( ( col, colIndex ) => (
+									<th key={ col.key }>
+										<TextControl
+											label={ __( 'Column label', 'gamestuff-blocks' ) }
+											hideLabelFromVision
+											placeholder={ __( 'Column label', 'gamestuff-blocks' ) }
+											value={ col.label }
+											onChange={ ( value ) => updateColumnLabel( colIndex, value ) }
+											onFocus={ () => setFocusedCell( { rowIndex: -1, colIndex } ) }
+										/>
+									</th>
+								) ) }
+							</tr>
+						</thead>
+						<tbody>
+							{ rows.map( ( row, rowIndex ) => (
+								<tr
+									key={ rowIndex }
+									className={ row.isDivider ? 'gs-table-editor__row--divider' : undefined }
 								>
-									<Button
-										className="gs-table__insert-row"
-										icon="plus"
-										label={ __(
-											'Insert row above',
-											'gamestuff-blocks'
-										) }
-										size="small"
-										onClick={ () => addDataRow( rowIndex ) }
-									/>
-									<RichText
-										tagName="span"
-										className="gs-table__divider-label"
-										value={ row.title }
-										onChange={ ( value ) =>
-											updateGroupTitle( row.id, value )
-										}
-										placeholder={ __(
-											'Group title',
-											'gamestuff-blocks'
-										) }
-									/>
-									<DropdownMenu
-										icon="ellipsis"
-										label={ __(
-											'Divider options',
-											'gamestuff-blocks'
-										) }
-										className="gs-table__row-menu"
-										controls={ [
-											{
-												title: row.defaultCollapsed
-													? __(
-															'Expanded on mobile by default',
-															'gamestuff-blocks'
-													  )
-													: __(
-															'Collapsed on mobile by default',
-															'gamestuff-blocks'
-													  ),
-												onClick: () =>
-													toggleDefaultCollapsed( row.id ),
-											},
-											{
-												title: __(
-													'Remove',
-													'gamestuff-blocks'
-												),
-												onClick: () => removeRow( row.id ),
-											},
-										] }
-									/>
-								</div>
-							);
-						}
-
-						return (
-							<div
-								key={ row.id }
-								className="gs-table__row gs-table__row--editable"
-							>
-								<Button
-									className="gs-table__insert-row"
-									icon="plus"
-									label={ __(
-										'Insert row above',
-										'gamestuff-blocks'
-									) }
-									size="small"
-									onClick={ () => addDataRow( rowIndex ) }
-								/>
-								<DropdownMenu
-									icon="ellipsis"
-									label={ __( 'Row options', 'gamestuff-blocks' ) }
-									className="gs-table__row-menu"
-									controls={ [
-										{
-											title: __(
-												'Remove row',
-												'gamestuff-blocks'
-											),
-											onClick: () => removeRow( row.id ),
-										},
-									] }
-								/>
-								{ columns.map( ( column ) => {
-									const cell = row.cells?.[ column.id ] || emptyCell();
-
-									return (
-										<div
-											key={ column.id }
-											className="gs-table__cell gs-table__cell--editable"
-										>
-											{ cellModeMenu( row, column, cell ) }
-
-											{ cell.mode === 'text' && (
-												<RichText
-													tagName="span"
-													value={ cell.content }
-													onChange={ ( value ) =>
-														updateCell( row.id, column.id, {
-															content: value,
-														} )
-													}
-													onPaste={ ( event ) =>
-														handlePaste(
-															event,
-															row.id,
-															column.id
-														)
-													}
-													allowedFormats={ [
-														'core/bold',
-														'core/italic',
-														'core/link',
-													] }
-													placeholder={ __(
-														'Text…',
-														'gamestuff-blocks'
-													) }
-												/>
-											) }
-
-											{ cell.mode === 'image' && (
-												<MediaUploadCheck>
-													<MediaUpload
-														onSelect={ ( media ) =>
-															updateCell(
-																row.id,
-																column.id,
-																{
-																	imageId: media.id,
-																	imageUrl: media.url,
-																	imageAlt:
-																		media.alt || '',
-																}
-															)
-														}
-														allowedTypes={ [ 'image' ] }
-														value={ cell.imageId }
-														render={ ( { open } ) =>
-															cell.imageUrl ? (
-																<img
-																	src={ cell.imageUrl }
-																	alt={ cell.imageAlt }
-																	className="gs-table__cell-image-preview"
-																	onClick={ open }
-																/>
-															) : (
-																<Button
-																	variant="secondary"
-																	size="small"
-																	onClick={ open }
-																>
-																	{ __(
-																		'Choose image',
-																		'gamestuff-blocks'
+									{ row.isDivider ? (
+										<td colSpan={ columns.length }>
+											<TextControl
+												label={ __( 'Divider text', 'gamestuff-blocks' ) }
+												hideLabelFromVision
+												placeholder={ __( 'Divider text…', 'gamestuff-blocks' ) }
+												value={ row.dividerLabel ?? '' }
+												onChange={ ( value ) => updateRow( rowIndex, { dividerLabel: value } ) }
+												onFocus={ () => setFocusedCell( { rowIndex, colIndex: null } ) }
+											/>
+										</td>
+									) : (
+										columns.map( ( col, colIndex ) => (
+											<td key={ col.key }>
+												{ 'image' === col.type && (
+													<MediaUploadCheck>
+														<MediaUpload
+															onSelect={ ( media ) => updateCellImage( rowIndex, col.key, media ) }
+															allowedTypes={ [ 'image' ] }
+															value={ row[ col.key ]?.id }
+															render={ ( { open } ) => (
+																<div onFocus={ () => setFocusedCell( { rowIndex, colIndex } ) }>
+																	{ row[ col.key ]?.url ? (
+																		<div className="gs-table-editor__image-cell">
+																			<img
+																				src={ row[ col.key ].url }
+																				alt=""
+																				style={ {
+																					width: ( col.imageWidth || DEFAULT_IMAGE_WIDTH ) + 'px',
+																				} }
+																			/>
+																			<Button variant="link" onClick={ open } isSmall>
+																				{ __( 'Replace', 'gamestuff-blocks' ) }
+																			</Button>
+																			<Button
+																				variant="link"
+																				isDestructive
+																				isSmall
+																				onClick={ () => updateCellImage( rowIndex, col.key, null ) }
+																			>
+																				{ __( 'Remove image', 'gamestuff-blocks' ) }
+																			</Button>
+																		</div>
+																	) : (
+																		<Button variant="secondary" isSmall onClick={ open }>
+																			{ __( 'Choose image', 'gamestuff-blocks' ) }
+																		</Button>
 																	) }
-																</Button>
-															)
-														}
+																</div>
+															) }
+														/>
+													</MediaUploadCheck>
+												) }
+
+												{ 'number' === col.type && (
+													<TextControl
+														label={ __( 'Cell value', 'gamestuff-blocks' ) }
+														hideLabelFromVision
+														type="number"
+														value={ row[ col.key ] ?? '' }
+														onChange={ ( value ) => updateCell( rowIndex, col.key, value ) }
+														onFocus={ () => setFocusedCell( { rowIndex, colIndex } ) }
 													/>
-												</MediaUploadCheck>
-											) }
+												) }
 
-											{ cell.mode === 'richCell' && (
-												<span className="gs-table__cell-placeholder">
-													{ __(
-														'Rich content — edit below ↓',
-														'gamestuff-blocks'
-													) }
-												</span>
-											) }
-										</div>
-									);
-								} ) }
-							</div>
-						);
-					} ) }
-				</div>
-
-				{ innerBlocks.length > 0 && (
-					<div className="gs-table__rich-cells">
-						<p className="gs-table__rich-cells-label">
-							{ __( 'Rich cell contents', 'gamestuff-blocks' ) }
-						</p>
-						<InnerBlocks
-							allowedBlocks={ [ 'gamestuff/table-cell' ] }
-							templateLock={ false }
-						/>
-					</div>
+												{ 'text' === col.type && (
+													<TextareaControl
+														label={ __( 'Cell value', 'gamestuff-blocks' ) }
+														hideLabelFromVision
+														value={ row[ col.key ] ?? '' }
+														onChange={ ( value ) => updateCell( rowIndex, col.key, value ) }
+														onFocus={ () => setFocusedCell( { rowIndex, colIndex } ) }
+														rows={ 2 }
+													/>
+												) }
+											</td>
+										) )
+									) }
+								</tr>
+							) ) }
+						</tbody>
+					</table>
 				) }
 			</div>
 		</>
