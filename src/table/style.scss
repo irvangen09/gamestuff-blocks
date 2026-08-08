@@ -117,16 +117,16 @@
 	}
 
 	// Preset: styling only, never structural (see spec §8).
-	&[ data-preset="compact" ] .gs-table__table th,
-	&[ data-preset="compact" ] .gs-table__table td,
-	&[ data-preset="schedule" ] .gs-table__table th,
-	&[ data-preset="schedule" ] .gs-table__table td {
+	&[ data-preset="style-1" ] .gs-table__table th,
+	&[ data-preset="style-1" ] .gs-table__table td,
+	&[ data-preset="style-3" ] .gs-table__table th,
+	&[ data-preset="style-3" ] .gs-table__table td {
 		padding: 6px 10px;
 		font-size: 0.85rem;
 	}
 
-	&[ data-preset="comparison" ] .gs-table__table th,
-	&[ data-preset="comparison" ] .gs-table__table td {
+	&[ data-preset="style-2" ] .gs-table__table th,
+	&[ data-preset="style-2" ] .gs-table__table td {
 		padding: 12px 18px;
 	}
 
@@ -193,6 +193,50 @@
 
 			&::before {
 				content: none;
+			}
+		}
+
+		// Style 1: two-column layout — label on the left with an
+		// accent background, value on the right. The label is
+		// ::before positioned over the td rather than a separate
+		// element, so no markup/JS changes were needed for this.
+		&[ data-preset="style-1" ] {
+
+			.gs-table__table td {
+				position: relative;
+				padding: 10px 12px 10px calc( 40% + 12px );
+				min-height: 40px;
+				background: none;
+				border-bottom: 1px solid var(--gs-border);
+
+				&::before {
+					content: attr( data-label );
+					position: absolute;
+					top: 0;
+					left: 0;
+					bottom: 0;
+					width: 40%;
+					display: flex;
+					align-items: center;
+					margin: 0;
+					padding: 0 12px;
+					background: color-mix( in srgb, var(--gs-accent) 50%, transparent );
+					color: currentColor;
+					font-size: 0.8rem;
+					font-weight: 700;
+				}
+			}
+
+			.gs-table__table tbody tr:nth-child( even ) td {
+				background: var(--gs-zebra-bg);
+			}
+
+			.gs-table__table tr.gs-table__row--divider td {
+				padding-left: 12px;
+
+				&::before {
+					content: none;
+				}
 			}
 		}
 	}

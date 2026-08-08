@@ -18,10 +18,10 @@ import TableToolbar from './table-toolbar';
 
 const PRESET_OPTIONS = [
 	{ label: __( 'Standard', 'gamestuff-blocks' ), value: 'standard' },
-	{ label: __( 'Compact', 'gamestuff-blocks' ), value: 'compact' },
-	{ label: __( 'Comparison', 'gamestuff-blocks' ), value: 'comparison' },
-	{ label: __( 'Schedule', 'gamestuff-blocks' ), value: 'schedule' },
-	{ label: __( 'Database', 'gamestuff-blocks' ), value: 'database' },
+	{ label: __( 'Style 1', 'gamestuff-blocks' ), value: 'style-1' },
+	{ label: __( 'Style 2', 'gamestuff-blocks' ), value: 'style-2' },
+	{ label: __( 'Style 3', 'gamestuff-blocks' ), value: 'style-3' },
+	{ label: __( 'Style 4', 'gamestuff-blocks' ), value: 'style-4' },
 ];
 
 const DEFAULT_IMAGE_WIDTH = 48;

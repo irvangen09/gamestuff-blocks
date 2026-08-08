@@ -23,7 +23,7 @@
 	"attributes": {
 		"preset": {
 			"type": "string",
-			"enum": [ "standard", "compact", "comparison", "schedule", "database" ],
+			"enum": [ "standard", "style-1", "style-2", "style-3", "style-4" ],
 			"default": "standard"
 		},
 		"columns": {
