@@ -6,9 +6,8 @@
 .gs-table {
 
 	--gs-accent: #fe6f22;
-	--gs-border: color-mix( in srgb, currentColor 24%, transparent );
+	--gs-border: color-mix( in srgb, currentColor 18%, transparent );
 	--gs-header-bg: color-mix( in srgb, var(--gs-accent) 12%, transparent );
-	--gs-divider-bg: color-mix( in srgb, var(--gs-accent) 10%, transparent );
 	--gs-zebra-bg: color-mix( in srgb, currentColor 5%, transparent );
 
 	margin: 1.5em 0;
@@ -63,6 +62,7 @@
 			font-size: 1.02rem;
 			font-weight: 700;
 			letter-spacing: 0.01em;
+			text-align: center;
 			border-bottom: 2px solid var(--gs-accent);
 		}
 
@@ -71,11 +71,17 @@
 		}
 	}
 
-	.gs-table__divider-cell {
-		background: var(--gs-divider-bg);
-		font-weight: 600;
+	// Soft neutral background — same currentColor-tint technique as
+	// the Infobox card, not an accent-color block. Selector includes
+	// "td" explicitly to outrank the base ".gs-table__table td" rule
+	// (two classes + a type selector beats two classes alone).
+	td.gs-table__divider-cell {
+		background: color-mix( in srgb, currentColor 6%, transparent );
+		font-weight: 700;
 		text-align: center;
 		white-space: normal;
+		border-top: 1px solid var(--gs-accent);
+		border-bottom: 1px solid var(--gs-accent);
 	}
 
 	// Sort indicator glyph, added by view.js only when data-sort="true".
@@ -168,20 +174,15 @@
 			&::before {
 				content: attr( data-label );
 				display: block;
-				margin-bottom: 2px;
-				font-size: 0.72rem;
+				margin-bottom: 4px;
+				font-size: 0.95rem;
 				font-weight: 700;
-				letter-spacing: 0.04em;
-				text-transform: uppercase;
-				color: color-mix( in srgb, currentColor 65%, transparent );
+				color: inherit;
 			}
 		}
 
 		.gs-table__table tr.gs-table__row--divider {
 			display: block;
-			background: none;
-			border: 1px solid var(--gs-border);
-			border-bottom: none;
 			margin-top: 14px;
 			margin-bottom: 0;
 		}
@@ -189,9 +190,6 @@
 		.gs-table__table tr.gs-table__row--divider td {
 			display: block;
 			width: 100%;
-			background: none;
-			border-left: 3px solid var(--gs-accent);
-			text-align: left;
 
 			&::before {
 				content: none;
