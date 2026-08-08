@@ -19,7 +19,7 @@ import TableToolbar from './table-toolbar';
 const PRESET_OPTIONS = [
 	{ label: __( 'Standard', 'gamestuff-blocks' ), value: 'standard' },
 	{ label: __( 'Style 1', 'gamestuff-blocks' ), value: 'style-1' },
-	{ label: __( 'Style 2', 'gamestuff-blocks' ), value: 'style-2' },
+	{ label: __( 'Style 2 — Catalog Card', 'gamestuff-blocks' ), value: 'style-2' },
 	{ label: __( 'Style 3', 'gamestuff-blocks' ), value: 'style-3' },
 	{ label: __( 'Style 4', 'gamestuff-blocks' ), value: 'style-4' },
 ];

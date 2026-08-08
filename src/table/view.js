@@ -154,19 +154,75 @@
 		} );
 	}
 
+	// Card layout (Style 2) has no clickable header, so only search
+	// applies here — sort is skipped entirely for this preset.
+	function applyCardFilter( cardsEl, query ) {
+		var items = Array.prototype.slice.call( cardsEl.children );
+		var currentDivider = null;
+		var groupHasMatch = false;
+
+		function closeGroup() {
+			if ( currentDivider ) {
+				currentDivider.toggleAttribute( 'hidden', '' !== query && ! groupHasMatch );
+			}
+		}
+
+		items.forEach( function ( item ) {
+			if ( item.classList.contains( 'gs-table__cards-divider' ) ) {
+				closeGroup();
+				currentDivider = item;
+				groupHasMatch = false;
+				return;
+			}
+
+			var matches = rowMatchesQuery( item, query );
+			item.toggleAttribute( 'hidden', ! matches );
+
+			if ( matches ) {
+				groupHasMatch = true;
+			}
+		} );
+
+		closeGroup();
+	}
+
+	function initCardFilter( wrapperEl, cardsEl ) {
+		var searchWrap = document.createElement( 'div' );
+		searchWrap.className = 'gs-table__filter';
+
+		var input = document.createElement( 'input' );
+		input.type = 'search';
+		input.className = 'gs-table__filter-input';
+		input.setAttribute( 'placeholder', 'Search this table…' );
+		input.setAttribute( 'aria-label', 'Search within this table' );
+
+		searchWrap.appendChild( input );
+		wrapperEl.insertBefore( searchWrap, cardsEl );
+
+		input.addEventListener( 'input', function () {
+			applyCardFilter( cardsEl, input.value.trim().toLowerCase() );
+		} );
+	}
+
 	document.querySelectorAll( '.gs-table' ).forEach( function ( wrapperEl ) {
 		var tableEl = wrapperEl.querySelector( '.gs-table__table' );
 
-		if ( ! tableEl ) {
+		if ( tableEl ) {
+			if ( 'true' === wrapperEl.getAttribute( 'data-sort' ) ) {
+				initSort( tableEl );
+			}
+
+			if ( 'true' === wrapperEl.getAttribute( 'data-filter' ) ) {
+				initFilter( wrapperEl, tableEl );
+			}
+
 			return;
 		}
 
-		if ( 'true' === wrapperEl.getAttribute( 'data-sort' ) ) {
-			initSort( tableEl );
-		}
+		var cardsEl = wrapperEl.querySelector( '.gs-table__cards' );
 
-		if ( 'true' === wrapperEl.getAttribute( 'data-filter' ) ) {
-			initFilter( wrapperEl, tableEl );
+		if ( cardsEl && 'true' === wrapperEl.getAttribute( 'data-filter' ) ) {
+			initCardFilter( wrapperEl, cardsEl );
 		}
 	} );
 } )();

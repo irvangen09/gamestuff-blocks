@@ -43,7 +43,7 @@
 		td {
 			padding: 10px 14px;
 			text-align: left;
-			vertical-align: top;
+			vertical-align: middle;
 			border: 1px solid var(--gs-border);
 		}
 
@@ -110,6 +110,74 @@
 			outline: 2px solid var(--gs-accent);
 			outline-offset: -2px;
 		}
+	}
+
+	// Style 2 ("catalog card") — a different render engine entirely
+	// (see save.js), not a CSS-only variant like the others. Grid
+	// reflows on its own at any width, so no separate mobile rules
+	// are needed here the way the table layout needs them.
+	.gs-table__cards {
+		display: grid;
+		grid-template-columns: repeat( auto-fit, minmax( 240px, 1fr ) );
+		gap: 12px;
+	}
+
+	.gs-table__cards-divider {
+		grid-column: 1 / -1;
+		padding: 8px 14px;
+		font-weight: 700;
+		text-align: center;
+		background: color-mix( in srgb, currentColor 6%, transparent );
+		border-top: 1px solid var(--gs-accent);
+		border-bottom: 1px solid var(--gs-accent);
+	}
+
+	.gs-table__card {
+		border: 1px solid var(--gs-border);
+		border-radius: 12px;
+		padding: 14px;
+	}
+
+	.gs-table__card-head {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 10px;
+	}
+
+	// Deliberately not cropped/circular — item art (seeds, fish,
+	// tools, etc.) is usually already isolated on a transparent
+	// background and varies in shape, so forcing a circle would
+	// clip it. Only the empty-state placeholder is circular.
+	.gs-table__card-image {
+		display: block;
+		width: 40px;
+		height: 40px;
+		object-fit: contain;
+	}
+
+	.gs-table__card-image-placeholder {
+		flex-shrink: 0;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: color-mix( in srgb, currentColor 8%, transparent );
+	}
+
+	.gs-table__card-title {
+		font-weight: 700;
+	}
+
+	.gs-table__card-subtitle {
+		font-size: 0.85rem;
+		color: color-mix( in srgb, currentColor 65%, transparent );
+	}
+
+	.gs-table__card-body {
+		border-top: 1px solid var(--gs-border);
+		padding-top: 8px;
+		font-size: 0.88rem;
+		line-height: 1.7;
 	}
 
 	// Preset: styling only, never structural (see spec §8).
