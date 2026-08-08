@@ -48,6 +48,12 @@
 	}
 }
 
+.gs-table-editor__image-empty {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
 // Divider row: only one field (the divider text) — a distinct
 // background and centered bold text make it obviously different
 // from a data row while editing, closer to how it renders up front.

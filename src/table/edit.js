@@ -317,9 +317,26 @@ export default function Edit( { attributes, setAttributes } ) {
 																			</Button>
 																		</div>
 																	) : (
+																	<div className="gs-table-editor__image-empty">
 																		<Button variant="secondary" isSmall onClick={ open }>
 																			{ __( 'Choose image', 'gamestuff-blocks' ) }
 																		</Button>
+																		<TextControl
+																			label={ __( 'Image URL', 'gamestuff-blocks' ) }
+																			hideLabelFromVision
+																			placeholder={ __( 'or paste image URL…', 'gamestuff-blocks' ) }
+																			onKeyDown={ ( event ) => {
+																				if ( 'Enter' !== event.key ) {
+																					return;
+																				}
+																				event.preventDefault();
+																				const url = event.target.value.trim();
+																				if ( url ) {
+																					updateCellImage( rowIndex, col.key, { id: 0, url, alt: '' } );
+																				}
+																			} }
+																		/>
+																	</div>
 																	) }
 																</div>
 															) }
