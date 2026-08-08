@@ -1,8 +1,8 @@
 // Sort and search for Table on the frontend. Without this file the
 // table still renders fully and stays readable — just without these
-// interactions. Only Style 3's mobile layout needs JS (it swaps to a
-// different structure entirely); every other preset's mobile layout
-// is pure CSS. This file only ever runs on the frontend (viewScript).
+// interactions. Card layout (Style 2) only needs search, not sort
+// (no clickable header). This file only ever runs on the frontend
+// (viewScript).
 ( function () {
 	function getCellText( row, key ) {
 		var cell = row.querySelector( '[data-key="' + key + '"]' );
@@ -205,113 +205,6 @@
 		} );
 	}
 
-	// Style 3's mobile view: built once from the table's own data-*
-	// attributes and appended alongside it — style.scss hides the
-	// <table> and shows this instead under the mobile breakpoint.
-	// Column role is positional: column 1 = identity, column 2 =
-	// secondary (both always visible), column 3+ = detail on tap.
-	function buildMobileExpand( wrapperEl, tableEl ) {
-		var headerCells = Array.prototype.slice.call( tableEl.querySelectorAll( 'thead th' ) );
-		var columns = headerCells.map( function ( th ) {
-			return { key: th.getAttribute( 'data-key' ), label: th.textContent.trim() };
-		} );
-
-		if ( 0 === columns.length ) {
-			return;
-		}
-
-		var identityKey = columns[ 0 ].key;
-		var primaryKey = columns.length > 1 ? columns[ 1 ].key : null;
-		var detailColumns = columns.slice( primaryKey ? 2 : 1 );
-
-		var expandEl = document.createElement( 'div' );
-		expandEl.className = 'gs-table__expand';
-
-		var rows = Array.prototype.slice.call( tableEl.querySelectorAll( 'tbody tr' ) );
-		var currentGroupWrap = null;
-
-		rows.forEach( function ( row ) {
-			if ( isDividerRow( row ) ) {
-				var dividerCell = row.querySelector( '.gs-table__divider-cell' );
-				var title = dividerCell ? dividerCell.textContent.trim() : '';
-
-				var groupToggle = document.createElement( 'button' );
-				groupToggle.type = 'button';
-				groupToggle.className = 'gs-table__expand-group-toggle';
-				groupToggle.setAttribute( 'aria-expanded', 'true' );
-
-				var titleSpan = document.createElement( 'span' );
-				titleSpan.textContent = title;
-
-				var groupChevron = document.createElement( 'span' );
-				groupChevron.className = 'gs-table__expand-chevron';
-				groupChevron.setAttribute( 'aria-hidden', 'true' );
-
-				groupToggle.append( titleSpan, groupChevron );
-
-				var groupRows = document.createElement( 'div' );
-				groupRows.className = 'gs-table__expand-group-rows';
-
-				groupToggle.addEventListener( 'click', function () {
-					var isHidden = groupRows.hidden;
-					groupRows.hidden = ! isHidden;
-					groupToggle.setAttribute( 'aria-expanded', isHidden ? 'true' : 'false' );
-				} );
-
-				expandEl.append( groupToggle, groupRows );
-				currentGroupWrap = groupRows;
-				return;
-			}
-
-			var rowWrap = document.createElement( 'div' );
-			rowWrap.className = 'gs-table__expand-row';
-
-			var rowToggle = document.createElement( 'button' );
-			rowToggle.type = 'button';
-			rowToggle.className = 'gs-table__expand-toggle';
-			rowToggle.setAttribute( 'aria-expanded', 'false' );
-
-			var identitySpan = document.createElement( 'span' );
-			identitySpan.className = 'gs-table__expand-identity';
-			identitySpan.textContent = getCellText( row, identityKey );
-
-			var primarySpan = document.createElement( 'span' );
-			primarySpan.className = 'gs-table__expand-primary';
-			primarySpan.textContent = primaryKey ? getCellText( row, primaryKey ) : '';
-
-			rowToggle.append( identitySpan, primarySpan );
-
-			var detailWrap = document.createElement( 'div' );
-			detailWrap.className = 'gs-table__expand-detail';
-			detailWrap.hidden = true;
-
-			detailColumns.forEach( function ( col ) {
-				var line = document.createElement( 'div' );
-				line.className = 'gs-table__expand-detail-line';
-
-				var strong = document.createElement( 'strong' );
-				strong.textContent = col.label + ':';
-
-				line.appendChild( strong );
-				line.appendChild( document.createTextNode( ' ' + getCellText( row, col.key ) ) );
-
-				detailWrap.appendChild( line );
-			} );
-
-			rowToggle.addEventListener( 'click', function () {
-				var isHidden = detailWrap.hidden;
-				detailWrap.hidden = ! isHidden;
-				rowToggle.setAttribute( 'aria-expanded', isHidden ? 'true' : 'false' );
-			} );
-
-			rowWrap.append( rowToggle, detailWrap );
-
-			( currentGroupWrap || expandEl ).appendChild( rowWrap );
-		} );
-
-		wrapperEl.appendChild( expandEl );
-	}
-
 	document.querySelectorAll( '.gs-table' ).forEach( function ( wrapperEl ) {
 		var tableEl = wrapperEl.querySelector( '.gs-table__table' );
 
@@ -322,10 +215,6 @@
 
 			if ( 'true' === wrapperEl.getAttribute( 'data-filter' ) ) {
 				initFilter( wrapperEl, tableEl );
-			}
-
-			if ( 'style-3' === wrapperEl.getAttribute( 'data-preset' ) ) {
-				buildMobileExpand( wrapperEl, tableEl );
 			}
 
 			return;

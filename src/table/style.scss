@@ -180,22 +180,6 @@
 		line-height: 1.7;
 	}
 
-	// Style 3 — desktop: first column frozen while the rest scrolls
-	// horizontally. True opacity is unavoidable here (something is
-	// genuinely scrolling underneath), so this uses the same Canvas
-	// exception documented for this class of problem — it may not
-	// track a theme's own custom dark-mode toggle under "Auto";
-	// forced Light/Dark below always work correctly.
-	&[ data-preset="style-3" ] .gs-table__table {
-		th:first-child,
-		td:first-child {
-			position: sticky;
-			left: 0;
-			z-index: 1;
-			background: Canvas;
-		}
-	}
-
 	// Preset: styling only, never structural (see spec §8) — except
 	// Style 3, which genuinely needs different markup on mobile (see
 	// the dedicated block below and view.js).
@@ -320,96 +304,6 @@
 			}
 		}
 
-		// Style 3 — mobile: the native table is hidden entirely and
-		// replaced by a JS-built structure (view.js) where each row
-		// is a toggle (identity + secondary column) that reveals the
-		// remaining columns on tap, grouped under collapsible
-		// Dividers. Built once from the table's own data-* attributes,
-		// not duplicated markup shipped from the server.
-		&[ data-preset="style-3" ] {
-
-			.gs-table__table {
-				display: none;
-			}
-
-			.gs-table__expand {
-				display: block;
-			}
-		}
-
-		.gs-table__expand {
-			display: none;
-		}
-
-		.gs-table__expand-group-toggle {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 6px;
-			width: 100%;
-			margin-top: 14px;
-			padding: 8px 14px;
-			background: color-mix( in srgb, currentColor 6%, transparent );
-			border: none;
-			border-top: 1px solid var(--gs-accent);
-			border-bottom: 1px solid var(--gs-accent);
-			font: inherit;
-			font-weight: 700;
-			color: inherit;
-			cursor: pointer;
-		}
-
-		.gs-table__expand-chevron {
-			transition: transform 0.15s ease;
-		}
-
-		.gs-table__expand-group-toggle[ aria-expanded="true" ] .gs-table__expand-chevron,
-		.gs-table__expand-toggle[ aria-expanded="true" ] .gs-table__expand-chevron {
-			transform: rotate( 90deg );
-		}
-
-		.gs-table__expand-row {
-			margin-top: 10px;
-			overflow: hidden;
-			border: 1px solid var(--gs-border);
-			border-radius: 2px;
-		}
-
-		.gs-table__expand-toggle {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			gap: 10px;
-			width: 100%;
-			padding: 10px 12px;
-			background: none;
-			border: none;
-			font: inherit;
-			color: inherit;
-			text-align: left;
-			cursor: pointer;
-		}
-
-		.gs-table__expand-identity {
-			font-weight: 700;
-		}
-
-		.gs-table__expand-primary {
-			flex: 1;
-			font-size: 0.85rem;
-			color: color-mix( in srgb, currentColor 65%, transparent );
-		}
-
-		.gs-table__expand-detail {
-			border-top: 1px solid var(--gs-border);
-			padding: 8px 12px;
-			font-size: 0.85rem;
-			line-height: 1.7;
-		}
-
-		.gs-table__expand-detail-line strong {
-			margin-right: 4px;
-		}
 	}
 }
 
@@ -418,18 +312,8 @@
 // the wrapper's own color is enough to cascade correctly.
 body.gs-color-scheme-light .gs-table {
 	color: #1d2327;
-
-	&[ data-preset="style-3" ] .gs-table__table th:first-child,
-	&[ data-preset="style-3" ] .gs-table__table td:first-child {
-		background: #fff;
-	}
 }
 
 body.gs-color-scheme-dark .gs-table {
 	color: #f2f2f3;
-
-	&[ data-preset="style-3" ] .gs-table__table th:first-child,
-	&[ data-preset="style-3" ] .gs-table__table td:first-child {
-		background: #1c1c1d;
-	}
 }

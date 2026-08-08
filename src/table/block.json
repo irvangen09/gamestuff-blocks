@@ -23,7 +23,7 @@
 	"attributes": {
 		"preset": {
 			"type": "string",
-			"enum": [ "standard", "style-1", "style-2", "style-3" ],
+			"enum": [ "standard", "style-1", "style-2" ],
 			"default": "standard"
 		},
 		"columns": {

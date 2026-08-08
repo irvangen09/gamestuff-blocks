@@ -20,7 +20,6 @@ const PRESET_OPTIONS = [
 	{ label: __( 'Standard', 'gamestuff-blocks' ), value: 'standard' },
 	{ label: __( 'Style 1 — Field List (mobile)', 'gamestuff-blocks' ), value: 'style-1' },
 	{ label: __( 'Style 2 — Catalog Card', 'gamestuff-blocks' ), value: 'style-2' },
-	{ label: __( 'Style 3 — Sticky Column & Expand', 'gamestuff-blocks' ), value: 'style-3' },
 ];
 
 const DEFAULT_IMAGE_WIDTH = 48;
