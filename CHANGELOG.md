@@ -5,6 +5,25 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.0] - 2026-08-09
+
+### Added
+
+- **Table** block: a documentation table with grouped rows (via a
+  Divider control), built-in column sorting, and a search box. Three
+  layout presets are available: **Standard** (a regular table),
+  **Style 1 — Field List** (the same table on desktop, but a compact
+  two-column label/value layout on mobile, no JavaScript required),
+  and **Style 2 — Catalog Card** (renders each row as a card with an
+  image, title, and subtitle instead of a table row — well suited to
+  catalog-style content such as items, recipes, or database entries).
+- Table columns can be typed as Text, Number, or Image (uploaded from
+  the Media Library or linked directly by URL).
+- A contextual toolbar for inserting, deleting, and retyping rows and
+  columns, based on whichever cell is currently focused.
+- Table's accent color follows the "Primary Color" setting, consistent
+  with every other GameStuff block.
+
 ## [1.9.0] - 2026-08-01
 
 ### Added

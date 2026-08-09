@@ -20,6 +20,7 @@ No jQuery or other legacy front-end libraries are used — blocks are built with
 - **Character Infobox** — a portrait + key/value information card, e.g. for character profiles, item stats, or quest summaries.
 - **Info List** — a compact box of key-value attributes with an optional Requirements checklist, e.g. for an event's trigger conditions.
 - **Tabs** — displays content in multiple panels that visitors switch between, with Underline and Sidebar style variants.
+- **Table** — a documentation table with grouped rows, built-in sorting and search, and three layout presets: Standard, Field List (a compact two-column layout on mobile), and Catalog Card (renders rows as an image/title/detail card grid instead of a table).
 
 ## Settings
 

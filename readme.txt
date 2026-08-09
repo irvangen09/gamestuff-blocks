@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.9.0
+Stable tag: 1.10.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,7 @@ Blocks currently available:
 * Character Infobox — a portrait + key/value information card, e.g. for character profiles or item stats.
 * Info List — a compact box of key-value attributes with an optional Requirements checklist, e.g. for an event's trigger conditions.
 * Tabs — displays content in multiple panels that visitors switch between, with Underline and Sidebar style variants.
+* Table — a documentation table with grouped rows, built-in sorting and search, and three layout presets — including a catalog-card view for item or database-style content.
 
 More content blocks are introduced in subsequent releases.
 
@@ -52,7 +53,14 @@ Blocks made up of a parent and a child (e.g. Accordion and Accordion Item) share
 
 Every block automatically adapts to your theme's dark mode — no setup needed. If a site owner wants one fixed appearance regardless of the theme instead, the "Color Scheme" setting under Settings > GameStuff Blocks > Appearance can force every block to Light or Dark.
 
+= What are the Table block's layout presets? =
+
+Standard is a regular table. Style 1 (Field List) looks the same as Standard on desktop, but switches to a compact two-column label/value layout on mobile — no JavaScript required. Style 2 (Catalog Card) renders each table row as a card with an image, title, and subtitle instead of a table row, which suits catalog-style content (items, recipes, database entries) better than a plain table.
+
 == Changelog ==
+
+= 1.10.0 =
+* Added the Table block, with built-in sorting, search, grouped rows, and three layout presets (Standard, Field List, Catalog Card).
 
 = 1.9.0 =
 * Added the Tabs block, with Underline and Sidebar style variants.
@@ -96,6 +104,9 @@ Every block automatically adapts to your theme's dark mode — no setup needed. 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.10.0 =
+Adds the Table block. No breaking changes.
 
 = 1.9.0 =
 Adds the Tabs block. No breaking changes.
