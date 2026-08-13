@@ -171,6 +171,13 @@ export default function Edit( { attributes, setAttributes } ) {
 		updateCell( rowIndex, key, media ? { id: media.id, url: media.url, alt: media.alt || '' } : null );
 	}
 
+	function updateCellAlt( rowIndex, key, alt ) {
+		const current = rows[ rowIndex ][ key ];
+		if ( current ) {
+			updateCell( rowIndex, key, { ...current, alt } );
+		}
+	}
+
 	const focusedColumn = null !== focusedCell.colIndex ? columns[ focusedCell.colIndex ] : null;
 
 	return (
@@ -301,6 +308,13 @@ export default function Edit( { attributes, setAttributes } ) {
 																				style={ {
 																					width: ( col.imageWidth || DEFAULT_IMAGE_WIDTH ) + 'px',
 																				} }
+																			/>
+																			<TextControl
+																				label={ __( 'Alt text', 'gamestuff-blocks' ) }
+																				hideLabelFromVision
+																				placeholder={ __( 'Describe this image…', 'gamestuff-blocks' ) }
+																				value={ row[ col.key ].alt || '' }
+																				onChange={ ( value ) => updateCellAlt( rowIndex, col.key, value ) }
 																			/>
 																			<Button variant="link" onClick={ open } isSmall>
 																				{ __( 'Replace', 'gamestuff-blocks' ) }
