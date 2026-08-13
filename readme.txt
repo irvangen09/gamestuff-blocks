@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.10.0
+Stable tag: 1.10.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,10 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 
 == Changelog ==
 
+= 1.10.1 =
+* Table: sortable column headers now announce their sort state to screen readers.
+* Table: image cells now support alt text.
+
 = 1.10.0 =
 * Added the Table block, with built-in sorting, search, grouped rows, and three layout presets (Standard, Field List, Catalog Card).
 
@@ -104,6 +108,9 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.10.1 =
+Accessibility fixes for the Table block. No breaking changes.
 
 = 1.10.0 =
 Adds the Table block. No breaking changes.

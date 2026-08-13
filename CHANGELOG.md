@@ -5,6 +5,16 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.1] - 2026-08-13
+
+### Fixed
+
+- **Table**: sortable column headers now expose their sort state
+  (`aria-sort`) so screen reader users can tell which column is
+  currently sorted, and in which direction.
+- **Table**: image cells now support alt text, whether the image is
+  chosen from the Media Library or inserted by URL.
+
 ## [1.10.0] - 2026-08-09
 
 ### Added

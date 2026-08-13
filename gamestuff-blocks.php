@@ -3,7 +3,7 @@
  * Plugin Name:       GameStuff Blocks
  * Plugin URI:        https://gamestuff.id
  * Description:       Custom Gutenberg Blocks for GameStuff.id
- * Version:           1.10.0
+ * Version:           1.10.1
  * Requires at least: 6.9
  * Requires PHP:      8.0
  * Author:            Irvan Noerfazri
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Core plugin constants.
  */
-define( 'GAMESTUFF_BLOCKS_VERSION', '1.10.0' );
+define( 'GAMESTUFF_BLOCKS_VERSION', '1.10.1' );
 define( 'GAMESTUFF_BLOCKS_FILE', __FILE__ );
 define( 'GAMESTUFF_BLOCKS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'GAMESTUFF_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
