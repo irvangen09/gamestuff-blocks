@@ -1,25 +1,30 @@
 {
-	"name": "gamestuff-blocks",
-	"version": "1.9.0",
+	"name": "irvannoerfazri/gamestuff-blocks",
 	"description": "A lightweight, WordPress-native collection of Gutenberg blocks for documentation, wiki, and knowledge base websites.",
-	"author": "Irvan Noerfazri",
+	"version": "1.10.0",
 	"license": "GPL-2.0-or-later",
-	"private": true,
-	"engines": {
-		"node": ">=18.12.0",
-		"npm": ">=8.19.2"
+	"type": "wordpress-plugin",
+	"authors": [
+		{
+			"name": "Irvan Noerfazri"
+		}
+	],
+	"require": {
+		"php": ">=8.0"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "^3.4",
+		"phpcompatibility/phpcompatibility-wp": "^3.0@dev"
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	},
 	"scripts": {
-		"build": "wp-scripts build",
-		"start": "wp-scripts start",
-		"format": "wp-scripts format",
-		"lint:js": "wp-scripts lint-js",
-		"lint:css": "wp-scripts lint-style",
-		"packages-update": "wp-scripts packages-update",
-		"plugin-zip": "wp-scripts plugin-zip && node bin/strip-docs-from-zip.js"
-	},
-	"devDependencies": {
-		"@wordpress/scripts": "^33.0.0",
-		"adm-zip": "^0.5.18"
+		"lint:php": "phpcs",
+		"lint:php-fix": "phpcbf"
 	}
 }

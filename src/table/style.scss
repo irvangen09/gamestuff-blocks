@@ -6,8 +6,8 @@
 .gs-table {
 
 	--gs-accent: #fe6f22;
-	--gs-border: color-mix( in srgb, currentColor 18%, transparent );
-	--gs-header-bg: color-mix( in srgb, var(--gs-accent) 12%, transparent );
+	--gs-border: color-mix(in srgb, currentColor 18%, transparent);
+	--gs-header-bg: color-mix(in srgb, var(--gs-accent) 12%, transparent);
 
 	margin: 1.5em 0;
 	overflow-x: auto;
@@ -21,7 +21,7 @@
 		width: 100%;
 		max-width: 320px;
 		padding: 8px 14px;
-		background: color-mix( in srgb, currentColor 3%, transparent );
+		background: color-mix(in srgb, currentColor 3%, transparent);
 		border: 1px solid var(--gs-border);
 		border-radius: 0;
 		color: inherit;
@@ -72,7 +72,7 @@
 	// "td" explicitly to outrank the base ".gs-table__table td" rule
 	// (two classes + a type selector beats two classes alone).
 	td.gs-table__divider-cell {
-		background: color-mix( in srgb, currentColor 6%, transparent );
+		background: color-mix(in srgb, currentColor 6%, transparent);
 		font-weight: 700;
 		text-align: center;
 		white-space: normal;
@@ -94,13 +94,13 @@
 			opacity: 0.4;
 		}
 
-		&[ data-sort-direction="asc" ]::after {
+		&[data-sort-direction="asc"]::after {
 			content: "\2191";
 			color: var(--gs-accent);
 			opacity: 1;
 		}
 
-		&[ data-sort-direction="desc" ]::after {
+		&[data-sort-direction="desc"]::after {
 			content: "\2193";
 			color: var(--gs-accent);
 			opacity: 1;
@@ -118,7 +118,7 @@
 	// are needed here the way the table layout needs them.
 	.gs-table__cards {
 		display: grid;
-		grid-template-columns: repeat( auto-fit, minmax( 240px, 1fr ) );
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 		gap: 12px;
 	}
 
@@ -127,7 +127,7 @@
 		padding: 8px 14px;
 		font-weight: 700;
 		text-align: center;
-		background: color-mix( in srgb, currentColor 6%, transparent );
+		background: color-mix(in srgb, currentColor 6%, transparent);
 		border-top: 1px solid var(--gs-accent);
 		border-bottom: 1px solid var(--gs-accent);
 	}
@@ -161,7 +161,7 @@
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
-		background: color-mix( in srgb, currentColor 8%, transparent );
+		background: color-mix(in srgb, currentColor 8%, transparent);
 	}
 
 	.gs-table__card-title {
@@ -170,7 +170,7 @@
 
 	.gs-table__card-subtitle {
 		font-size: 0.85rem;
-		color: color-mix( in srgb, currentColor 65%, transparent );
+		color: color-mix(in srgb, currentColor 65%, transparent);
 	}
 
 	.gs-table__card-body {
@@ -180,17 +180,14 @@
 		line-height: 1.7;
 	}
 
-	// Preset: styling only, never structural (see spec §8) — except
-	// Style 3, which genuinely needs different markup on mobile (see
-	// the dedicated block below and view.js).
-	&[ data-preset="style-1" ] .gs-table__table th,
-	&[ data-preset="style-1" ] .gs-table__table td {
+	&[data-preset="style-1"] .gs-table__table th,
+	&[data-preset="style-1"] .gs-table__table td {
 		padding: 6px 10px;
 		font-size: 0.85rem;
 	}
 
-	&[ data-preset="style-2" ] .gs-table__table th,
-	&[ data-preset="style-2" ] .gs-table__table td {
+	&[data-preset="style-2"] .gs-table__table th,
+	&[data-preset="style-2"] .gs-table__table td {
 		padding: 12px 18px;
 	}
 
@@ -206,7 +203,7 @@
 
 		// [hidden] (toggled by view.js filter) needs higher specificity
 		// than the plain "tr" rule above to actually stay hidden here.
-		.gs-table__table tr[ hidden ] {
+		.gs-table__table tr[hidden] {
 			display: none;
 		}
 
@@ -215,7 +212,7 @@
 			width: 1px;
 			height: 1px;
 			overflow: hidden;
-			clip: rect( 0 0 0 0 );
+			clip: rect(0 0 0 0);
 			white-space: nowrap;
 		}
 
@@ -238,12 +235,44 @@
 			}
 
 			&::before {
-				content: attr( data-label );
+				content: attr(data-label);
 				display: block;
 				margin-bottom: 4px;
 				font-size: 0.95rem;
 				font-weight: 700;
 				color: inherit;
+			}
+		}
+
+		// Style 1: two-column layout — label on the left with an
+		// accent background, value on the right. The label is
+		// ::before positioned over the td rather than a separate
+		// element, so no markup/JS changes were needed for this.
+		&[data-preset="style-1"] {
+
+			.gs-table__table td {
+				position: relative;
+				padding: 10px 12px 10px calc(40% + 12px);
+				min-height: 40px;
+				background: none;
+				border-bottom: 1px solid var(--gs-border);
+
+				&::before {
+					content: attr(data-label);
+					position: absolute;
+					top: 0;
+					left: 0;
+					bottom: 0;
+					width: 40%;
+					display: flex;
+					align-items: center;
+					margin: 0;
+					padding: 0 12px;
+					background: color-mix(in srgb, var(--gs-accent) 50%, transparent);
+					color: currentColor;
+					font-size: 0.8rem;
+					font-weight: 700;
+				}
 			}
 		}
 
@@ -264,43 +293,11 @@
 			}
 		}
 
-		// Style 1: two-column layout — label on the left with an
-		// accent background, value on the right. The label is
-		// ::before positioned over the td rather than a separate
-		// element, so no markup/JS changes were needed for this.
-		&[ data-preset="style-1" ] {
+		&[data-preset="style-1"] .gs-table__table tr.gs-table__row--divider td {
+			padding-left: 12px;
 
-			.gs-table__table td {
-				position: relative;
-				padding: 10px 12px 10px calc( 40% + 12px );
-				min-height: 40px;
-				background: none;
-				border-bottom: 1px solid var(--gs-border);
-
-				&::before {
-					content: attr( data-label );
-					position: absolute;
-					top: 0;
-					left: 0;
-					bottom: 0;
-					width: 40%;
-					display: flex;
-					align-items: center;
-					margin: 0;
-					padding: 0 12px;
-					background: color-mix( in srgb, var(--gs-accent) 50%, transparent );
-					color: currentColor;
-					font-size: 0.8rem;
-					font-weight: 700;
-				}
-			}
-
-			.gs-table__table tr.gs-table__row--divider td {
-				padding-left: 12px;
-
-				&::before {
-					content: none;
-				}
+			&::before {
+				content: none;
 			}
 		}
 
