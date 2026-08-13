@@ -2,7 +2,7 @@
 // JS; this builds the interactive tab widget with full ARIA at runtime.
 ( function () {
 	function initTabs( tabsEl, tabsIndex ) {
-		var items = Array.prototype.slice.call(
+		const items = Array.prototype.slice.call(
 			tabsEl.querySelectorAll( ':scope > .gs-tabs-item' )
 		);
 
@@ -10,11 +10,11 @@
 			return;
 		}
 
-		var isVertical = tabsEl.dataset.style === 'sidebar';
-		var nextKey = isVertical ? 'ArrowDown' : 'ArrowRight';
-		var prevKey = isVertical ? 'ArrowUp' : 'ArrowLeft';
+		const isVertical = tabsEl.dataset.style === 'sidebar';
+		const nextKey = isVertical ? 'ArrowDown' : 'ArrowRight';
+		const prevKey = isVertical ? 'ArrowUp' : 'ArrowLeft';
 
-		var tablist = document.createElement( 'div' );
+		const tablist = document.createElement( 'div' );
 		tablist.className = 'gs-tabs__nav';
 		tablist.setAttribute( 'role', 'tablist' );
 		tablist.setAttribute(
@@ -26,20 +26,22 @@
 		// this was adapted from leaves them as loose siblings) so the
 		// sidebar variant has a single element to lay out as the
 		// second flex column.
-		var panelsWrap = document.createElement( 'div' );
+		const panelsWrap = document.createElement( 'div' );
 		panelsWrap.className = 'gs-tabs__panels';
 
 		items.forEach( function ( item, itemIndex ) {
-			var label = item.querySelector( ':scope > .gs-tabs-item__label' );
-			var panel = item.querySelector( ':scope > .gs-tabs-item__content' );
+			const label = item.querySelector( ':scope > .gs-tabs-item__label' );
+			const panel = item.querySelector(
+				':scope > .gs-tabs-item__content'
+			);
 
 			if ( ! label || ! panel ) {
 				return;
 			}
 
-			var tabId = 'gs-tabs-' + tabsIndex + '-tab-' + itemIndex;
-			var panelId = 'gs-tabs-' + tabsIndex + '-panel-' + itemIndex;
-			var isActive = 0 === itemIndex;
+			const tabId = 'gs-tabs-' + tabsIndex + '-tab-' + itemIndex;
+			const panelId = 'gs-tabs-' + tabsIndex + '-panel-' + itemIndex;
+			const isActive = 0 === itemIndex;
 
 			label.classList.remove( 'gs-tabs-item__label' );
 			label.classList.add( 'gs-tabs__tab' );
@@ -68,16 +70,16 @@
 		tabsEl.appendChild( panelsWrap );
 		tabsEl.classList.add( 'gs-tabs--enhanced' );
 
-		var tabs = Array.prototype.slice.call(
+		const tabs = Array.prototype.slice.call(
 			tablist.querySelectorAll( '.gs-tabs__tab' )
 		);
 
 		function activate( tab ) {
 			tabs.forEach( function ( candidate ) {
-				var panel = document.getElementById(
+				const panel = document.getElementById(
 					candidate.getAttribute( 'aria-controls' )
 				);
-				var isSelected = candidate === tab;
+				const isSelected = candidate === tab;
 
 				candidate.setAttribute(
 					'aria-selected',
@@ -99,7 +101,7 @@
 			} );
 
 			tab.addEventListener( 'keydown', function ( event ) {
-				var newIndex = null;
+				let newIndex = null;
 
 				if ( nextKey === event.key ) {
 					newIndex = ( index + 1 ) % tabs.length;
@@ -119,7 +121,9 @@
 		} );
 	}
 
-	document.querySelectorAll( '.gs-tabs' ).forEach( function ( tabsEl, index ) {
-		initTabs( tabsEl, index );
-	} );
+	document
+		.querySelectorAll( '.gs-tabs' )
+		.forEach( function ( tabsEl, index ) {
+			initTabs( tabsEl, index );
+		} );
 } )();

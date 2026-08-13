@@ -6,8 +6,8 @@
 @use "../../shared/tokens" as *;
 
 .gs-accordion-item {
-	--gs-accordion-border: color-mix( in srgb, currentColor 15%, transparent );
-	--gs-accordion-chevron: color-mix( in srgb, currentColor 60%, transparent );
+	--gs-accordion-border: color-mix(in srgb, currentColor 15%, transparent);
+	--gs-accordion-chevron: color-mix(in srgb, currentColor 60%, transparent);
 
 	background: transparent;
 	overflow: hidden;
@@ -39,7 +39,7 @@
 
 	margin: 0;
 	border: 0;
-	border-bottom: 1px solid var( --gs-accordion-border );
+	border-bottom: 1px solid var(--gs-accordion-border);
 
 	background: transparent;
 
@@ -148,7 +148,7 @@
 	font-size: 13px;
 	line-height: 1;
 
-	color: var( --gs-accordion-chevron );
+	color: var(--gs-accordion-chevron);
 }
 
 .gs-accordion-item__content {

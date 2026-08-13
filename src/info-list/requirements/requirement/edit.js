@@ -55,10 +55,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							text: newText,
 						} )
 					}
-					placeholder={ __(
-						'Requirement…',
-						'gamestuff-blocks'
-					) }
+					placeholder={ __( 'Requirement…', 'gamestuff-blocks' ) }
 					allowedFormats={ [
 						'core/bold',
 						'core/italic',

@@ -10,10 +10,7 @@ export default function save( { attributes } ) {
 	return (
 		<li { ...blockProps }>
 			{ icon && (
-				<span
-					className={ `dashicons ${ icon }` }
-					aria-hidden="true"
-				/>
+				<span className={ `dashicons ${ icon }` } aria-hidden="true" />
 			) }
 
 			<RichText.Content tagName="span" value={ text } />

@@ -15,10 +15,7 @@ import {
 
 const ALLOWED_BLOCKS = [ 'gamestuff/tabs-item' ];
 
-const TEMPLATE = [
-	[ 'gamestuff/tabs-item' ],
-	[ 'gamestuff/tabs-item' ],
-];
+const TEMPLATE = [ [ 'gamestuff/tabs-item' ], [ 'gamestuff/tabs-item' ] ];
 
 // Editor shows every Tab Item in full sequence, not as a live tab
 // widget — real switching only exists on the frontend (view.js).
@@ -46,7 +43,9 @@ export default function Edit( { attributes, setAttributes } ) {
 						label={ __( 'Tab Style', 'gamestuff-blocks' ) }
 						value={ style }
 						isBlock
-						onChange={ ( value ) => setAttributes( { style: value } ) }
+						onChange={ ( value ) =>
+							setAttributes( { style: value } )
+						}
 					>
 						<ToggleGroupControlOption
 							value="underline"

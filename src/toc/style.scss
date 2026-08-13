@@ -4,13 +4,13 @@
 
 .gs-toc {
 	--gs-accent: #fe6f22; // fallback before the Primary Color setting CSS loads
-	--gs-toc-border: color-mix( in srgb, currentColor 15%, transparent );
+	--gs-toc-border: color-mix(in srgb, currentColor 15%, transparent);
 
 	margin: 1.5em 0;
 
 	color: inherit;
-	background-color: color-mix( in srgb, currentColor 4%, transparent );
-	border: 1px solid var( --gs-toc-border );
+	background-color: color-mix(in srgb, currentColor 4%, transparent);
+	border: 1px solid var(--gs-toc-border);
 	border-radius: 8px;
 }
 
@@ -34,29 +34,29 @@
 	&::after {
 		content: "+";
 		margin-left: auto;
-		color: var( --gs-accent );
+		color: var(--gs-accent);
 		font-family: monospace;
 	}
 
 	&:focus-visible {
-		outline: 2px solid var( --gs-accent );
+		outline: 2px solid var(--gs-accent);
 		outline-offset: 2px;
 	}
 }
 
-.gs-toc[ open ] > .gs-toc__summary::after {
+.gs-toc[open] > .gs-toc__summary::after {
 	content: "\2212";
 }
 
 .gs-toc__icon {
 	display: flex;
 	flex-shrink: 0;
-	color: var( --gs-accent );
+	color: var(--gs-accent);
 }
 
 .gs-toc__nav {
 	padding: 4px 18px 18px;
-	border-top: 1px solid var( --gs-toc-border );
+	border-top: 1px solid var(--gs-toc-border);
 }
 
 .gs-toc__list {
@@ -77,12 +77,12 @@
 		text-decoration: none;
 
 		&:hover {
-			color: var( --gs-accent );
+			color: var(--gs-accent);
 			text-decoration: underline;
 		}
 
 		&:focus-visible {
-			outline: 2px solid var( --gs-accent );
+			outline: 2px solid var(--gs-accent);
 			outline-offset: 2px;
 		}
 	}

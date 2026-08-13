@@ -1,6 +1,6 @@
 .wp-block-gamestuff-tabs {
-	--gs-tabs-text-soft: color-mix( in srgb, currentColor 60%, transparent );
-	--gs-tabs-border: color-mix( in srgb, currentColor 15%, transparent );
+	--gs-tabs-text-soft: color-mix(in srgb, currentColor 60%, transparent);
+	--gs-tabs-border: color-mix(in srgb, currentColor 15%, transparent);
 
 	// Before view.js runs: items shown in sequence, readable without
 	// JS. view.js removes these classes once enhanced.
@@ -18,7 +18,7 @@
 		display: flex;
 		gap: 24px;
 		margin-bottom: 20px;
-		border-bottom: 1px solid var( --gs-tabs-border );
+		border-bottom: 1px solid var(--gs-tabs-border);
 		overflow-x: auto;
 	}
 
@@ -32,20 +32,20 @@
 		margin-bottom: -1px;
 		border-bottom: 2px solid transparent;
 		font-weight: 500;
-		color: var( --gs-tabs-text-soft );
+		color: var(--gs-tabs-text-soft);
 		transition: color 0.15s ease, border-color 0.15s ease;
 		// Removes the ~300ms tap delay some mobile browsers add before
 		// firing click, while it waits to rule out a double-tap zoom.
 		touch-action: manipulation;
 
 		&[aria-selected="true"] {
-			color: var( --gs-accent, currentColor );
+			color: var(--gs-accent, currentColor);
 			font-weight: 700;
-			border-bottom-color: var( --gs-accent, currentColor );
+			border-bottom-color: var(--gs-accent, currentColor);
 		}
 
 		&:focus-visible {
-			outline: 2px solid var( --gs-accent, currentColor );
+			outline: 2px solid var(--gs-accent, currentColor);
 			outline-offset: 2px;
 		}
 	}
@@ -55,6 +55,7 @@
 	}
 
 	@media ( prefers-reduced-motion: reduce ) {
+
 		.gs-tabs__tab {
 			transition: none;
 		}
@@ -71,7 +72,7 @@
 			margin-bottom: 0;
 			padding-right: 16px;
 			border-bottom: none;
-			border-right: 1px solid var( --gs-tabs-border );
+			border-right: 1px solid var(--gs-tabs-border);
 		}
 
 		.gs-tabs__tab {
@@ -83,7 +84,7 @@
 			border-left: 2px solid transparent;
 
 			&[aria-selected="true"] {
-				border-left-color: var( --gs-accent, currentColor );
+				border-left-color: var(--gs-accent, currentColor);
 				border-bottom-color: transparent;
 			}
 		}
@@ -106,7 +107,7 @@
 				margin-bottom: 20px;
 				padding-right: 0;
 				border-right: none;
-				border-bottom: 1px solid var( --gs-tabs-border );
+				border-bottom: 1px solid var(--gs-tabs-border);
 			}
 
 			.gs-tabs__tab {
@@ -118,7 +119,7 @@
 
 				&[aria-selected="true"] {
 					border-left-color: transparent;
-					border-bottom-color: var( --gs-accent, currentColor );
+					border-bottom-color: var(--gs-accent, currentColor);
 				}
 			}
 

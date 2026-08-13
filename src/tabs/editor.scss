@@ -5,7 +5,7 @@
 	.gs-tabs-item {
 		padding: 10px 4px;
 		margin-bottom: 12px;
-		border: 1px dashed color-mix( in srgb, currentColor 25%, transparent );
+		border: 1px dashed color-mix(in srgb, currentColor 25%, transparent);
 		border-radius: 4px;
 	}
 
@@ -14,7 +14,7 @@
 		font-weight: 600;
 
 		&[data-rich-text-placeholder]::before {
-			color: color-mix( in srgb, currentColor 60%, transparent );
+			color: color-mix(in srgb, currentColor 60%, transparent);
 			opacity: 0.75;
 		}
 	}

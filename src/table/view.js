@@ -41,7 +41,10 @@
 		if ( 'number' === type ) {
 			result = parseFloat( aText || '0' ) - parseFloat( bText || '0' );
 		} else {
-			result = aText.localeCompare( bText, undefined, { numeric: true, sensitivity: 'base' } );
+			result = aText.localeCompare( bText, undefined, {
+				numeric: true,
+				sensitivity: 'base',
+			} );
 		}
 
 		return 'desc' === direction ? -result : result;
@@ -49,7 +52,9 @@
 
 	function sortRows( tableEl, key, type, direction ) {
 		const tbody = tableEl.querySelector( 'tbody' );
-		const allRows = Array.prototype.slice.call( tbody.querySelectorAll( 'tr' ) );
+		const allRows = Array.prototype.slice.call(
+			tbody.querySelectorAll( 'tr' )
+		);
 		const groups = groupRowsByDivider( allRows );
 
 		groups.forEach( function ( group ) {
@@ -72,7 +77,9 @@
 	}
 
 	function initSort( tableEl ) {
-		const headers = Array.prototype.slice.call( tableEl.querySelectorAll( 'thead th' ) );
+		const headers = Array.prototype.slice.call(
+			tableEl.querySelectorAll( 'thead th' )
+		);
 
 		headers.forEach( function ( th ) {
 			let direction = null;
@@ -92,9 +99,17 @@
 
 				direction = 'asc' === direction ? 'desc' : 'asc';
 				th.setAttribute( 'data-sort-direction', direction );
-				th.setAttribute( 'aria-sort', 'asc' === direction ? 'ascending' : 'descending' );
+				th.setAttribute(
+					'aria-sort',
+					'asc' === direction ? 'ascending' : 'descending'
+				);
 
-				sortRows( tableEl, th.getAttribute( 'data-key' ), th.getAttribute( 'data-type' ), direction );
+				sortRows(
+					tableEl,
+					th.getAttribute( 'data-key' ),
+					th.getAttribute( 'data-type' ),
+					direction
+				);
 			}
 
 			th.addEventListener( 'click', activateSort );
@@ -115,7 +130,9 @@
 
 	function applyFilter( tableEl, query ) {
 		const tbody = tableEl.querySelector( 'tbody' );
-		const allRows = Array.prototype.slice.call( tbody.querySelectorAll( 'tr' ) );
+		const allRows = Array.prototype.slice.call(
+			tbody.querySelectorAll( 'tr' )
+		);
 		const groups = groupRowsByDivider( allRows );
 
 		groups.forEach( function ( group ) {
@@ -133,7 +150,10 @@
 			if ( group.divider ) {
 				// Hide an empty section heading rather than leaving a
 				// Divider with nothing matching underneath it.
-				group.divider.toggleAttribute( 'hidden', '' !== query && ! groupHasMatch );
+				group.divider.toggleAttribute(
+					'hidden',
+					'' !== query && ! groupHasMatch
+				);
 			}
 		} );
 	}
@@ -165,7 +185,10 @@
 
 		function closeGroup() {
 			if ( currentDivider ) {
-				currentDivider.toggleAttribute( 'hidden', '' !== query && ! groupHasMatch );
+				currentDivider.toggleAttribute(
+					'hidden',
+					'' !== query && ! groupHasMatch
+				);
 			}
 		}
 

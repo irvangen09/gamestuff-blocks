@@ -7,10 +7,10 @@
 .gs-info-list {
 
 	--gs-accent: #fe6f22; // fallback before the Primary Color setting CSS loads
-	--gs-border: color-mix( in srgb, currentColor 14%, transparent );
-	--gs-hairline: color-mix( in srgb, currentColor 8%, transparent );
+	--gs-border: color-mix(in srgb, currentColor 14%, transparent);
+	--gs-hairline: color-mix(in srgb, currentColor 8%, transparent);
 	// 82%, not a heavier mute — lower read as barely visible in testing
-	--gs-value-color: color-mix( in srgb, currentColor 82%, transparent );
+	--gs-value-color: color-mix(in srgb, currentColor 82%, transparent);
 
 	color: inherit;
 	margin: 16px 0;

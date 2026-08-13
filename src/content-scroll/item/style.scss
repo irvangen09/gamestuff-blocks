@@ -47,13 +47,13 @@
 }
 
 .gs-cs-thumb {
-	--gs-cs-thumb-overlay: color-mix( in srgb, currentColor 4%, transparent );
+	--gs-cs-thumb-overlay: color-mix(in srgb, currentColor 4%, transparent);
 
 	display: block;
 
 	overflow: hidden;
 
-	background: var( --gs-cs-thumb-overlay );
+	background: var(--gs-cs-thumb-overlay);
 	border-radius: var(--gs-cs-radius, 8px);
 }
 
