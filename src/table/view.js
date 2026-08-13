@@ -1,11 +1,9 @@
-// Sort and search for Table on the frontend. Without this file the
-// table still renders fully and stays readable — just without these
-// interactions. Card layout (Style 2) only needs search, not sort
-// (no clickable header). This file only ever runs on the frontend
-// (viewScript).
+// Sort and search for Table on the frontend — without this file the
+// table still renders fully and stays readable, just without these
+// interactions.
 ( function () {
 	function getCellText( row, key ) {
-		var cell = row.querySelector( '[data-key="' + key + '"]' );
+		const cell = row.querySelector( '[data-key="' + key + '"]' );
 		return cell ? cell.textContent.trim() : '';
 	}
 
@@ -17,8 +15,8 @@
 	// stays scoped within a group instead of scrambling the sections
 	// a Divider was meant to keep apart.
 	function groupRowsByDivider( rows ) {
-		var groups = [];
-		var currentGroup = [];
+		const groups = [];
+		let currentGroup = [];
 
 		rows.forEach( function ( row ) {
 			if ( isDividerRow( row ) ) {
@@ -36,9 +34,9 @@
 	}
 
 	function compareRows( a, b, key, type, direction ) {
-		var aText = getCellText( a, key );
-		var bText = getCellText( b, key );
-		var result;
+		const aText = getCellText( a, key );
+		const bText = getCellText( b, key );
+		let result;
 
 		if ( 'number' === type ) {
 			result = parseFloat( aText || '0' ) - parseFloat( bText || '0' );
@@ -50,9 +48,9 @@
 	}
 
 	function sortRows( tableEl, key, type, direction ) {
-		var tbody = tableEl.querySelector( 'tbody' );
-		var allRows = Array.prototype.slice.call( tbody.querySelectorAll( 'tr' ) );
-		var groups = groupRowsByDivider( allRows );
+		const tbody = tableEl.querySelector( 'tbody' );
+		const allRows = Array.prototype.slice.call( tbody.querySelectorAll( 'tr' ) );
+		const groups = groupRowsByDivider( allRows );
 
 		groups.forEach( function ( group ) {
 			group.rows.sort( function ( a, b ) {
@@ -74,24 +72,27 @@
 	}
 
 	function initSort( tableEl ) {
-		var headers = Array.prototype.slice.call( tableEl.querySelectorAll( 'thead th' ) );
+		const headers = Array.prototype.slice.call( tableEl.querySelectorAll( 'thead th' ) );
 
 		headers.forEach( function ( th ) {
-			var direction = null;
+			let direction = null;
 
 			th.classList.add( 'gs-table__sortable' );
 			th.setAttribute( 'role', 'button' );
 			th.setAttribute( 'tabindex', '0' );
+			th.setAttribute( 'aria-sort', 'none' );
 
 			function activateSort() {
 				headers.forEach( function ( other ) {
 					if ( other !== th ) {
 						other.removeAttribute( 'data-sort-direction' );
+						other.setAttribute( 'aria-sort', 'none' );
 					}
 				} );
 
 				direction = 'asc' === direction ? 'desc' : 'asc';
 				th.setAttribute( 'data-sort-direction', direction );
+				th.setAttribute( 'aria-sort', 'asc' === direction ? 'ascending' : 'descending' );
 
 				sortRows( tableEl, th.getAttribute( 'data-key' ), th.getAttribute( 'data-type' ), direction );
 			}
@@ -108,20 +109,20 @@
 	}
 
 	function rowMatchesQuery( row, query ) {
-		var text = row.textContent.toLowerCase();
+		const text = row.textContent.toLowerCase();
 		return '' === query || -1 !== text.indexOf( query );
 	}
 
 	function applyFilter( tableEl, query ) {
-		var tbody = tableEl.querySelector( 'tbody' );
-		var allRows = Array.prototype.slice.call( tbody.querySelectorAll( 'tr' ) );
-		var groups = groupRowsByDivider( allRows );
+		const tbody = tableEl.querySelector( 'tbody' );
+		const allRows = Array.prototype.slice.call( tbody.querySelectorAll( 'tr' ) );
+		const groups = groupRowsByDivider( allRows );
 
 		groups.forEach( function ( group ) {
-			var groupHasMatch = false;
+			let groupHasMatch = false;
 
 			group.rows.forEach( function ( row ) {
-				var matches = rowMatchesQuery( row, query );
+				const matches = rowMatchesQuery( row, query );
 				row.toggleAttribute( 'hidden', ! matches );
 
 				if ( matches ) {
@@ -138,10 +139,10 @@
 	}
 
 	function initFilter( wrapperEl, tableEl ) {
-		var searchWrap = document.createElement( 'div' );
+		const searchWrap = document.createElement( 'div' );
 		searchWrap.className = 'gs-table__filter';
 
-		var input = document.createElement( 'input' );
+		const input = document.createElement( 'input' );
 		input.type = 'search';
 		input.className = 'gs-table__filter-input';
 		input.setAttribute( 'placeholder', 'Search this table…' );
@@ -158,9 +159,9 @@
 	// Card layout (Style 2) has no clickable header, so only search
 	// applies here — sort is skipped entirely for this preset.
 	function applyCardFilter( cardsEl, query ) {
-		var items = Array.prototype.slice.call( cardsEl.children );
-		var currentDivider = null;
-		var groupHasMatch = false;
+		const items = Array.prototype.slice.call( cardsEl.children );
+		let currentDivider = null;
+		let groupHasMatch = false;
 
 		function closeGroup() {
 			if ( currentDivider ) {
@@ -176,7 +177,7 @@
 				return;
 			}
 
-			var matches = rowMatchesQuery( item, query );
+			const matches = rowMatchesQuery( item, query );
 			item.toggleAttribute( 'hidden', ! matches );
 
 			if ( matches ) {
@@ -188,10 +189,10 @@
 	}
 
 	function initCardFilter( wrapperEl, cardsEl ) {
-		var searchWrap = document.createElement( 'div' );
+		const searchWrap = document.createElement( 'div' );
 		searchWrap.className = 'gs-table__filter';
 
-		var input = document.createElement( 'input' );
+		const input = document.createElement( 'input' );
 		input.type = 'search';
 		input.className = 'gs-table__filter-input';
 		input.setAttribute( 'placeholder', 'Search this table…' );
@@ -206,7 +207,7 @@
 	}
 
 	document.querySelectorAll( '.gs-table' ).forEach( function ( wrapperEl ) {
-		var tableEl = wrapperEl.querySelector( '.gs-table__table' );
+		const tableEl = wrapperEl.querySelector( '.gs-table__table' );
 
 		if ( tableEl ) {
 			if ( 'true' === wrapperEl.getAttribute( 'data-sort' ) ) {
@@ -220,7 +221,7 @@
 			return;
 		}
 
-		var cardsEl = wrapperEl.querySelector( '.gs-table__cards' );
+		const cardsEl = wrapperEl.querySelector( '.gs-table__cards' );
 
 		if ( cardsEl && 'true' === wrapperEl.getAttribute( 'data-filter' ) ) {
 			initCardFilter( wrapperEl, cardsEl );
