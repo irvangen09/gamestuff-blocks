@@ -246,11 +246,14 @@ final class HeadingCollector {
 		);
 
 		foreach ( $headings as $heading ) {
-			while ( count( $stack ) > 1 && $stack[ count( $stack ) - 1 ]['level'] >= $heading['level'] ) {
+			$stack_size = count( $stack );
+
+			while ( $stack_size > 1 && $stack[ $stack_size - 1 ]['level'] >= $heading['level'] ) {
 				array_pop( $stack );
+				--$stack_size;
 			}
 
-			$top_index = count( $stack ) - 1;
+			$top_index = $stack_size - 1;
 
 			$stack[ $top_index ]['children'][] = array(
 				'text'     => $heading['text'],

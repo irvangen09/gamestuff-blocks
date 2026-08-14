@@ -41,10 +41,10 @@ if ( ! is_multisite() ) {
  * sites, each with its own copy of these options, so every site
  * needs to be visited individually.
  */
-$site_ids = get_sites( array( 'fields' => 'ids' ) );
+$gamestuff_blocks_site_ids = get_sites( array( 'fields' => 'ids' ) );
 
-foreach ( $site_ids as $site_id ) {
-	switch_to_blog( (int) $site_id );
+foreach ( $gamestuff_blocks_site_ids as $gamestuff_blocks_site_id ) {
+	switch_to_blog( (int) $gamestuff_blocks_site_id );
 	gamestuff_blocks_uninstall_delete_data();
 	restore_current_blog();
 }

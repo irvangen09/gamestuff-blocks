@@ -189,6 +189,7 @@ final class BlockRegistry {
 				continue;
 			}
 
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- reading a local block.json from disk, not a remote URL.
 			$metadata = json_decode( (string) file_get_contents( $file->getPathname() ), true );
 
 			if ( ! is_array( $metadata ) || empty( $metadata['name'] ) ) {

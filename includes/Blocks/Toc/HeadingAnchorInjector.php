@@ -131,9 +131,12 @@ final class HeadingAnchorInjector {
 	 *
 	 *
 	 * @param string $block_content Rendered Accordion Item markup.
-	 * @param array  $block         Block data (attrs, etc).
+	 * @param array  $block         Block data (attrs, etc). Unused, but
+	 *                              required by the render_block filter
+	 *                              signature.
 	 * @return string
 	 */
+	// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- $block is required by the render_block filter signature.
 	public static function inject_accordion_item_anchor( string $block_content, array $block ): string {
 
 		$used_slugs = &self::used_slugs();

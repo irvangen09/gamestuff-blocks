@@ -41,6 +41,17 @@
 				<element value="GAMESTUFF_BLOCKS"/>
 			</property>
 		</properties>
+		<!--
+		Dynamic block render.php templates are included by WordPress
+		from within an internal render method, not true global scope
+		— top-level variables here are safe, but static analysis
+		can't tell the difference.
+		-->
+		<exclude-pattern>*/render.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.WP.GlobalVariablesOverride.Prohibited">
+		<exclude-pattern>*/render.php</exclude-pattern>
 	</rule>
 
 	<config name="minimum_supported_wp_version" value="6.9"/>

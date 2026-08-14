@@ -40,19 +40,19 @@ define( 'GAMESTUFF_BLOCKS_BASENAME', plugin_basename( __FILE__ ) );
  * runtime dependency on a build step for class loading.
  *
  *
- * @param string $class Fully qualified class name being requested.
+ * @param string $class_name Fully qualified class name being requested.
  * @return void
  */
 spl_autoload_register(
-	static function ( string $class ): void {
+	static function ( string $class_name ): void {
 
 		$prefix = __NAMESPACE__ . '\\';
 
-		if ( ! str_starts_with( $class, $prefix ) ) {
+		if ( ! str_starts_with( $class_name, $prefix ) ) {
 			return;
 		}
 
-		$relative_class = substr( $class, strlen( $prefix ) );
+		$relative_class = substr( $class_name, strlen( $prefix ) );
 		$relative_path  = str_replace( '\\', DIRECTORY_SEPARATOR, $relative_class );
 
 		$file = GAMESTUFF_BLOCKS_PATH . 'includes' . DIRECTORY_SEPARATOR . $relative_path . '.php';
