@@ -1,4 +1,14 @@
-import { useBlockProps } from '@wordpress/block-editor';
+import { RichText, useBlockProps } from '@wordpress/block-editor';
+
+// Text cells may contain inline formatting (bold/italic/link) saved
+// by RichText; other cell types are always plain values.
+function renderCellValue( col, value ) {
+	if ( 'text' === col.type ) {
+		return <RichText.Content value={ value ?? '' } />;
+	}
+
+	return value ?? '';
+}
 
 function renderTable( { columns, rows } ) {
 	return (
@@ -69,7 +79,10 @@ function renderTable( { columns, rows } ) {
 										data-label={ col.label }
 										data-key={ col.key }
 									>
-										{ row[ col.key ] ?? '' }
+										{ renderCellValue(
+											col,
+											row[ col.key ]
+										) }
 									</td>
 								);
 							} ) }
@@ -81,74 +94,96 @@ function renderTable( { columns, rows } ) {
 	);
 }
 
-// Style 2 ("catalog card"): same columns/rows data, rendered as a
-// card grid instead of a table. Column role is positional, not
-// user-labeled: column 1 = image, column 2 = title, column 3 =
-// subtitle, column 4+ = "label: value" detail lines.
+// Column role is positional: 1 = image, 2 = title, 3 = subtitle,
+// 4+ = detail.
 function renderCards( { columns, rows } ) {
 	const [ imageCol, titleCol, subtitleCol, ...detailCols ] = columns;
 
+	// colSpan can't be columns.length — the heading cell merges two
+	// columns, so cellCount is the real <td> count per row.
+	const cellCount = ( imageCol ? 1 : 0 ) + 1 + detailCols.length;
+
 	return (
-		<div className="gs-table__cards">
-			{ rows.map( ( row, index ) => {
-				if ( row.isDivider ) {
+		<table
+			className="gs-table__cards"
+			data-has-image={ imageCol ? 'true' : 'false' }
+		>
+			<tbody>
+				{ rows.map( ( row, index ) => {
+					if ( row.isDivider ) {
+						return (
+							<tr
+								key={ index }
+								className="gs-table__row--divider"
+							>
+								<td
+									colSpan={ cellCount }
+									className="gs-table__cards-divider-cell"
+								>
+									{ row.dividerLabel ?? '' }
+								</td>
+							</tr>
+						);
+					}
+
+					const image = imageCol ? row[ imageCol.key ] : null;
+
 					return (
-						<div key={ index } className="gs-table__cards-divider">
-							{ row.dividerLabel ?? '' }
-						</div>
-					);
-				}
-
-				const image = imageCol ? row[ imageCol.key ] : null;
-
-				return (
-					<div key={ index } className="gs-table__card">
-						<div className="gs-table__card-head">
-							{ image?.url ? (
-								<img
-									src={ image.url }
-									alt={ image.alt || '' }
-									className="gs-table__card-image"
-								/>
-							) : (
-								<div
-									className="gs-table__card-image-placeholder"
-									aria-hidden="true"
-								/>
+						<tr key={ index } className="gs-table__card">
+							{ imageCol && (
+								<td
+									className="gs-table__card-cell-image"
+									data-key={ imageCol.key }
+								>
+									{ image?.url ? (
+										<img
+											src={ image.url }
+											alt={ image.alt || '' }
+											className="gs-table__card-image"
+										/>
+									) : (
+										<div
+											className="gs-table__card-image-placeholder"
+											aria-hidden="true"
+										/>
+									) }
+								</td>
 							) }
 
-							<div className="gs-table__card-heading">
+							<td className="gs-table__card-cell-heading">
 								<div className="gs-table__card-title">
 									{ titleCol
-										? row[ titleCol.key ] ?? ''
+										? renderCellValue(
+												titleCol,
+												row[ titleCol.key ]
+										  )
 										: '' }
 								</div>
 								{ subtitleCol && (
 									<div className="gs-table__card-subtitle">
-										{ row[ subtitleCol.key ] ?? '' }
+										{ renderCellValue(
+											subtitleCol,
+											row[ subtitleCol.key ]
+										) }
 									</div>
 								) }
-							</div>
-						</div>
+							</td>
 
-						{ detailCols.length > 0 && (
-							<div className="gs-table__card-body">
-								{ detailCols.map( ( col ) => (
-									<div
-										key={ col.key }
-										className="gs-table__card-detail"
-										data-key={ col.key }
-									>
-										<strong>{ col.label }:</strong>{ ' ' }
-										{ row[ col.key ] ?? '' }
-									</div>
-								) ) }
-							</div>
-						) }
-					</div>
-				);
-			} ) }
-		</div>
+							{ detailCols.map( ( col ) => (
+								<td
+									key={ col.key }
+									className="gs-table__card-cell-detail"
+									data-key={ col.key }
+								>
+									<strong>{ col.label }:</strong>{ ' ' }
+									{ renderCellValue( col, row[ col.key ] ) }
+								</td>
+							) ) }
+						</tr>
+					);
+				} ) }
+			</tbody>
+		</table>
 	);
 }
 

@@ -120,9 +120,8 @@ function renderTableV1( { columns, rows } ) {
 	);
 }
 
-// Style 2 as it existed before the semantic HTML refactor: a plain
-// div grid, not a <table>. Column role was positional (1 = image,
-// 2 = title, 3 = subtitle, 4+ = detail), same as the current version.
+// Column role is positional: 1 = image, 2 = title, 3 = subtitle,
+// 4+ = detail.
 function renderCardsV1( { columns, rows } ) {
 	const [ imageCol, titleCol, subtitleCol, ...detailCols ] = columns;
 
@@ -215,11 +214,8 @@ function saveV1( { attributes } ) {
 	);
 }
 
-// v1: text cells were plain strings (no bold/italic/link formatting),
-// and Style 2 ("Catalog Card") rendered as a div grid instead of a
-// semantic <table>. Attributes are unchanged — only markup differs —
-// so no migrate() is needed; existing saved content keeps validating
-// against this exact markup.
+// Attributes are unchanged from the current schema — only markup
+// differs — so no migrate() is needed.
 const v1 = {
 	attributes: ATTRIBUTES_V1,
 	supports: SUPPORTS_V1,
