@@ -5,13 +5,13 @@ import {
 	InspectorControls,
 	MediaUpload,
 	MediaUploadCheck,
+	RichText,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	SelectControl,
 	ToggleControl,
 	TextControl,
-	TextareaControl,
 	Button,
 } from '@wordpress/components';
 import TableToolbar from './table-toolbar';
@@ -29,6 +29,8 @@ const PRESET_OPTIONS = [
 ];
 
 const DEFAULT_IMAGE_WIDTH = 48;
+
+const TEXT_CELL_FORMATS = [ 'core/bold', 'core/italic', 'core/link' ];
 
 function generateColumnKey() {
 	return 'col_' + Math.random().toString( 36 ).slice( 2, 8 );
@@ -251,13 +253,15 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { preset: value } )
 						}
 					/>
-					<ToggleControl
-						label={ __( 'Sortable', 'gamestuff-blocks' ) }
-						checked={ enableSort }
-						onChange={ ( value ) =>
-							setAttributes( { enableSort: value } )
-						}
-					/>
+					{ 'style-2' !== preset && (
+						<ToggleControl
+							label={ __( 'Sortable', 'gamestuff-blocks' ) }
+							checked={ enableSort }
+							onChange={ ( value ) =>
+								setAttributes( { enableSort: value } )
+							}
+						/>
+					) }
 					<ToggleControl
 						label={ __( 'Searchable', 'gamestuff-blocks' ) }
 						checked={ enableFilter }
@@ -593,12 +597,13 @@ export default function Edit( { attributes, setAttributes } ) {
 												) }
 
 												{ 'text' === col.type && (
-													<TextareaControl
-														label={ __(
+													<RichText
+														tagName="div"
+														className="gs-table-editor__cell-text"
+														aria-label={ __(
 															'Cell value',
 															'gamestuff-blocks'
 														) }
-														hideLabelFromVision
 														value={
 															row[ col.key ] ?? ''
 														}
@@ -615,7 +620,13 @@ export default function Edit( { attributes, setAttributes } ) {
 																colIndex,
 															} )
 														}
-														rows={ 2 }
+														allowedFormats={
+															TEXT_CELL_FORMATS
+														}
+														placeholder={ __(
+															'Cell value',
+															'gamestuff-blocks'
+														) }
 													/>
 												) }
 											</td>
