@@ -34,6 +34,13 @@
 	}
 }
 
+// white-space:pre-line keeps old plain-text line breaks visible;
+// new breaks insert as <br> and render correctly either way.
+.gs-table-editor__cell-text {
+	min-height: 2.6em;
+	white-space: pre-line;
+}
+
 .gs-table-editor__image-cell {
 	display: flex;
 	flex-direction: column;
