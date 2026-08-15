@@ -176,10 +176,10 @@
 		} );
 	}
 
-	// Card layout (Style 2) has no clickable header, so only search
-	// applies here — sort is skipped entirely for this preset.
+	// Search-only for Style 2 (no clickable header). cardsEl is a
+	// <table> (see save.js); .rows reads all <tr> rows directly.
 	function applyCardFilter( cardsEl, query ) {
-		const items = Array.prototype.slice.call( cardsEl.children );
+		const items = Array.prototype.slice.call( cardsEl.rows );
 		let currentDivider = null;
 		let groupHasMatch = false;
 
@@ -193,7 +193,7 @@
 		}
 
 		items.forEach( function ( item ) {
-			if ( item.classList.contains( 'gs-table__cards-divider' ) ) {
+			if ( item.classList.contains( 'gs-table__row--divider' ) ) {
 				closeGroup();
 				currentDivider = item;
 				groupHasMatch = false;
