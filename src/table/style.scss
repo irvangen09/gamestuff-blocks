@@ -124,6 +124,15 @@
 			display: contents;
 		}
 
+		// Real <td> elements can inherit the host theme's own table
+		// defaults (border/padding/background) — reset so only the
+		// styling below applies.
+		td {
+			padding: 0;
+			border: none;
+			background: none;
+		}
+
 		// [hidden] (toggled by view.js filter) needs higher specificity
 		// than the grid "display" rules below to actually stay hidden.
 		tr[hidden] {
