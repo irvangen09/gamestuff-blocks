@@ -41,9 +41,10 @@
 
 		th,
 		td {
-			padding: 10px 14px;
+			padding: 7px 12px;
 			text-align: left;
 			vertical-align: middle;
+			line-height: 1.45;
 			border: 1px solid var(--gs-border);
 		}
 
@@ -112,83 +113,116 @@
 		}
 	}
 
-	// Style 2 ("catalog card") — a different render engine entirely
-	// (see save.js), not a CSS-only variant like the others. Grid
-	// reflows on its own at any width, so no separate mobile rules
-	// are needed here the way the table layout needs them.
+	// Card grid via CSS only — markup is a real <table> (see save.js).
 	.gs-table__cards {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 		gap: 12px;
-	}
+		width: 100%;
 
-	.gs-table__cards-divider {
-		grid-column: 1 / -1;
-		padding: 8px 14px;
-		font-weight: 700;
-		text-align: center;
-		background: color-mix(in srgb, currentColor 6%, transparent);
-		border-top: 1px solid var(--gs-accent);
-		border-bottom: 1px solid var(--gs-accent);
-	}
+		tbody {
+			display: contents;
+		}
 
-	.gs-table__card {
-		border: 1px solid var(--gs-border);
-		border-radius: 12px;
-		padding: 14px;
-	}
+		// [hidden] (toggled by view.js filter) needs higher specificity
+		// than the grid "display" rules below to actually stay hidden.
+		tr[hidden] {
+			display: none;
+		}
 
-	.gs-table__card-head {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		margin-bottom: 10px;
-	}
+		tr.gs-table__row--divider {
+			grid-column: 1 / -1;
+		}
 
-	// Deliberately not cropped/circular — item art (seeds, fish,
-	// tools, etc.) is usually already isolated on a transparent
-	// background and varies in shape, so forcing a circle would
-	// clip it. Only the empty-state placeholder is circular.
-	.gs-table__card-image {
-		display: block;
-		width: 40px;
-		height: 40px;
-		object-fit: contain;
-	}
+		td.gs-table__cards-divider-cell {
+			display: block;
+			padding: 8px 14px;
+			font-weight: 700;
+			text-align: center;
+			background: color-mix(in srgb, currentColor 6%, transparent);
+			border-top: 1px solid var(--gs-accent);
+			border-bottom: 1px solid var(--gs-accent);
+		}
 
-	.gs-table__card-image-placeholder {
-		flex-shrink: 0;
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		background: color-mix(in srgb, currentColor 8%, transparent);
-	}
+		tr.gs-table__card {
+			display: grid;
+			grid-template-columns: auto 1fr;
+			align-items: center;
+			column-gap: 10px;
+			border: 1px solid var(--gs-border);
+			border-radius: 12px;
+			padding: 14px;
+		}
 
-	.gs-table__card-title {
-		font-weight: 700;
-	}
+		// No image column: heading spans the full card width.
+		&[data-has-image="false"] tr.gs-table__card {
+			grid-template-columns: 1fr;
+		}
 
-	.gs-table__card-subtitle {
-		font-size: 0.85rem;
-		color: color-mix(in srgb, currentColor 65%, transparent);
-	}
+		td.gs-table__card-cell-image {
+			display: block;
+			grid-column: 1;
+			grid-row: 1;
+		}
 
-	.gs-table__card-body {
-		border-top: 1px solid var(--gs-border);
-		padding-top: 8px;
-		font-size: 0.88rem;
-		line-height: 1.7;
+		td.gs-table__card-cell-heading {
+			display: block;
+			grid-column: 2;
+			grid-row: 1;
+		}
+
+		&[data-has-image="false"] td.gs-table__card-cell-heading {
+			grid-column: 1;
+		}
+
+		// Deliberately not cropped/circular — item art (seeds, fish,
+		// tools, etc.) is usually already isolated on a transparent
+		// background and varies in shape, so forcing a circle would
+		// clip it. Only the empty-state placeholder is circular.
+		.gs-table__card-image {
+			display: block;
+			width: 40px;
+			height: 40px;
+			object-fit: contain;
+		}
+
+		.gs-table__card-image-placeholder {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background: color-mix(in srgb, currentColor 8%, transparent);
+		}
+
+		.gs-table__card-title {
+			font-weight: 700;
+		}
+
+		.gs-table__card-subtitle {
+			font-size: 0.85rem;
+			color: color-mix(in srgb, currentColor 65%, transparent);
+		}
+
+		// "+" selector below removes this border from every detail
+		// cell after the first, merging them into one visual block.
+		td.gs-table__card-cell-detail {
+			display: block;
+			grid-column: 1 / -1;
+			padding-top: 8px;
+			border-top: 1px solid var(--gs-border);
+			font-size: 0.88rem;
+			line-height: 1.6;
+		}
+
+		td.gs-table__card-cell-detail + td.gs-table__card-cell-detail {
+			padding-top: 0;
+			border-top: none;
+		}
 	}
 
 	&[data-preset="style-1"] .gs-table__table th,
 	&[data-preset="style-1"] .gs-table__table td {
 		padding: 6px 10px;
 		font-size: 0.85rem;
-	}
-
-	&[data-preset="style-2"] .gs-table__table th,
-	&[data-preset="style-2"] .gs-table__table td {
-		padding: 12px 18px;
 	}
 
 	// --- Mobile: stacked cards, pure CSS — no JS restructuring ---
@@ -252,8 +286,8 @@
 
 			.gs-table__table td {
 				position: relative;
-				padding: 10px 12px 10px calc(40% + 12px);
-				min-height: 40px;
+				padding: 8px 12px 8px calc(40% + 12px);
+				min-height: 36px;
 				background: none;
 				border-bottom: 1px solid var(--gs-border);
 
