@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Single entry point for everything the Accordion block family
  * (Accordion + Accordion Item) needs beyond plain block.json
  * registration: the progressive-enhancement flag its mobile collapse
- * behavior depends on, and Dashicons for its optional icon field.
+ * behavior depends on.
  *
  * Dark mode needs no rules registered here — accordion/item/style.scss
  * handles it via `currentColor`/`color-mix()`, not a per-block service.
@@ -37,7 +37,6 @@ final class Accordion {
 	public static function boot(): void {
 
 		add_action( 'wp_head', array( self::class, 'print_progressive_enhancement_flag' ), 1 );
-		add_action( 'wp_enqueue_scripts', array( self::class, 'enqueue_dashicons' ) );
 	}
 
 	/**
@@ -63,25 +62,5 @@ final class Accordion {
 		}
 
 		wp_print_inline_script_tag( 'document.documentElement.classList.add("js");' );
-	}
-
-	/**
-	 * Load Dashicons on the front end, only on pages that need it.
-	 *
-	 * Dashicons is a WordPress core stylesheet not loaded on the
-	 * front end by default. Accordion Item's optional icon field can
-	 * render a dashicon class in its saved markup, so it's enqueued
-	 * only when the page actually contains an Accordion.
-	 *
-	 *
-	 * @return void
-	 */
-	public static function enqueue_dashicons(): void {
-
-		if ( ! BlockRegistry::page_has_block( 'gamestuff/accordion' ) ) {
-			return;
-		}
-
-		wp_enqueue_style( 'dashicons' );
 	}
 }
