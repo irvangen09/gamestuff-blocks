@@ -51,7 +51,6 @@
 	--gs-accent: #fe6f22;
 	--gs-accent-soft: color-mix(in srgb, var(--gs-accent) 10%, transparent);
 	--gs-accent-softer: color-mix(in srgb, var(--gs-accent) 6%, transparent);
-	--gs-card-bg: color-mix(in srgb, currentColor 4%, transparent);
 	--gs-card-border: color-mix(in srgb, var(--gs-accent) 18%, transparent);
 	--gs-row-border: color-mix(in srgb, currentColor 8%, transparent);
 	--gs-text-muted: color-mix(in srgb, currentColor 65%, transparent);
@@ -80,7 +79,6 @@
 
 	padding: 20px;
 
-	background: var(--gs-card-bg);
 	border: 1px solid var(--gs-card-border);
 	border-radius: 16px;
 	box-shadow: var(--gs-shadow);
@@ -426,7 +424,6 @@
 body.gs-color-scheme-light .gs-character {
 	--gs-accent-soft: rgba(254, 111, 34, 0.08);
 	--gs-accent-softer: rgba(254, 111, 34, 0.05);
-	--gs-card-bg: #fff;
 	--gs-card-border: rgba(254, 111, 34, 0.16);
 	--gs-row-border: rgba(20, 20, 23, 0.08);
 	--gs-text-muted: #595e63;
@@ -437,7 +434,6 @@ body.gs-color-scheme-light .gs-character {
 body.gs-color-scheme-dark .gs-character {
 	--gs-accent-soft: rgba(254, 111, 34, 0.14);
 	--gs-accent-softer: rgba(254, 111, 34, 0.08);
-	--gs-card-bg: #1c1c1d;
 	--gs-card-border: rgba(254, 111, 34, 0.22);
 	--gs-row-border: rgba(255, 255, 255, 0.08);
 	--gs-text-muted: #b7b9bc;
