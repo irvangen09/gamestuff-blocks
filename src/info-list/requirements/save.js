@@ -1,7 +1,8 @@
-import { __ } from '@wordpress/i18n';
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 
-export default function save() {
+export default function save( { attributes } ) {
+	const { title } = attributes;
+
 	const blockProps = useBlockProps.save( {
 		className: 'gs-info-list-requirements',
 	} );
@@ -14,7 +15,7 @@ export default function save() {
 					aria-hidden="true"
 				/>
 
-				{ __( 'Requirements', 'gamestuff-blocks' ) }
+				<RichText.Content value={ title } />
 			</div>
 
 			<ul className="gs-info-list-requirements-list">
