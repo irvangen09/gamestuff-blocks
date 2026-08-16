@@ -1,11 +1,13 @@
 import { __ } from '@wordpress/i18n';
-import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
+import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 
 const ALLOWED_BLOCKS = [ 'gamestuff/info-list-requirement' ];
 
 const TEMPLATE = [ [ 'gamestuff/info-list-requirement' ] ];
 
-export default function Edit() {
+export default function Edit( { attributes, setAttributes } ) {
+	const { title } = attributes;
+
 	const blockProps = useBlockProps( {
 		className: 'gs-info-list-requirements',
 	} );
@@ -18,7 +20,15 @@ export default function Edit() {
 					aria-hidden="true"
 				/>
 
-				{ __( 'Requirements', 'gamestuff-blocks' ) }
+				<RichText
+					tagName="span"
+					value={ title }
+					onChange={ ( newTitle ) =>
+						setAttributes( { title: newTitle } )
+					}
+					placeholder={ __( 'Requirements', 'gamestuff-blocks' ) }
+					allowedFormats={ [] }
+				/>
 			</div>
 
 			<ul className="gs-info-list-requirements-list">
