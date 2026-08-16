@@ -63,32 +63,6 @@
 	outline-offset: -2px;
 }
 
-.gs-accordion-item__icon {
-	flex: 0 0 16px;
-
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	width: 16px;
-	height: 16px;
-
-	margin-top: 1px;
-
-	font-size: 18px;
-	line-height: 1;
-
-	color: #ff5a1f;
-}
-
-// When the Icon field is left empty, the icon box has no
-// dashicons-xxx modifier to paint a glyph, so it collapses itself and
-// the title shifts flush left automatically, with no placeholder box
-// and no JS/JSX change required.
-.gs-accordion-item__icon:not([class*="dashicons-"]) {
-	display: none;
-}
-
 .gs-accordion-item__title {
 	flex: 1;
 
