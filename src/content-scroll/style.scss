@@ -14,7 +14,6 @@
    .gs-content-scroll
      ul.gs-cs-track        (grid on desktop / scroll on mobile)
        li.gs-cs-item       (×N — styled in content-scroll-item)
-     .gs-cs-arrow          (mobile-only "more content" hint)
 
    Item-level styles (.gs-cs-item, .gs-cs-thumb, .gs-cs-title)
    live in content-scroll/item/style.scss, since that block is
@@ -32,8 +31,6 @@
 	--gs-cs-cols: 3;
 	--gs-cs-gap: 24px;
 	--gs-cs-radius: 8px;
-
-	position: relative;
 
 	margin: 16px 0;
 
@@ -62,35 +59,6 @@
 	display: none;
 }
 
-.gs-cs-arrow {
-	display: none;
-
-	position: absolute;
-	top: 50%;
-	right: 6px;
-
-	width: 28px;
-	height: 28px;
-
-	transform: translateY(-50%);
-
-	border-radius: 50%;
-
-	background: #b86c3a;
-	color: #fff;
-
-	font-size: 16px;
-	line-height: 28px;
-	text-align: center;
-
-	opacity: 1;
-	transition: opacity 0.2s ease;
-}
-
-.gs-cs-arrow.is-hidden {
-	opacity: 0;
-}
-
 /* ------------------------------
    Mobile — horizontal scroll
 ------------------------------ */
@@ -105,8 +73,8 @@
 		-webkit-overflow-scrolling: touch;
 		scroll-snap-type: x proximity;
 
-		/* Room for the last card's peek + the arrow hint
-		   (scaled down to match the smaller mobile card width). */
+		/* Room for the last card's peek, scaled down to match the
+		   smaller mobile card width. */
 		padding-right: 6%;
 
 		/* Hide scrollbar (Firefox + legacy Edge). */
@@ -119,7 +87,4 @@
 		display: none;
 	}
 
-	.gs-cs-arrow {
-		display: block;
-	}
 }

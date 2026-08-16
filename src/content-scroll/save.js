@@ -38,16 +38,6 @@ export default function save( { attributes } ) {
 			<ul className="gs-cs-track" role="list">
 				<InnerBlocks.Content />
 			</ul>
-
-			{ /*
-			 * Purely decorative "there's more to scroll" hint, shown
-			 * only on mobile (see style.scss). Hidden/shown at the
-			 * end of the track by view.js; never keyboard-focusable
-			 * since it carries no functionality of its own.
-			 */ }
-			<span className="gs-cs-arrow" aria-hidden="true">
-				&#8250;
-			</span>
 		</div>
 	);
 }

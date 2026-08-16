@@ -175,10 +175,6 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 
 			<div { ...blockProps }>
 				<div { ...innerBlocksProps } />
-
-				<span className="gs-cs-arrow" aria-hidden="true">
-					&#8250;
-				</span>
 			</div>
 		</>
 	);

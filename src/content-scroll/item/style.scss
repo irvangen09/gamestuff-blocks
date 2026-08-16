@@ -104,10 +104,9 @@ a.gs-cs-title:focus-visible {
    ------------------------------
    Card takes ~46% of the track's width so images render smaller,
    more cards are visible per screen, and horizontal scrolling feels
-   less cramped. Still leaves the next card peeking at the edge (see
-   content-scroll/view.js for the "there's more" arrow). Aspect Ratio
-   is untouched — the image still scales to whatever width this
-   gives it.
+   less cramped. Still leaves the next card peeking at the edge.
+   Aspect ratio is untouched — the image still scales to whatever
+   width this gives it.
 ------------------------------ */
 
 @media (max-width: $gs-mobile-breakpoint) {

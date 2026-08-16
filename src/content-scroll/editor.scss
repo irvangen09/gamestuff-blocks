@@ -15,9 +15,3 @@
 	grid-column: 1 / -1;
 	margin-top: 8px;
 }
-
-// Mobile-only "more content" hint (view.js) — hidden in the editor
-// canvas where it would just be visual noise.
-.wp-block-gamestuff-content-scroll .gs-cs-arrow {
-	display: none;
-}
