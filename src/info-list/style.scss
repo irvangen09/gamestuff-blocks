@@ -7,7 +7,6 @@
 .gs-info-list {
 
 	--gs-accent: #fe6f22; // fallback before the Primary Color setting CSS loads
-	--gs-border: color-mix(in srgb, currentColor 14%, transparent);
 	--gs-hairline: color-mix(in srgb, currentColor 8%, transparent);
 	// 82%, not a heavier mute — lower read as barely visible in testing
 	--gs-value-color: color-mix(in srgb, currentColor 82%, transparent);
@@ -18,10 +17,6 @@
 	// falls back to inherit until the Typography setting has a value
 	font-family: var(--gs-font-family, inherit);
 
-	border: 1px solid var(--gs-border);
-	border-radius: 8px;
-
-	overflow: hidden;
 	background: transparent;
 
 }
@@ -220,14 +215,12 @@
 
 // Forced Light/Dark override from the Color Scheme setting; inert under Auto
 body.gs-color-scheme-light .gs-info-list {
-	--gs-border: rgba(20, 20, 23, 0.14);
 	--gs-hairline: rgba(20, 20, 23, 0.08);
 	--gs-value-color: #3c434a;
 	color: #1d2327;
 }
 
 body.gs-color-scheme-dark .gs-info-list {
-	--gs-border: rgba(255, 255, 255, 0.14);
 	--gs-hairline: rgba(255, 255, 255, 0.08);
 	--gs-value-color: #d5d5d7;
 	color: #f2f2f3;
