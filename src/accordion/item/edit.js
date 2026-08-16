@@ -10,7 +10,7 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 
-import { PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import { PanelBody, SelectControl } from '@wordpress/components';
 
 const HEADING_LEVELS = [
 	{ label: 'H2', value: 'h2' },
@@ -21,8 +21,7 @@ const HEADING_LEVELS = [
 ];
 
 export default function Edit( { attributes, setAttributes, clientId } ) {
-	const { title, icon, iconColor, headingLevel, triggerId, panelId } =
-		attributes;
+	const { title, headingLevel, triggerId, panelId } = attributes;
 
 	// Detects an id inherited from another Accordion Item via
 	// duplicate/copy-paste (Gutenberg clones attributes but assigns a
@@ -96,32 +95,11 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 							} )
 						}
 					/>
-
-					<TextControl
-						label={ __( 'Icon', 'gamestuff-blocks' ) }
-						value={ icon }
-						onChange={ ( value ) =>
-							setAttributes( {
-								icon: value,
-							} )
-						}
-						placeholder="dashicons-media-document"
-						help={ __(
-							'Enter an icon class name, e.g. dashicons-instagram. You can also enter multiple classes at once (e.g. from Font Awesome) if your theme already loads that library.',
-							'gamestuff-blocks'
-						) }
-					/>
 				</PanelBody>
 			</InspectorControls>
 
 			<div { ...blockProps }>
 				<div className="gs-accordion-item__header">
-					<span
-						className={ `gs-accordion-item__icon dashicons ${ icon }` }
-						style={ { color: iconColor } }
-						aria-hidden="true"
-					/>
-
 					<RichText
 						tagName={ headingLevel }
 						className="gs-accordion-item__title"
