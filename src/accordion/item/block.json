@@ -31,14 +31,6 @@
 			"type": "string",
 			"default": "h2"
 		},
-		"icon": {
-			"type": "string",
-			"default": "dashicons-media-document"
-		},
-		"iconColor": {
-			"type": "string",
-			"default": "#ff5a1f"
-		},
 		"triggerId": {
 			"type": "string",
 			"source": "attribute",
