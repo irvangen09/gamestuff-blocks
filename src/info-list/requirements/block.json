@@ -22,7 +22,12 @@
 
 	"textdomain": "gamestuff-blocks",
 
-	"attributes": {},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Requirements"
+		}
+	},
 
 	"supports": {
 		"html": false,
