@@ -1,8 +1,7 @@
 import { InnerBlocks, RichText, useBlockProps } from '@wordpress/block-editor';
 
 export default function Save( { attributes } ) {
-	const { title, icon, iconColor, headingLevel, triggerId, panelId } =
-		attributes;
+	const { title, headingLevel, triggerId, panelId } = attributes;
 
 	const blockProps = useBlockProps.save( {
 		className: 'gs-accordion-item',
@@ -20,12 +19,6 @@ export default function Save( { attributes } ) {
 					aria-expanded="false"
 					aria-controls={ panelId }
 				>
-					<span
-						className={ `gs-accordion-item__icon dashicons ${ icon }` }
-						style={ { color: iconColor } }
-						aria-hidden="true"
-					/>
-
 					<span className="gs-accordion-item__title">
 						<RichText.Content value={ title } />
 					</span>
