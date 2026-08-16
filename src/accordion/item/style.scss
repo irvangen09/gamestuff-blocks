@@ -74,6 +74,13 @@
 	color: inherit;
 }
 
+// Safety net for content saved before the icon feature was removed —
+// the old <span class="gs-accordion-item__icon..."> is still present
+// in already-saved markup until each post is reopened and re-saved.
+.gs-accordion-item__trigger .gs-accordion-item__icon {
+	display: none;
+}
+
 // The title renders as a real h2-h6 (see headingLevel), so it
 // inherits the active theme's own heading typography, which may force
 // e.g. uppercase text. This preserves the exact casing typed in the
