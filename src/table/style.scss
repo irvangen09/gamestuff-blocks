@@ -9,7 +9,7 @@
 	--gs-border: color-mix(in srgb, currentColor 18%, transparent);
 	--gs-header-bg: color-mix(in srgb, var(--gs-accent) 12%, transparent);
 
-	margin: 1.5em 0;
+	margin: 0;
 	overflow-x: auto;
 	color: inherit;
 
@@ -117,7 +117,7 @@
 	.gs-table__cards {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-		gap: 12px;
+		gap: 10px;
 		width: 100%;
 
 		tbody {
@@ -145,7 +145,7 @@
 
 		td.gs-table__cards-divider-cell {
 			display: block;
-			padding: 8px 14px;
+			padding: 6px 14px;
 			font-weight: 700;
 			text-align: center;
 			background: color-mix(in srgb, currentColor 6%, transparent);
@@ -160,7 +160,7 @@
 			column-gap: 10px;
 			border: 1px solid var(--gs-border);
 			border-radius: 12px;
-			padding: 14px;
+			padding: 10px;
 		}
 
 		// No image column: heading spans the full card width.
@@ -216,10 +216,10 @@
 		td.gs-table__card-cell-detail {
 			display: block;
 			grid-column: 1 / -1;
-			padding-top: 8px;
+			padding-top: 6px;
 			border-top: 1px solid var(--gs-border);
 			font-size: 0.88rem;
-			line-height: 1.6;
+			line-height: 1.45;
 		}
 
 		td.gs-table__card-cell-detail + td.gs-table__card-cell-detail {
@@ -261,10 +261,10 @@
 
 		.gs-table__table tbody tr {
 			display: block;
-			margin-bottom: 10px;
+			margin-bottom: 12px;
 			overflow: hidden;
-			border: 1px solid var(--gs-border);
-			border-radius: 2px;
+			border: 2px solid var(--gs-border);
+			border-radius: 4px;
 		}
 
 		.gs-table__table td {
