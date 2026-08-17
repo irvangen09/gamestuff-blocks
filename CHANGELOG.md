@@ -5,6 +5,36 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.11.0] - 2026-08-17
+
+### Added
+
+- **Table**: cell text now supports bold, italic, and link formatting.
+- **Info List**: the "Requirements" title is now editable per instance,
+  instead of a fixed English label.
+
+### Changed
+
+- **Table**: Style 2 ("Catalog Card") now renders as a semantic
+  `<table>` instead of a `<div>` grid — the visual card layout is
+  unchanged, achieved entirely through CSS.
+- **Table**: reduced default cell padding and line-height, and removed
+  a custom outer margin in favor of the theme's own block spacing, for
+  a more compact look consistent with WordPress core's table block.
+- **Info List**: removed the outer container border. Row separators
+  are unchanged.
+- **Character Infobox**: removed the card background so it blends
+  with the host theme, matching Accordion's existing borderless look.
+
+### Removed
+
+- **Accordion**: removed the icon field — unused across the site's
+  content, and its removal simplifies the block's attributes and
+  editor controls.
+- **Content Scroll**: removed the decorative "more content" arrow
+  shown on mobile. The underlying horizontal scroll is native and
+  needs no indicator.
+
 ## [1.10.1] - 2026-08-13
 
 ### Fixed

@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.10.1
+Stable tag: 1.11.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,6 +59,16 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 
 == Changelog ==
 
+= 1.11.0 =
+* Table: Catalog Card (Style 2) now renders as a semantic table instead of plain divs.
+* Table: cell text now supports bold, italic, and links.
+* Table: reduced default spacing for a more compact look.
+* Info List: removed the outer container border; row separators are unchanged.
+* Info List: the "Requirements" title is now editable per instance.
+* Character Infobox: removed the card background so it blends with the theme.
+* Accordion: removed the icon feature (unused across the site).
+* Content Scroll: removed the decorative "more content" scroll arrow.
+
 = 1.10.1 =
 * Table: sortable column headers now announce their sort state to screen readers.
 * Table: image cells now support alt text.
@@ -108,6 +118,9 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.11.0 =
+Style refactor for Table, Info List, Character Infobox, Accordion, and Content Scroll. No breaking changes.
 
 = 1.10.1 =
 Accessibility fixes for the Table block. No breaking changes.

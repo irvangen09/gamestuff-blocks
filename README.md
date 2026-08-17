@@ -15,12 +15,12 @@ No jQuery or other legacy front-end libraries are used — blocks are built with
 
 - **TOC** — an automatic table of contents built from the article's headings, with anchor ids injected into the article body so each entry links directly to its section.
 - **Accordion** — displays content as a set of collapsible panels.
-- **Content Scroll** — a navigation grid on desktop that becomes a native horizontal scroll on mobile, with an overflow-aware "more content" hint.
+- **Content Scroll** — a navigation grid on desktop that becomes a native horizontal scroll on mobile.
 - **Timeline** — a vertical timeline for sequential content (events, walkthroughs, quests, etc.), with a Numbered Timeline variant.
 - **Character Infobox** — a portrait + key/value information card, e.g. for character profiles, item stats, or quest summaries.
 - **Info List** — a compact box of key-value attributes with an optional Requirements checklist, e.g. for an event's trigger conditions.
 - **Tabs** — displays content in multiple panels that visitors switch between, with Underline and Sidebar style variants.
-- **Table** — a documentation table with grouped rows, built-in sorting and search, and three layout presets: Standard, Field List (a compact two-column layout on mobile), and Catalog Card (renders rows as an image/title/detail card grid instead of a table).
+- **Table** — a documentation table with grouped rows, built-in sorting and search, cell text formatting (bold, italic, links), and three layout presets: Standard, Field List (a compact two-column layout on mobile), and Catalog Card (renders rows as an image/title/detail card grid).
 
 ## Settings
 
