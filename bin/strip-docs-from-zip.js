@@ -14,6 +14,8 @@ const zip = new AdmZip( ZIP_PATH );
 for ( const entryName of ENTRIES_TO_REMOVE ) {
 	if ( zip.getEntry( entryName ) ) {
 		zip.deleteFile( entryName );
+		// CLI status output, not application debug code.
+		// eslint-disable-next-line no-console
 		console.log( `Removed \`${ entryName }\` from the package.` );
 	}
 }
