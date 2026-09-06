@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.11.0
+Stable tag: 1.11.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,9 @@ Every block automatically adapts to your theme's dark mode — no setup needed. 
 Standard is a regular table. Style 1 (Field List) looks the same as Standard on desktop, but switches to a compact two-column label/value layout on mobile — no JavaScript required. Style 2 (Catalog Card) renders each table row as a card with an image, title, and subtitle instead of a table row, which suits catalog-style content (items, recipes, database entries) better than a plain table.
 
 == Changelog ==
+
+= 1.11.1 =
+* Info List: fixed the Requirements section only being usable in one Info List block per article; each instance can now have its own Requirements independently.
 
 = 1.11.0 =
 * Table: Catalog Card (Style 2) now renders as a semantic table instead of plain divs.
@@ -118,6 +121,9 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.11.1 =
+Fixes Info List Requirements not working independently across multiple Info List blocks in the same article. No breaking changes.
 
 = 1.11.0 =
 Style refactor for Table, Info List, Character Infobox, Accordion, and Content Scroll. No breaking changes.

@@ -5,6 +5,16 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.11.1] - 2026-09-06
+
+### Fixed
+
+- **Info List**: the "Requirements" section could previously only be
+  added to one Info List block per article — inserting it into a
+  second instance was silently blocked by an editor-level restriction.
+  Each Info List block can now have its own Requirements section
+  independently, with no limit per article.
+
 ## [1.11.0] - 2026-08-17
 
 ### Added
