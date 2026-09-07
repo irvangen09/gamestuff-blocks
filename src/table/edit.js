@@ -45,6 +45,17 @@ function buildEmptyRow( columns ) {
 	return row;
 }
 
+// Alignment only visually applies for the Plain preset — Standard and
+// Style 1 keep their own fixed alignment, Style 2 renders cards, not
+// a header/column grid.
+function columnAlignStyle( col, preset ) {
+	if ( 'plain' !== preset || ! col.align ) {
+		return undefined;
+	}
+
+	return { textAlign: col.align };
+}
+
 export default function Edit( { attributes, setAttributes } ) {
 	const { preset, columns, rows, enableSort, enableFilter } = attributes;
 
@@ -113,6 +124,22 @@ export default function Edit( { attributes, setAttributes } ) {
 
 		const newColumns = columns.map( ( col, i ) =>
 			i === colIndex ? { ...col, ...changes } : col
+		);
+		setAttributes( { columns: newColumns } );
+	}
+
+	// Column alignment only takes visual effect for the Plain preset
+	// (see save.js) — Standard/Style 1 keep their own fixed alignment,
+	// Style 2 has no header/column concept to align.
+	function setColumnAlign( align ) {
+		const colIndex = focusedCell.colIndex;
+
+		if ( null === colIndex ) {
+			return;
+		}
+
+		const newColumns = columns.map( ( col, i ) =>
+			i === colIndex ? { ...col, align } : col
 		);
 		setAttributes( { columns: newColumns } );
 	}
@@ -223,6 +250,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		<>
 			{ columns.length > 0 && (
 				<TableToolbar
+					preset={ preset }
 					focusedCell={ focusedCell }
 					rows={ rows }
 					onInsertRowBefore={ () =>
@@ -241,6 +269,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					}
 					onDeleteColumn={ deleteColumn }
 					onSetColumnType={ setColumnType }
+					onSetColumnAlign={ setColumnAlign }
 				/>
 			) }
 
@@ -333,7 +362,13 @@ export default function Edit( { attributes, setAttributes } ) {
 						<thead>
 							<tr>
 								{ columns.map( ( col, colIndex ) => (
-									<th key={ col.key }>
+									<th
+										key={ col.key }
+										style={ columnAlignStyle(
+											col,
+											preset
+										) }
+									>
 										<TextControl
 											label={ __(
 												'Column label',
@@ -400,7 +435,13 @@ export default function Edit( { attributes, setAttributes } ) {
 										</td>
 									) : (
 										columns.map( ( col, colIndex ) => (
-											<td key={ col.key }>
+											<td
+												key={ col.key }
+												style={ columnAlignStyle(
+													col,
+													preset
+												) }
+											>
 												{ 'image' === col.type && (
 													<MediaUploadCheck>
 														<MediaUpload
