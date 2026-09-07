@@ -13,7 +13,14 @@ const COLUMN_TYPE_LABELS = {
 	image: __( 'Image', 'gamestuff-blocks' ),
 };
 
+const COLUMN_ALIGN_LABELS = {
+	left: __( 'Align column left', 'gamestuff-blocks' ),
+	center: __( 'Align column center', 'gamestuff-blocks' ),
+	right: __( 'Align column right', 'gamestuff-blocks' ),
+};
+
 export default function TableToolbar( {
+	preset,
 	focusedCell,
 	rows,
 	onInsertRowBefore,
@@ -24,6 +31,7 @@ export default function TableToolbar( {
 	onInsertColumnAfter,
 	onDeleteColumn,
 	onSetColumnType,
+	onSetColumnAlign,
 } ) {
 	const hasFocusedRow =
 		null !== focusedCell.rowIndex && -1 !== focusedCell.rowIndex;
@@ -170,6 +178,41 @@ export default function TableToolbar( {
 									)
 								) }
 							</MenuGroup>
+							{ 'plain' === preset && (
+								<MenuGroup
+									label={ __(
+										'Change column alignment',
+										'gamestuff-blocks'
+									) }
+								>
+									{ Object.keys( COLUMN_ALIGN_LABELS ).map(
+										( align ) => (
+											<MenuItem
+												key={ align }
+												disabled={ ! hasFocusedColumn }
+												onClick={ () => {
+													onSetColumnAlign( align );
+													onClose();
+												} }
+											>
+												{ COLUMN_ALIGN_LABELS[ align ] }
+											</MenuItem>
+										)
+									) }
+									<MenuItem
+										disabled={ ! hasFocusedColumn }
+										onClick={ () => {
+											onSetColumnAlign( undefined );
+											onClose();
+										} }
+									>
+										{ __(
+											'Reset alignment',
+											'gamestuff-blocks'
+										) }
+									</MenuItem>
+								</MenuGroup>
+							) }
 						</>
 					) }
 				</DropdownMenu>
