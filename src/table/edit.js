@@ -26,6 +26,7 @@ const PRESET_OPTIONS = [
 		label: __( 'Style 2 — Catalog Card', 'gamestuff-blocks' ),
 		value: 'style-2',
 	},
+	{ label: __( 'Plain', 'gamestuff-blocks' ), value: 'plain' },
 ];
 
 const DEFAULT_IMAGE_WIDTH = 48;
