@@ -234,116 +234,139 @@
 		font-size: 0.85rem;
 	}
 
+	// Plain: closer to WordPress core table styling — no accent tint
+	// on the header, no accent-colored Divider border, no mobile
+	// restructuring (see the media query below).
+	&[data-preset="plain"] .gs-table__table thead th {
+		background: none;
+		font-size: inherit;
+		font-weight: 700;
+		letter-spacing: normal;
+		text-align: left;
+		border-bottom: 1px solid var(--gs-border);
+	}
+
+	&[data-preset="plain"] td.gs-table__divider-cell {
+		border-top-color: var(--gs-border);
+		border-bottom-color: var(--gs-border);
+	}
+
 	// --- Mobile: stacked cards, pure CSS — no JS restructuring ---
+	// Plain is excluded entirely — it keeps the plain <table> with
+	// horizontal scroll at every viewport width, closer to WordPress
+	// core table behavior.
 	@media ( max-width: $gs-mobile-breakpoint ) {
 
-		.gs-table__table,
-		.gs-table__table tbody,
-		.gs-table__table tr,
-		.gs-table__table td {
-			display: block;
-		}
+		&:not([data-preset="plain"]) {
 
-		// [hidden] (toggled by view.js filter) needs higher specificity
-		// than the plain "tr" rule above to actually stay hidden here.
-		.gs-table__table tr[hidden] {
-			display: none;
-		}
-
-		.gs-table__table thead {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			overflow: hidden;
-			clip: rect(0 0 0 0);
-			white-space: nowrap;
-		}
-
-		.gs-table__table tbody tr {
-			display: block;
-			margin-bottom: 10px;
-			overflow: hidden;
-			border: 1px solid var(--gs-border);
-			border-radius: 2px;
-		}
-
-		.gs-table__table td {
-			background: none;
-			padding: 6px 12px;
-			border: none;
-			border-bottom: 1px solid var(--gs-border);
-
-			&:last-child {
-				border-bottom: none;
-			}
-
-			&::before {
-				content: attr(data-label);
+			.gs-table__table,
+			.gs-table__table tbody,
+			.gs-table__table tr,
+			.gs-table__table td {
 				display: block;
-				margin-bottom: 4px;
-				font-size: 0.95rem;
-				font-weight: 700;
-				color: inherit;
 			}
-		}
 
-		// Style 1: two-column layout — label on the left with an
-		// accent background, value on the right. The label is
-		// ::before positioned over the td rather than a separate
-		// element, so no markup/JS changes were needed for this.
-		&[data-preset="style-1"] {
+			// [hidden] (toggled by view.js filter) needs higher specificity
+			// than the plain "tr" rule above to actually stay hidden here.
+			.gs-table__table tr[hidden] {
+				display: none;
+			}
+
+			.gs-table__table thead {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				overflow: hidden;
+				clip: rect(0 0 0 0);
+				white-space: nowrap;
+			}
+
+			.gs-table__table tbody tr {
+				display: block;
+				margin-bottom: 10px;
+				overflow: hidden;
+				border: 1px solid var(--gs-border);
+				border-radius: 2px;
+			}
 
 			.gs-table__table td {
-				position: relative;
-				padding: 8px 12px 8px calc(40% + 12px);
-				min-height: 36px;
 				background: none;
+				padding: 6px 12px;
+				border: none;
 				border-bottom: 1px solid var(--gs-border);
+
+				&:last-child {
+					border-bottom: none;
+				}
 
 				&::before {
 					content: attr(data-label);
-					position: absolute;
-					top: 0;
-					left: 0;
-					bottom: 0;
-					width: 40%;
-					display: flex;
-					align-items: center;
-					margin: 0;
-					padding: 0 12px;
-					background: color-mix(in srgb, var(--gs-accent) 50%, transparent);
-					color: currentColor;
-					font-size: 0.8rem;
+					display: block;
+					margin-bottom: 4px;
+					font-size: 0.95rem;
 					font-weight: 700;
+					color: inherit;
 				}
 			}
-		}
 
-		.gs-table__table tr.gs-table__row--divider {
-			display: block;
-			margin-top: 14px;
-			margin-bottom: 0;
-			overflow: hidden;
-			border-radius: 2px;
-		}
+			// Style 1: two-column layout — label on the left with an
+			// accent background, value on the right. The label is
+			// ::before positioned over the td rather than a separate
+			// element, so no markup/JS changes were needed for this.
+			&[data-preset="style-1"] {
 
-		.gs-table__table tr.gs-table__row--divider td {
-			display: block;
-			width: 100%;
+				.gs-table__table td {
+					position: relative;
+					padding: 8px 12px 8px calc(40% + 12px);
+					min-height: 36px;
+					background: none;
+					border-bottom: 1px solid var(--gs-border);
 
-			&::before {
-				content: none;
+					&::before {
+						content: attr(data-label);
+						position: absolute;
+						top: 0;
+						left: 0;
+						bottom: 0;
+						width: 40%;
+						display: flex;
+						align-items: center;
+						margin: 0;
+						padding: 0 12px;
+						background: color-mix(in srgb, var(--gs-accent) 50%, transparent);
+						color: currentColor;
+						font-size: 0.8rem;
+						font-weight: 700;
+					}
+				}
 			}
-		}
 
-		&[data-preset="style-1"] .gs-table__table tr.gs-table__row--divider td {
-			padding-left: 12px;
-
-			&::before {
-				content: none;
+			.gs-table__table tr.gs-table__row--divider {
+				display: block;
+				margin-top: 14px;
+				margin-bottom: 0;
+				overflow: hidden;
+				border-radius: 2px;
 			}
-		}
 
+			.gs-table__table tr.gs-table__row--divider td {
+				display: block;
+				width: 100%;
+
+				&::before {
+					content: none;
+				}
+			}
+
+			&[data-preset="style-1"] .gs-table__table tr.gs-table__row--divider td {
+				padding-left: 12px;
+
+				&::before {
+					content: none;
+				}
+			}
+
+		}
 	}
 }
 
