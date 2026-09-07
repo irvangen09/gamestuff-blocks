@@ -23,22 +23,16 @@
 	"attributes": {
 		"preset": {
 			"type": "string",
-			"enum": [ "standard", "style-1", "style-2" ],
+			"enum": [ "standard", "style-1", "style-2", "plain" ],
 			"default": "standard"
 		},
 		"columns": {
 			"type": "array",
-			"default": [
-				{ "key": "col-1", "label": "Column 1", "type": "text" },
-				{ "key": "col-2", "label": "Column 2", "type": "text" }
-			]
+			"default": []
 		},
 		"rows": {
 			"type": "array",
-			"default": [
-				{ "isDivider": false, "col-1": "", "col-2": "" },
-				{ "isDivider": false, "col-1": "", "col-2": "" }
-			]
+			"default": []
 		},
 		"enableSort": {
 			"type": "boolean",
