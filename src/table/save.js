@@ -10,7 +10,18 @@ function renderCellValue( col, value ) {
 	return value ?? '';
 }
 
-function renderTable( { columns, rows } ) {
+// Alignment only takes visual effect for the Plain preset — Standard
+// and Style 1 keep their own fixed alignment (see style.scss), Style
+// 2 renders cards via renderCards(), not this function.
+function columnAlignStyle( col, preset ) {
+	if ( 'plain' !== preset || ! col.align ) {
+		return undefined;
+	}
+
+	return { textAlign: col.align };
+}
+
+function renderTable( { columns, rows, preset } ) {
 	return (
 		<table className="gs-table__table">
 			<thead>
@@ -21,6 +32,7 @@ function renderTable( { columns, rows } ) {
 							scope="col"
 							data-key={ col.key }
 							data-type={ col.type }
+							style={ columnAlignStyle( col, preset ) }
 						>
 							{ col.label }
 						</th>
@@ -56,6 +68,10 @@ function renderTable( { columns, rows } ) {
 											key={ col.key }
 											data-label={ col.label }
 											data-key={ col.key }
+											style={ columnAlignStyle(
+												col,
+												preset
+											) }
 										>
 											{ image?.url && (
 												<img
@@ -78,6 +94,10 @@ function renderTable( { columns, rows } ) {
 										key={ col.key }
 										data-label={ col.label }
 										data-key={ col.key }
+										style={ columnAlignStyle(
+											col,
+											preset
+										) }
 									>
 										{ renderCellValue(
 											col,
@@ -208,7 +228,7 @@ export default function save( { attributes } ) {
 		<div { ...blockProps }>
 			{ isCardLayout
 				? renderCards( { columns, rows } )
-				: renderTable( { columns, rows } ) }
+				: renderTable( { columns, rows, preset } ) }
 		</div>
 	);
 }
