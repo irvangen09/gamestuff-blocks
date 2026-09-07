@@ -234,18 +234,10 @@
 		font-size: 0.85rem;
 	}
 
-	// Plain: closer to WordPress core table styling — no accent tint
-	// on the header, no accent-colored Divider border, no mobile
-	// restructuring (see the media query below).
-	&[data-preset="plain"] .gs-table__table thead th {
-		background: none;
-		font-size: inherit;
-		font-weight: 700;
-		letter-spacing: normal;
-		text-align: left;
-		border-bottom: 1px solid var(--gs-border);
-	}
-
+	// Plain: divider stays neutral (no accent border) and it's
+	// excluded from mobile stacking below — the header intentionally
+	// inherits the same tinted style as Standard/Style-1 above, for
+	// clear visual separation from body rows.
 	&[data-preset="plain"] td.gs-table__divider-cell {
 		border-top-color: var(--gs-border);
 		border-bottom-color: var(--gs-border);
