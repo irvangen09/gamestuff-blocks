@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.11.1
+Stable tag: 1.12.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +27,7 @@ Blocks currently available:
 * Character Infobox — a portrait + key/value information card, e.g. for character profiles or item stats.
 * Info List — a compact box of key-value attributes with an optional Requirements checklist, e.g. for an event's trigger conditions.
 * Tabs — displays content in multiple panels that visitors switch between, with Underline and Sidebar style variants.
-* Table — a documentation table with grouped rows, built-in sorting and search, and three layout presets — including a catalog-card view for item or database-style content.
+* Table — a documentation table with grouped rows, built-in sorting and search, and four layout presets — including a catalog-card view for item or database-style content and a minimal Plain preset with per-column text alignment.
 
 More content blocks are introduced in subsequent releases.
 
@@ -55,9 +55,13 @@ Every block automatically adapts to your theme's dark mode — no setup needed. 
 
 = What are the Table block's layout presets? =
 
-Standard is a regular table. Style 1 (Field List) looks the same as Standard on desktop, but switches to a compact two-column label/value layout on mobile — no JavaScript required. Style 2 (Catalog Card) renders each table row as a card with an image, title, and subtitle instead of a table row, which suits catalog-style content (items, recipes, database entries) better than a plain table.
+Standard is a regular table. Style 1 (Field List) looks the same as Standard on desktop, but switches to a compact two-column label/value layout on mobile — no JavaScript required. Style 2 (Catalog Card) renders each table row as a card with an image, title, and subtitle instead of a table row, which suits catalog-style content (items, recipes, database entries) better than a plain table. Plain keeps the same header style as Standard but never restructures on mobile, and lets you set left/center/right text alignment per column, closer to the core WordPress Table block.
 
 == Changelog ==
+
+= 1.12.0 =
+* Table: added a new "Plain" preset — a minimal table closer to the core WordPress Table block, with no special mobile layout and per-column text alignment (left, center, right).
+* Table: inserting a new Table block now starts with a column/row count prompt, matching the core WordPress Table block, instead of a pre-filled 2x2 grid.
 
 = 1.11.1 =
 * Info List: fixed the Requirements section only being usable in one Info List block per article; each instance can now have its own Requirements independently.
@@ -121,6 +125,9 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.12.0 =
+Adds a new Plain table preset with column alignment, plus a column/row count prompt when creating a new Table. No breaking changes.
 
 = 1.11.1 =
 Fixes Info List Requirements not working independently across multiple Info List blocks in the same article. No breaking changes.

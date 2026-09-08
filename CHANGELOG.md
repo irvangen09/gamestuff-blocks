@@ -5,6 +5,17 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.12.0] - 2026-09-07
+
+### Added
+
+- **Table**: new "Plain" preset — a minimal table closer to the core
+  WordPress Table block, with no special mobile layout and
+  per-column text alignment (left, center, right).
+- **Table**: inserting a new Table block now starts with a
+  column/row count prompt, matching the core WordPress Table block,
+  instead of a pre-filled 2x2 grid.
+
 ## [1.11.1] - 2026-09-06
 
 ### Fixed
