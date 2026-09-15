@@ -34,6 +34,8 @@
 	align-items: baseline;
 	gap: 16px;
 
+	// Resets the browser's default <dl> block margin.
+	margin: 0;
 	padding: 12px 0;
 
 }
@@ -49,6 +51,7 @@
 	align-items: center;
 	gap: 8px;
 
+	margin: 0;
 	font-weight: 700;
 	font-size: 15px;
 	line-height: 1.5;
@@ -76,6 +79,8 @@
 
 .gs-info-list-row-value {
 
+	// Resets the browser's default <dd> indent margin.
+	margin: 0;
 	font-size: 15px;
 	line-height: 1.5;
 	text-align: right;
