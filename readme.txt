@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.12.0
+Stable tag: 1.12.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,10 @@ Every block automatically adapts to your theme's dark mode — no setup needed. 
 Standard is a regular table. Style 1 (Field List) looks the same as Standard on desktop, but switches to a compact two-column label/value layout on mobile — no JavaScript required. Style 2 (Catalog Card) renders each table row as a card with an image, title, and subtitle instead of a table row, which suits catalog-style content (items, recipes, database entries) better than a plain table. Plain keeps the same header style as Standard but never restructures on mobile, and lets you set left/center/right text alignment per column, closer to the core WordPress Table block.
 
 == Changelog ==
+
+= 1.12.1 =
+* Info List: Field rows now use semantic dl/dt/dd markup for better screen reader support. No visual change.
+* Table: Plain preset columns now split width evenly, matching WordPress core's "Fixed width table cells" behavior.
 
 = 1.12.0 =
 * Table: added a new "Plain" preset — a minimal table closer to the core WordPress Table block, with no special mobile layout and per-column text alignment (left, center, right).
@@ -125,6 +129,9 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.12.1 =
+Improves Info List accessibility markup and fixes Table Plain preset column widths. No breaking changes.
 
 = 1.12.0 =
 Adds a new Plain table preset with column alignment, plus a column/row count prompt when creating a new Table. No breaking changes.
