@@ -35,7 +35,8 @@
 
 	.gs-table__table {
 		width: 100%;
-		border-collapse: collapse;
+		border-collapse: collapse !important;
+		border-spacing: 0 !important;
 		font-size: 0.92rem;
 		color: inherit;
 
@@ -236,8 +237,12 @@
 
 	// Plain: divider stays neutral (no accent border) and it's
 	// excluded from mobile stacking below — the header intentionally
-	// inherits the same tinted style as Standard/Style-1 above, for
-	// clear visual separation from body rows.
+	// inherits the same accent-tinted style as Standard/Style-1
+	// above, kept as the plugin's visual identity.
+	&[data-preset="plain"] .gs-table__table {
+		table-layout: fixed;
+	}
+
 	&[data-preset="plain"] td.gs-table__divider-cell {
 		border-top-color: var(--gs-border);
 		border-bottom-color: var(--gs-border);
