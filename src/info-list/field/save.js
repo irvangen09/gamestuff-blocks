@@ -8,8 +8,8 @@ export default function save( { attributes } ) {
 	} );
 
 	return (
-		<div { ...blockProps }>
-			<div className="gs-info-list-row-label">
+		<dl { ...blockProps }>
+			<dt className="gs-info-list-row-label">
 				{ icon && (
 					<span
 						className={ `dashicons ${ icon }` }
@@ -22,13 +22,13 @@ export default function save( { attributes } ) {
 					className="gs-info-list-row-label-text"
 					value={ label }
 				/>
-			</div>
+			</dt>
 
 			<RichText.Content
-				tagName="span"
+				tagName="dd"
 				className="gs-info-list-row-value"
 				value={ value }
 			/>
-		</div>
+		</dl>
 	);
 }
