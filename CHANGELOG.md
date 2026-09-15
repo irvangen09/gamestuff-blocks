@@ -5,6 +5,20 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.12.1] - 2026-09-15
+
+### Changed
+
+- **Info List**: Field rows now use semantic `<dl>`/`<dt>`/`<dd>`
+  markup instead of generic `<div>`s, so screen readers announce
+  each label-value pair correctly. Visual appearance is unchanged.
+
+### Fixed
+
+- **Table**: the Plain preset's columns now split the available
+  width evenly, matching WordPress core's "Fixed width table cells"
+  behavior, instead of sizing to content.
+
 ## [1.12.0] - 2026-09-07
 
 ### Added
