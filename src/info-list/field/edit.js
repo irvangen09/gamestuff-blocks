@@ -37,8 +37,8 @@ export default function Edit( { attributes, setAttributes } ) {
 				</PanelBody>
 			</InspectorControls>
 
-			<div { ...blockProps }>
-				<div className="gs-info-list-row-label">
+			<dl { ...blockProps }>
+				<dt className="gs-info-list-row-label">
 					{ icon && (
 						<span
 							className={ `dashicons ${ icon }` }
@@ -58,10 +58,10 @@ export default function Edit( { attributes, setAttributes } ) {
 						placeholder={ __( 'Label', 'gamestuff-blocks' ) }
 						allowedFormats={ [] }
 					/>
-				</div>
+				</dt>
 
 				<RichText
-					tagName="span"
+					tagName="dd"
 					className="gs-info-list-row-value"
 					value={ value }
 					onChange={ ( newValue ) =>
@@ -72,7 +72,7 @@ export default function Edit( { attributes, setAttributes } ) {
 					placeholder={ __( 'Value', 'gamestuff-blocks' ) }
 					allowedFormats={ [] }
 				/>
-			</div>
+			</dl>
 		</>
 	);
 }
