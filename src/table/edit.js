@@ -15,6 +15,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import TableToolbar from './table-toolbar';
+import { columnAlignStyle } from './utils';
 
 const PRESET_OPTIONS = [
 	{ label: __( 'Standard', 'gamestuff-blocks' ), value: 'standard' },
@@ -43,17 +44,6 @@ function buildEmptyRow( columns ) {
 		row[ col.key ] = '';
 	} );
 	return row;
-}
-
-// Alignment only visually applies for the Plain preset — Standard and
-// Style 1 keep their own fixed alignment, Style 2 renders cards, not
-// a header/column grid.
-function columnAlignStyle( col, preset ) {
-	if ( 'plain' !== preset || ! col.align ) {
-		return undefined;
-	}
-
-	return { textAlign: col.align };
 }
 
 export default function Edit( { attributes, setAttributes } ) {

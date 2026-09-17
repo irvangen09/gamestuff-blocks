@@ -1,5 +1,7 @@
 import { RichText, useBlockProps } from '@wordpress/block-editor';
 
+import { columnAlignStyle } from './utils';
+
 // Text cells may contain inline formatting (bold/italic/link) saved
 // by RichText; other cell types are always plain values.
 function renderCellValue( col, value ) {
@@ -8,17 +10,6 @@ function renderCellValue( col, value ) {
 	}
 
 	return value ?? '';
-}
-
-// Alignment only takes visual effect for the Plain preset — Standard
-// and Style 1 keep their own fixed alignment (see style.scss), Style
-// 2 renders cards via renderCards(), not this function.
-function columnAlignStyle( col, preset ) {
-	if ( 'plain' !== preset || ! col.align ) {
-		return undefined;
-	}
-
-	return { textAlign: col.align };
 }
 
 function renderTable( { columns, rows, preset } ) {
