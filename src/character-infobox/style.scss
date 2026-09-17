@@ -418,8 +418,7 @@
 
 /*
  * Forced Light/Dark from "Color Scheme" — inert under "Auto".
- * Matches this block's historical values exactly, including the
- * shadow that Auto omits.
+ * Includes the shadow that Auto omits.
  */
 body.gs-color-scheme-light .gs-character {
 	--gs-accent-soft: rgba(254, 111, 34, 0.08);

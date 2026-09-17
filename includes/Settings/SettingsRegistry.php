@@ -61,11 +61,10 @@ final class SettingsRegistry {
 				'label'       => __( 'Primary Color', 'gamestuff-blocks' ),
 				'type'        => 'color',
 				/*
-				 * Confirmed against the old plugin (v1.7.0), not a
-				 * placeholder: this matches $gs-brand-accent in its
-				 * src/shared/_tokens.scss, the one accent color
-				 * already used consistently in production across
-				 * Character Infobox, Timeline, and TOC.
+				 * Not an arbitrary placeholder: this matches
+				 * $gs-brand-accent in its src/shared/_tokens.scss,
+				 * the one accent color already used consistently
+				 * across Character Infobox, Timeline, and TOC.
 				 */
 				'default'     => '#fe6f22',
 				'targets'     => array(
