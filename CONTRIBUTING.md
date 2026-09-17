@@ -18,7 +18,7 @@ See [README.md](README.md) for the full list of available scripts.
 
 ## Coding Standards
 
-- **PHP** — WordPress Coding Standards, OOP, one class per file, single responsibility. Run `composer lint` before submitting; `composer lint:fix` can auto-fix most style issues.
+- **PHP** — WordPress Coding Standards, OOP, one class per file, single responsibility. Run `composer lint:php` before submitting; `composer lint:php-fix` can auto-fix most style issues.
 - **JavaScript** — modern, dependency-free (no jQuery). Run `npm run lint:js`.
 - **CSS/SCSS** — the `.gs-` class prefix, simple selectors, avoid `!important` except where a specific comment explains why it's necessary (usually to guard against a theme's own styles cascading into a block). Run `npm run lint:css`.
 - **HTML** — semantic elements matched to the meaning of the content.
@@ -49,7 +49,7 @@ Common types: `feat`, `fix`, `docs`, `chore`, `refactor`. Commit messages and co
 
 1. Fork the repository and create a branch from `main`.
 2. Make your change, following the standards above.
-3. Confirm `npm run build` completes without errors or warnings, and `composer lint` / `npm run lint:js` / `npm run lint:css` pass.
+3. Confirm `npm run build` completes without errors or warnings, and `composer lint:php` / `npm run lint:js` / `npm run lint:css` pass.
 4. Manually verify the change in both the block editor and the front end, including dark mode if your change touches styling.
 5. Open a pull request describing what changed and why.
 
