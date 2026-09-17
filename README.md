@@ -62,8 +62,8 @@ PHP code quality tooling (WordPress Coding Standards) is managed separately via 
 ```bash
 composer install
 
-composer lint      # phpcs
-composer lint:fix   # phpcbf
+composer lint:php      # phpcs
+composer lint:php-fix   # phpcbf
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full contribution workflow.
@@ -78,4 +78,4 @@ See [SECURITY.md](SECURITY.md) for how to report a vulnerability.
 
 ## License
 
-GPL-2.0-or-later. See the [LICENSE](LICENSE) file for details.
+GPL-2.0-or-later. See the [LICENSE](LICENSE.md) file for details.
