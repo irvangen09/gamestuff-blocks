@@ -1,6 +1,6 @@
 import { RichText, useBlockProps } from '@wordpress/block-editor';
 
-import { columnAlignStyle } from './utils';
+import { columnAlignStyle, headerAlignStyle } from './utils';
 
 // Text cells may contain inline formatting (bold/italic/link) saved
 // by RichText; other cell types are always plain values.
@@ -23,7 +23,7 @@ function renderTable( { columns, rows, preset } ) {
 							scope="col"
 							data-key={ col.key }
 							data-type={ col.type }
-							style={ columnAlignStyle( col, preset ) }
+							style={ headerAlignStyle( col, preset ) }
 						>
 							{ col.label }
 						</th>
