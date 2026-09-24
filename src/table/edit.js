@@ -15,7 +15,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import TableToolbar from './table-toolbar';
-import { columnAlignStyle } from './utils';
+import { columnAlignStyle, headerAlignStyle } from './utils';
 
 const PRESET_OPTIONS = [
 	{ label: __( 'Standard', 'gamestuff-blocks' ), value: 'standard' },
@@ -354,7 +354,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								{ columns.map( ( col, colIndex ) => (
 									<th
 										key={ col.key }
-										style={ columnAlignStyle(
+										style={ headerAlignStyle(
 											col,
 											preset
 										) }
