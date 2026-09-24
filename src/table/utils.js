@@ -8,3 +8,13 @@ export function columnAlignStyle( col, preset ) {
 
 	return { textAlign: col.align };
 }
+
+// Plain's header defaults to left, matching WordPress core's own
+// table — column alignment (when set) still overrides this, same as
+// it does for body cells.
+export function headerAlignStyle( col, preset ) {
+	return (
+		columnAlignStyle( col, preset ) ??
+		( 'plain' === preset ? { textAlign: 'left' } : undefined )
+	);
+}
