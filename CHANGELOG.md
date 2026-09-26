@@ -5,6 +5,17 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.12.2] - 2026-09-26
+
+### Fixed
+
+- **Table**: the Plain preset's column headers now default to left
+  alignment, matching body cells, instead of always centering. A
+  column's explicit left/center/right alignment (set from the
+  toolbar) continues to override this default, same as before.
+  Tables saved before this fix keep their previous appearance until
+  re-saved.
+
 ## [1.12.1] - 2026-09-15
 
 ### Changed
