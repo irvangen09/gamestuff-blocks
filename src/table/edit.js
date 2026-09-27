@@ -28,6 +28,10 @@ const PRESET_OPTIONS = [
 		value: 'style-2',
 	},
 	{ label: __( 'Plain', 'gamestuff-blocks' ), value: 'plain' },
+	{
+		label: __( 'Recipe Card A', 'gamestuff-blocks' ),
+		value: 'recipe-card-a',
+	},
 ];
 
 const DEFAULT_IMAGE_WIDTH = 48;
@@ -273,7 +277,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { preset: value } )
 						}
 					/>
-					{ 'style-2' !== preset && (
+					{ 'style-2' !== preset && 'recipe-card-a' !== preset && (
 						<ToggleControl
 							label={ __( 'Sortable', 'gamestuff-blocks' ) }
 							checked={ enableSort }
