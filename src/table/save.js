@@ -239,7 +239,7 @@ function renderRecipeCardA( { columns, rows } ) {
 					return (
 						<tr key={ index } className="gs-table__recipe-card">
 							<td className="gs-table__recipe-cell">
-								<div className="gs-table__recipe-top">
+								<div className="gs-table__recipe-header">
 									{ image?.url && (
 										<img
 											src={ image.url }
@@ -247,32 +247,36 @@ function renderRecipeCardA( { columns, rows } ) {
 											className="gs-table__recipe-image"
 										/>
 									) }
-									{ nameCol && (
-										<span className="gs-table__recipe-name">
-											{ renderCellValue(
-												nameCol,
-												row[ nameCol.key ]
-											) }
-										</span>
-									) }
-									{ ( statChips.length > 0 ||
-										priceValue ) && (
-										<span className="gs-table__recipe-stats">
-											{ statChips.map( ( chip, i ) => (
-												<span
-													key={ i }
-													className="gs-table__recipe-chip gs-table__recipe-chip--accent"
-												>
-													{ chip }
-												</span>
-											) ) }
-											{ priceValue && (
-												<span className="gs-table__recipe-chip">
-													{ priceValue }
-												</span>
-											) }
-										</span>
-									) }
+									<div className="gs-table__recipe-info">
+										{ nameCol && (
+											<span className="gs-table__recipe-name">
+												{ renderCellValue(
+													nameCol,
+													row[ nameCol.key ]
+												) }
+											</span>
+										) }
+										{ ( statChips.length > 0 ||
+											priceValue ) && (
+											<span className="gs-table__recipe-stats">
+												{ statChips.map(
+													( chip, i ) => (
+														<span
+															key={ i }
+															className="gs-table__recipe-chip gs-table__recipe-chip--accent"
+														>
+															{ chip }
+														</span>
+													)
+												) }
+												{ priceValue && (
+													<span className="gs-table__recipe-chip">
+														{ priceValue }
+													</span>
+												) }
+											</span>
+										) }
+									</div>
 								</div>
 
 								{ fieldCols.map( ( col ) => {
