@@ -229,6 +229,126 @@
 		}
 	}
 
+	// Recipe Card A: a vertical list, not a grid — markup is still a
+	// real <table> (see save.js), but tbody uses flex column instead
+	// of the grid technique .gs-table__cards uses.
+	.gs-table__recipes {
+		display: block;
+		width: 100%;
+
+		tbody {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		tr[hidden] {
+			display: none;
+		}
+
+		tr.gs-table__row--divider {
+			display: block;
+			width: 100%;
+		}
+
+		td.gs-table__recipes-divider-cell {
+			display: block;
+			padding: 6px 14px;
+			font-weight: 700;
+			text-align: center;
+			background: color-mix(in srgb, currentColor 6%, transparent);
+			border-top: 1px solid var(--gs-accent);
+			border-bottom: 1px solid var(--gs-accent);
+		}
+
+		tr.gs-table__recipe-card {
+			display: flex;
+			gap: 14px;
+			align-items: flex-start;
+			border: 1px solid var(--gs-border);
+			border-radius: 10px;
+			padding: 12px 14px;
+		}
+
+		td.gs-table__recipe-cell-image {
+			display: block;
+			flex-shrink: 0;
+		}
+
+		.gs-table__recipe-image {
+			display: block;
+			width: 48px;
+			height: 48px;
+			border-radius: 8px;
+			object-fit: cover;
+		}
+
+		td.gs-table__recipe-cell-main {
+			display: block;
+			flex: 1;
+			min-width: 0;
+		}
+
+		.gs-table__recipe-top {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		.gs-table__recipe-name {
+			font-weight: 700;
+		}
+
+		.gs-table__recipe-stats {
+			display: flex;
+			gap: 6px;
+			flex-wrap: wrap;
+		}
+
+		.gs-table__recipe-chip {
+			display: inline-flex;
+			align-items: center;
+			border: 1px solid var(--gs-border);
+			border-radius: 6px;
+			padding: 3px 8px;
+			font-size: 0.82rem;
+			font-weight: 600;
+			white-space: nowrap;
+		}
+
+		.gs-table__recipe-chip--accent {
+			color: var(--gs-accent);
+			border-color: color-mix(in srgb, var(--gs-accent) 35%, transparent);
+		}
+
+		.gs-table__recipe-field {
+			display: flex;
+			gap: 8px;
+			font-size: 0.85rem;
+			line-height: 1.55;
+		}
+
+		// Sibling selectors place the separator only *between* fields —
+		// simpler than tracking "is this the first field" in save.js.
+		.gs-table__recipe-top + .gs-table__recipe-field {
+			margin-top: 10px;
+		}
+
+		.gs-table__recipe-field + .gs-table__recipe-field {
+			margin-top: 8px;
+			padding-top: 8px;
+			border-top: 1px solid var(--gs-border);
+		}
+
+		.gs-table__recipe-field-label {
+			flex: 0 0 66px;
+			padding-top: 1px;
+			color: color-mix(in srgb, currentColor 45%, transparent);
+			font-size: 0.72rem;
+		}
+	}
+
 	&[data-preset="style-1"] .gs-table__table th,
 	&[data-preset="style-1"] .gs-table__table td {
 		padding: 6px 10px;
