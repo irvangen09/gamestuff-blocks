@@ -242,6 +242,15 @@
 			gap: 10px;
 		}
 
+		// Real <td> elements can inherit the host theme's own table
+		// defaults (border/padding/background) — reset so only the
+		// styling below applies.
+		td {
+			padding: 0;
+			border: none;
+			background: none;
+		}
+
 		tr[hidden] {
 			display: none;
 		}
@@ -344,7 +353,10 @@
 		.gs-table__recipe-field-label {
 			flex: 0 0 66px;
 			padding-top: 1px;
-			color: color-mix(in srgb, currentColor 45%, transparent);
+			// 65%, not the more transparent 45% first used here — matches
+			// .gs-table__card-subtitle above, which already reads fine on
+			// both light and dark backgrounds.
+			color: color-mix(in srgb, currentColor 65%, transparent);
 			font-size: 0.72rem;
 		}
 	}

@@ -245,18 +245,16 @@ function renderRecipeCardA( { columns, rows } ) {
 
 					return (
 						<tr key={ index } className="gs-table__recipe-card">
-							{ imageCol && (
+							{ image?.url && (
 								<td
 									className="gs-table__recipe-cell-image"
 									data-key={ imageCol.key }
 								>
-									{ image?.url && (
-										<img
-											src={ image.url }
-											alt={ image.alt || '' }
-											className="gs-table__recipe-image"
-										/>
-									) }
+									<img
+										src={ image.url }
+										alt={ image.alt || '' }
+										className="gs-table__recipe-image"
+									/>
 								</td>
 							) }
 
