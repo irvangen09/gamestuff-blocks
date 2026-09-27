@@ -203,10 +203,6 @@ function renderCards( { columns, rows } ) {
 function renderRecipeCardA( { columns, rows } ) {
 	const [ imageCol, nameCol, statCol, priceCol, ...fieldCols ] = columns;
 
-	// colSpan can't be columns.length — image and everything else merge
-	// into two <td>s per row (image cell, main cell), not one per column.
-	const cellCount = ( imageCol ? 1 : 0 ) + 1;
-
 	return (
 		<table className="gs-table__recipes">
 			<tbody>
@@ -217,10 +213,7 @@ function renderRecipeCardA( { columns, rows } ) {
 								key={ index }
 								className="gs-table__row--divider"
 							>
-								<td
-									colSpan={ cellCount }
-									className="gs-table__recipes-divider-cell"
-								>
+								<td className="gs-table__recipes-divider-cell">
 									{ row.dividerLabel ?? '' }
 								</td>
 							</tr>
@@ -245,21 +238,15 @@ function renderRecipeCardA( { columns, rows } ) {
 
 					return (
 						<tr key={ index } className="gs-table__recipe-card">
-							{ image?.url && (
-								<td
-									className="gs-table__recipe-cell-image"
-									data-key={ imageCol.key }
-								>
-									<img
-										src={ image.url }
-										alt={ image.alt || '' }
-										className="gs-table__recipe-image"
-									/>
-								</td>
-							) }
-
-							<td className="gs-table__recipe-cell-main">
+							<td className="gs-table__recipe-cell">
 								<div className="gs-table__recipe-top">
+									{ image?.url && (
+										<img
+											src={ image.url }
+											alt={ image.alt || '' }
+											className="gs-table__recipe-image"
+										/>
+									) }
 									{ nameCol && (
 										<span className="gs-table__recipe-name">
 											{ renderCellValue(
