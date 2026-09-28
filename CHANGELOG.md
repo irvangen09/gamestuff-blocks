@@ -5,6 +5,23 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.13.0] - 2026-09-28
+
+### Added
+
+- **Table**: new "Recipe Card A" preset — each row is shown as a card
+  with an optional image, the name, stat and price badges, and any
+  number of labeled fields (ingredients, utensils, source, and so on),
+  well suited to recipe-style content. Columns are read by position:
+  image, name, stat badge(s), price badge, then labeled fields. A
+  comma in the stat column splits it into separate badges, and a
+  field left empty on a row is simply not shown.
+- **Table**: Recipe Card A includes a checkbox on every card so
+  visitors can mark a recipe as obtained. The card dims when ticked,
+  and the choice is remembered in the visitor's own browser — no
+  account needed, and it is not shared between devices.
+- **Table**: the built-in search works with Recipe Card A.
+
 ## [1.12.2] - 2026-09-26
 
 ### Fixed
