@@ -205,131 +205,123 @@ function renderRecipeCardA( { columns, rows } ) {
 	const [ imageCol, nameCol, statCol, priceCol, ...fieldCols ] = columns;
 
 	return (
-		<>
-			<p className="gs-table__recipes-note">
-				{ __(
-					'Checked recipes are saved in this browser only.',
-					'gamestuff-blocks'
-				) }
-			</p>
-			<table className="gs-table__recipes">
-				<tbody>
-					{ rows.map( ( row, index ) => {
-						if ( row.isDivider ) {
-							return (
-								<tr
-									key={ index }
-									className="gs-table__row--divider"
-								>
-									<td className="gs-table__recipes-divider-cell">
-										{ row.dividerLabel ?? '' }
-									</td>
-								</tr>
-							);
-						}
-
-						const image = imageCol ? row[ imageCol.key ] : null;
-
-						// A comma splits a badge's raw value into separate
-						// chips (e.g. "+6 STA, -20 FAT"); rendered as plain
-						// text rather than through renderCellValue, since
-						// splitting formatted RichText HTML on a literal
-						// comma could cut a tag in half.
-						const statChips = statCol
-							? ( row[ statCol.key ] ?? '' )
-									.split( ',' )
-									.map( ( part ) => part.trim() )
-									.filter( Boolean )
-							: [];
-
-						const priceValue = priceCol ? row[ priceCol.key ] : '';
-
+		<table className="gs-table__recipes">
+			<tbody>
+				{ rows.map( ( row, index ) => {
+					if ( row.isDivider ) {
 						return (
 							<tr
 								key={ index }
-								className="gs-table__recipe-card"
-								data-recipe-id={ row.id }
+								className="gs-table__row--divider"
 							>
-								<td className="gs-table__recipe-cell">
-									<input
-										type="checkbox"
-										className="gs-table__recipe-check"
-										aria-label={ __(
-											'Mark as obtained',
-											'gamestuff-blocks'
-										) }
-									/>
-									<div className="gs-table__recipe-header">
-										{ image?.url && (
-											<img
-												src={ image.url }
-												alt={ image.alt || '' }
-												className="gs-table__recipe-image"
-											/>
-										) }
-										<div className="gs-table__recipe-info">
-											{ nameCol && (
-												<span className="gs-table__recipe-name">
-													{ renderCellValue(
-														nameCol,
-														row[ nameCol.key ]
-													) }
-												</span>
-											) }
-											{ ( statChips.length > 0 ||
-												priceValue ) && (
-												<span className="gs-table__recipe-stats">
-													{ statChips.map(
-														( chip, i ) => (
-															<span
-																key={ i }
-																className="gs-table__recipe-chip gs-table__recipe-chip--accent"
-															>
-																{ chip }
-															</span>
-														)
-													) }
-													{ priceValue && (
-														<span className="gs-table__recipe-chip">
-															{ priceValue }
-														</span>
-													) }
-												</span>
-											) }
-										</div>
-									</div>
-
-									{ fieldCols.map( ( col ) => {
-										const value = row[ col.key ];
-
-										if ( ! value ) {
-											return null;
-										}
-
-										return (
-											<div
-												key={ col.key }
-												className="gs-table__recipe-field"
-											>
-												<span className="gs-table__recipe-field-label">
-													{ col.label }
-												</span>
-												<span className="gs-table__recipe-field-value">
-													{ renderCellValue(
-														col,
-														value
-													) }
-												</span>
-											</div>
-										);
-									} ) }
+								<td className="gs-table__recipes-divider-cell">
+									{ row.dividerLabel ?? '' }
 								</td>
 							</tr>
 						);
-					} ) }
-				</tbody>
-			</table>
-		</>
+					}
+
+					const image = imageCol ? row[ imageCol.key ] : null;
+
+					// A comma splits a badge's raw value into separate
+					// chips (e.g. "+6 STA, -20 FAT"); rendered as plain
+					// text rather than through renderCellValue, since
+					// splitting formatted RichText HTML on a literal
+					// comma could cut a tag in half.
+					const statChips = statCol
+						? ( row[ statCol.key ] ?? '' )
+								.split( ',' )
+								.map( ( part ) => part.trim() )
+								.filter( Boolean )
+						: [];
+
+					const priceValue = priceCol ? row[ priceCol.key ] : '';
+
+					return (
+						<tr
+							key={ index }
+							className="gs-table__recipe-card"
+							data-recipe-id={ row.id }
+						>
+							<td className="gs-table__recipe-cell">
+								<input
+									type="checkbox"
+									className="gs-table__recipe-check"
+									aria-label={ __(
+										'Mark as obtained',
+										'gamestuff-blocks'
+									) }
+								/>
+								<div className="gs-table__recipe-header">
+									{ image?.url && (
+										<img
+											src={ image.url }
+											alt={ image.alt || '' }
+											className="gs-table__recipe-image"
+										/>
+									) }
+									<div className="gs-table__recipe-info">
+										{ nameCol && (
+											<span className="gs-table__recipe-name">
+												{ renderCellValue(
+													nameCol,
+													row[ nameCol.key ]
+												) }
+											</span>
+										) }
+										{ ( statChips.length > 0 ||
+											priceValue ) && (
+											<span className="gs-table__recipe-stats">
+												{ statChips.map(
+													( chip, i ) => (
+														<span
+															key={ i }
+															className="gs-table__recipe-chip gs-table__recipe-chip--accent"
+														>
+															{ chip }
+														</span>
+													)
+												) }
+												{ priceValue && (
+													<span className="gs-table__recipe-chip">
+														{ priceValue }
+													</span>
+												) }
+											</span>
+										) }
+									</div>
+								</div>
+
+								{ fieldCols.map( ( col ) => {
+									const value = row[ col.key ];
+
+									if ( ! value ) {
+										return null;
+									}
+
+									return (
+										<div
+											key={ col.key }
+											className="gs-table__recipe-field"
+										>
+											<span className="gs-table__recipe-field-label">
+												{ col.label }
+											</span>
+											<span className="gs-table__recipe-field-value">
+												{ renderCellValue(
+													col,
+													value
+												) }
+											</span>
+										</div>
+									);
+								} ) }
+							</td>
+						</tr>
+					);
+				} ) }
+			</tbody>
+		</table>
 	);
 }
 
