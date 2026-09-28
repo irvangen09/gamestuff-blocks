@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import {
 	useBlockProps,
 	InspectorControls,
@@ -42,8 +42,12 @@ function generateColumnKey() {
 	return 'col_' + Math.random().toString( 36 ).slice( 2, 8 );
 }
 
+function generateRowId() {
+	return 'row_' + Math.random().toString( 36 ).slice( 2, 10 );
+}
+
 function buildEmptyRow( columns ) {
-	const row = { isDivider: false };
+	const row = { isDivider: false, id: generateRowId() };
 	columns.forEach( ( col ) => {
 		row[ col.key ] = '';
 	} );
@@ -63,6 +67,26 @@ export default function Edit( { attributes, setAttributes } ) {
 
 	const [ pendingColumnCount, setPendingColumnCount ] = useState( '3' );
 	const [ pendingRowCount, setPendingRowCount ] = useState( '3' );
+
+	// The Recipe Card A checklist keys localStorage by row id; rows saved
+	// before ids existed get one the next time the block is opened here.
+	useEffect( () => {
+		if ( 'recipe-card-a' !== preset ) {
+			return;
+		}
+
+		if ( ! rows.some( ( row ) => ! row.isDivider && ! row.id ) ) {
+			return;
+		}
+
+		setAttributes( {
+			rows: rows.map( ( row ) =>
+				row.isDivider || row.id
+					? row
+					: { ...row, id: generateRowId() }
+			),
+		} );
+	}, [ preset, rows, setAttributes ] );
 
 	const blockProps = useBlockProps( {
 		className: 'gs-table-editor',
