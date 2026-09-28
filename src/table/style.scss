@@ -293,11 +293,22 @@
 			object-fit: cover;
 		}
 
-		.gs-table__recipe-top {
+		// Image and info are their own flex row so badges wrap inside
+		// .gs-table__recipe-info (staying under the name) instead of
+		// starting a new flex line under the image.
+		.gs-table__recipe-header {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.gs-table__recipe-info {
 			display: flex;
 			align-items: center;
 			gap: 10px;
 			flex-wrap: wrap;
+			flex: 1;
+			min-width: 0;
 		}
 
 		.gs-table__recipe-name {
@@ -329,19 +340,10 @@
 		.gs-table__recipe-field {
 			display: flex;
 			gap: 8px;
-			font-size: 0.85rem;
-			line-height: 1.55;
-		}
-
-		// Sibling selectors place the separator only *between* fields —
-		// simpler than tracking "is this the first field" in save.js.
-		.gs-table__recipe-top + .gs-table__recipe-field {
-			margin-top: 10px;
-		}
-
-		.gs-table__recipe-field + .gs-table__recipe-field {
 			margin-top: 8px;
 			padding-top: 8px;
+			font-size: 0.85rem;
+			line-height: 1.55;
 			border-top: 1px solid var(--gs-border);
 		}
 
