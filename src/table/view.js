@@ -229,6 +229,49 @@
 		} );
 	}
 
+	// Persists the Recipe Card A checklist per browser. The checkbox is
+	// native, so it works without this file — only saving needs it.
+	const CHECKLIST_KEY_PREFIX = 'gs-recipe-card-a:';
+
+	function initChecklist( recipesEl ) {
+		const checkboxes = Array.prototype.slice.call(
+			recipesEl.querySelectorAll( '.gs-table__recipe-check' )
+		);
+
+		checkboxes.forEach( function ( checkbox ) {
+			const row = checkbox.closest( '[data-recipe-id]' );
+			const recipeId = row && row.getAttribute( 'data-recipe-id' );
+
+			// Rows saved before ids existed have nothing to key on.
+			if ( ! recipeId ) {
+				return;
+			}
+
+			const storageKey = CHECKLIST_KEY_PREFIX + recipeId;
+
+			// Storage access can throw (e.g. blocked by browser settings);
+			// the checkbox then just works for this page view.
+			try {
+				checkbox.checked =
+					'1' === window.localStorage.getItem( storageKey );
+			} catch ( error ) {
+				return;
+			}
+
+			checkbox.addEventListener( 'change', function () {
+				try {
+					if ( checkbox.checked ) {
+						window.localStorage.setItem( storageKey, '1' );
+					} else {
+						window.localStorage.removeItem( storageKey );
+					}
+				} catch ( error ) {
+					// Not persisted; see above.
+				}
+			} );
+		} );
+	}
+
 	document.querySelectorAll( '.gs-table' ).forEach( function ( wrapperEl ) {
 		const tableEl = wrapperEl.querySelector( '.gs-table__table' );
 
@@ -244,10 +287,22 @@
 			return;
 		}
 
-		const cardsEl = wrapperEl.querySelector( '.gs-table__cards' );
+		// Recipe Card A is also a card-style <table>, so it shares the
+		// card search with Style 2.
+		const cardsEl = wrapperEl.querySelector(
+			'.gs-table__cards, .gs-table__recipes'
+		);
 
-		if ( cardsEl && 'true' === wrapperEl.getAttribute( 'data-filter' ) ) {
+		if ( ! cardsEl ) {
+			return;
+		}
+
+		if ( 'true' === wrapperEl.getAttribute( 'data-filter' ) ) {
 			initCardFilter( wrapperEl, cardsEl );
+		}
+
+		if ( cardsEl.classList.contains( 'gs-table__recipes' ) ) {
+			initChecklist( cardsEl );
 		}
 	} );
 } )();
