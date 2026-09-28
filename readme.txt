@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.12.2
+Stable tag: 1.13.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +27,7 @@ Blocks currently available:
 * Character Infobox — a portrait + key/value information card, e.g. for character profiles or item stats.
 * Info List — a compact box of key-value attributes with an optional Requirements checklist, e.g. for an event's trigger conditions.
 * Tabs — displays content in multiple panels that visitors switch between, with Underline and Sidebar style variants.
-* Table — a documentation table with grouped rows, built-in sorting and search, and four layout presets — including a catalog-card view for item or database-style content and a minimal Plain preset with per-column text alignment.
+* Table — a documentation table with grouped rows, built-in sorting and search, and five layout presets — including a catalog-card view for item or database-style content, a recipe-card view with an "obtained" checkbox for visitors, and a minimal Plain preset with per-column text alignment.
 
 More content blocks are introduced in subsequent releases.
 
@@ -57,7 +57,13 @@ Every block automatically adapts to your theme's dark mode — no setup needed. 
 
 Standard is a regular table. Style 1 (Field List) looks the same as Standard on desktop, but switches to a compact two-column label/value layout on mobile — no JavaScript required. Style 2 (Catalog Card) renders each table row as a card with an image, title, and subtitle instead of a table row, which suits catalog-style content (items, recipes, database entries) better than a plain table. Plain keeps the same header style as Standard but never restructures on mobile, and lets you set left/center/right text alignment per column, closer to the core WordPress Table block.
 
+Recipe Card A shows each row as a card built for recipe-style content. Columns are read by position — image, name, stat badge(s), price badge, then any number of labeled fields — and each card has a checkbox so visitors can mark a recipe as obtained. That choice is saved in the visitor's own browser, so it is not shared between devices.
+
 == Changelog ==
+
+= 1.13.0 =
+* Table: added a new "Recipe Card A" preset for recipe-style content, with an "obtained" checkbox on each card that is remembered in the visitor's browser.
+* Table: the built-in search works with Recipe Card A.
 
 = 1.12.2 =
 * Table: Plain preset column headers now default to left alignment, matching body cells, instead of always centering.
@@ -132,6 +138,9 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.13.0 =
+Adds the Recipe Card A preset to the Table block. No breaking changes.
 
 = 1.12.2 =
 Fixes Table Plain preset column headers always centering instead of defaulting to left alignment. No breaking changes.
