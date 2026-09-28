@@ -271,10 +271,12 @@
 		}
 
 		tr.gs-table__recipe-card {
+			--gs-recipe-check-color: #059669;
+			position: relative;
 			display: block;
 			border: 1px solid var(--gs-border);
 			border-radius: 10px;
-			padding: 12px 14px;
+			padding: 12px 40px 12px 14px;
 		}
 
 		td.gs-table__recipe-cell {
@@ -337,6 +339,9 @@
 			border-color: color-mix(in srgb, var(--gs-accent) 35%, transparent);
 		}
 
+		// Every field gets the same divider, including the first one
+		// (separating it from the header) — matches the border weight
+		// already used between Style 2's heading and detail rows.
 		.gs-table__recipe-field {
 			display: flex;
 			gap: 8px;
@@ -347,12 +352,64 @@
 			border-top: 1px solid var(--gs-border);
 		}
 
+		.gs-table__recipes-note {
+			margin: 0 0 8px;
+			font-size: 0.8rem;
+			color: color-mix(in srgb, currentColor 65%, transparent);
+		}
+
+		.gs-table__recipe-check {
+			position: absolute;
+			top: 12px;
+			right: 14px;
+			width: 20px;
+			height: 20px;
+			margin: 0;
+			appearance: none;
+			border: 1.5px solid color-mix(in srgb, currentColor 45%, transparent);
+			border-radius: 4px;
+			background: none;
+			cursor: pointer;
+
+			&:checked {
+				background: var(--gs-recipe-check-color);
+				border-color: var(--gs-recipe-check-color);
+			}
+
+			// Checkmark drawn with borders, so no icon dependency.
+			&:checked::after {
+				content: "";
+				position: absolute;
+				top: 2px;
+				left: 6px;
+				width: 5px;
+				height: 10px;
+				border: solid #fff;
+				border-width: 0 2px 2px 0;
+				transform: rotate(45deg);
+			}
+
+			&:focus-visible {
+				outline: 2px solid var(--gs-accent);
+				outline-offset: 2px;
+			}
+		}
+
+		// :has() dims the card straight from the checkbox's own checked
+		// state, so JS only has to persist it. The checkbox stays at full
+		// strength so the state remains easy to read.
+		tr.gs-table__recipe-card:has( .gs-table__recipe-check:checked ) {
+			border-color: color-mix(in srgb, currentColor 8%, transparent);
+
+			.gs-table__recipe-header,
+			.gs-table__recipe-field {
+				opacity: 0.5;
+			}
+		}
+
 		.gs-table__recipe-field-label {
 			flex: 0 0 66px;
 			padding-top: 1px;
-			// 65%, not the more transparent 45% first used here — matches
-			// .gs-table__card-subtitle above, which already reads fine on
-			// both light and dark backgrounds.
 			color: color-mix(in srgb, currentColor 90%, transparent);
 			font-size: 0.72rem;
 		}
