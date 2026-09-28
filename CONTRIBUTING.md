@@ -53,7 +53,7 @@ Common types: `feat`, `fix`, `docs`, `chore`, `refactor`. Commit messages and co
 4. Manually verify the change in both the block editor and the front end, including dark mode if your change touches styling.
 5. Open a pull request describing what changed and why.
 
-By contributing, you agree that your contributions will be licensed under the project's [GPL-2.0-or-later license](LICENSE).
+By contributing, you agree that your contributions will be licensed under the project's [GPL-2.0-or-later license](LICENSE.md).
 
 ## Code of Conduct
 
