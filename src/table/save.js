@@ -187,8 +187,15 @@ function renderCards( { columns, rows } ) {
 									className="gs-table__card-cell-detail"
 									data-key={ col.key }
 								>
-									<strong>{ col.label }:</strong>{ ' ' }
-									{ renderCellValue( col, row[ col.key ] ) }
+									<span className="gs-table__card-detail-label">
+										{ col.label }
+									</span>
+									<span className="gs-table__card-detail-value">
+										{ renderCellValue(
+											col,
+											row[ col.key ]
+										) }
+									</span>
 								</td>
 							) ) }
 						</tr>
