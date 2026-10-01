@@ -160,8 +160,9 @@
 			align-items: center;
 			column-gap: 10px;
 			border: 1px solid var(--gs-border);
-			border-radius: 12px;
+			border-radius: 6px;
 			padding: 10px;
+			margin-bottom: 8px;
 		}
 
 		// No image column: heading spans the full card width.
@@ -212,20 +213,28 @@
 			color: color-mix(in srgb, currentColor 65%, transparent);
 		}
 
-		// "+" selector below removes this border from every detail
-		// cell after the first, merging them into one visual block.
+		// Every detail cell gets its own divider, including the first
+		// (separating it from the heading)
 		td.gs-table__card-cell-detail {
 			display: block;
 			grid-column: 1 / -1;
-			padding-top: 6px;
+			margin-top: 8px;
+			padding-top: 8px;
 			border-top: 1px solid var(--gs-border);
 			font-size: 0.88rem;
 			line-height: 1.45;
 		}
 
-		td.gs-table__card-cell-detail + td.gs-table__card-cell-detail {
-			padding-top: 0;
-			border-top: none;
+		td.gs-table__card-cell-detail:has( .gs-table__card-detail-label ) {
+			display: flex;
+			gap: 8px;
+		}
+
+		.gs-table__card-detail-label {
+			flex: 0 0 145px;
+			padding-top: 1px;
+			color: color-mix(in srgb, currentColor 90%, transparent);
+			font-size: 0.72rem;
 		}
 	}
 
@@ -278,8 +287,9 @@
 			position: relative;
 			display: block;
 			border: 1px solid var(--gs-border);
-			border-radius: 10px;
+			border-radius: 6px;
 			padding: 12px 14px;
+			margin-bottom: 8px;
 		}
 
 		td.gs-table__recipe-cell {
