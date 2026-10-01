@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.13.0
+Stable tag: 1.13.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,6 +60,10 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 Recipe Card A shows each row as a card built for recipe-style content. Columns are read by position — image, name, stat badge(s), price badge, then any number of labeled fields — and each card has a checkbox so visitors can mark a recipe as obtained. That choice is saved in the visitor's own browser, so it is not shared between devices.
 
 == Changelog ==
+
+= 1.13.1 =
+* Table: Catalog Card (Style 2) detail rows now show the label on the left and the value on the right, with a divider between rows. Tables saved before this release keep their previous look until edited and saved again.
+* Table: the built-in search now hides non-matching cards in the Catalog Card (Style 2) preset.
 
 = 1.13.0 =
 * Table: added a new "Recipe Card A" preset for recipe-style content, with an "obtained" checkbox on each card that is remembered in the visitor's browser.
@@ -138,6 +142,9 @@ Recipe Card A shows each row as a card built for recipe-style content. Columns a
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.13.1 =
+Fixes Table search not hiding cards in the Catalog Card preset, and updates the layout of its detail rows. No breaking changes.
 
 = 1.13.0 =
 Adds the Recipe Card A preset to the Table block. No breaking changes.

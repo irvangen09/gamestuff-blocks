@@ -5,6 +5,22 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.13.1] - 2026-10-01
+
+### Changed
+
+- **Table**: Catalog Card (Style 2) detail rows now show the label on
+  the left and the value on the right, with a divider between rows,
+  matching the field list of Recipe Card A. Tables saved before this
+  release keep their previous inline "Label: value" look until they
+  are edited and saved again.
+
+### Fixed
+
+- **Table**: the built-in search now hides non-matching cards in the
+  Catalog Card (Style 2) preset. Previously, cards that did not match
+  stayed visible.
+
 ## [1.13.0] - 2026-09-28
 
 ### Added
