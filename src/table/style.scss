@@ -134,9 +134,10 @@
 			background: none;
 		}
 
-		// [hidden] (toggled by view.js filter) needs higher specificity
-		// than the grid "display" rules below to actually stay hidden.
-		tr[hidden] {
+		// Must out-rank tr.gs-table__card's "display: grid" below, or
+		// the filter's [hidden] is ignored.
+		tr.gs-table__card[hidden],
+		tr.gs-table__row--divider[hidden] {
 			display: none;
 		}
 
