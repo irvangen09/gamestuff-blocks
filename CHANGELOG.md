@@ -5,6 +5,18 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.14.0] - 2026-10-02
+
+### Added
+
+- **Table**: new "Recipe Card B" preset — the same card layout as
+  Recipe Card A (optional image, name, labeled fields, and the
+  "obtained" checkbox remembered in the visitor's browser), but
+  without the stat and price badges. Columns are read by position:
+  image, name, then labeled fields. Suited to recipe-style content
+  that has no stats to show. Search works the same way, and a field
+  left empty on a row is simply not shown.
+
 ## [1.13.1] - 2026-10-01
 
 ### Changed

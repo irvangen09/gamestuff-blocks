@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.13.1
+Stable tag: 1.14.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +27,7 @@ Blocks currently available:
 * Character Infobox — a portrait + key/value information card, e.g. for character profiles or item stats.
 * Info List — a compact box of key-value attributes with an optional Requirements checklist, e.g. for an event's trigger conditions.
 * Tabs — displays content in multiple panels that visitors switch between, with Underline and Sidebar style variants.
-* Table — a documentation table with grouped rows, built-in sorting and search, and five layout presets — including a catalog-card view for item or database-style content, a recipe-card view with an "obtained" checkbox for visitors, and a minimal Plain preset with per-column text alignment.
+* Table — a documentation table with grouped rows, built-in sorting and search, and six layout presets — including a catalog-card view for item or database-style content, two recipe-card views (with or without badges) that give visitors an "obtained" checkbox, and a minimal Plain preset with per-column text alignment.
 
 More content blocks are introduced in subsequent releases.
 
@@ -59,7 +59,12 @@ Standard is a regular table. Style 1 (Field List) looks the same as Standard on 
 
 Recipe Card A shows each row as a card built for recipe-style content. Columns are read by position — image, name, stat badge(s), price badge, then any number of labeled fields — and each card has a checkbox so visitors can mark a recipe as obtained. That choice is saved in the visitor's own browser, so it is not shared between devices.
 
+Recipe Card B is the same card without the badges: columns are read by position — image, name, then any number of labeled fields — which suits recipe-style content that has no stats or price to show. The checkbox works the same way.
+
 == Changelog ==
+
+= 1.14.0 =
+* Table: added a new "Recipe Card B" preset — the Recipe Card A layout without the stat and price badges, for recipe-style content that has no stats to show.
 
 = 1.13.1 =
 * Table: Catalog Card (Style 2) detail rows now show the label on the left and the value on the right, with a divider between rows. Tables saved before this release keep their previous look until edited and saved again.
@@ -142,6 +147,9 @@ Recipe Card A shows each row as a card built for recipe-style content. Columns a
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.14.0 =
+Adds the Recipe Card B preset to the Table block. No breaking changes.
 
 = 1.13.1 =
 Fixes Table search not hiding cards in the Catalog Card preset, and updates the layout of its detail rows. No breaking changes.
