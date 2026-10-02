@@ -101,11 +101,11 @@ export default function TableToolbar( {
 										? __(
 												'Unset as divider',
 												'gamestuff-blocks'
-										  )
+											)
 										: __(
 												'Make this row a divider',
 												'gamestuff-blocks'
-										  ) }
+											) }
 								</MenuItem>
 							</MenuGroup>
 						</>

@@ -85,9 +85,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 		setAttributes( {
 			rows: rows.map( ( row ) =>
-				row.isDivider || row.id
-					? row
-					: { ...row, id: generateRowId() }
+				row.isDivider || row.id ? row : { ...row, id: generateRowId() }
 			),
 		} );
 	}, [ preset, rows, setAttributes ] );

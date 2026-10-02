@@ -226,7 +226,7 @@
 			line-height: 1.45;
 		}
 
-		td.gs-table__card-cell-detail:has( .gs-table__card-detail-label ) {
+		td.gs-table__card-cell-detail:has(.gs-table__card-detail-label) {
 			display: flex;
 			gap: 8px;
 		}
@@ -411,7 +411,7 @@
 		// :has() dims the card straight from the checkbox's own checked
 		// state, so JS only has to persist it. The checkbox stays at full
 		// strength so the state remains easy to read.
-		tr.gs-table__recipe-card:has( .gs-table__recipe-check:checked ) {
+		tr.gs-table__recipe-card:has(.gs-table__recipe-check:checked) {
 			border-color: color-mix(in srgb, currentColor 8%, transparent);
 
 			.gs-table__recipe-header,

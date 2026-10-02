@@ -157,7 +157,7 @@ function renderCardsV1( { columns, rows } ) {
 							<div className="gs-table__card-heading">
 								<div className="gs-table__card-title">
 									{ titleCol
-										? row[ titleCol.key ] ?? ''
+										? ( row[ titleCol.key ] ?? '' )
 										: '' }
 								</div>
 								{ subtitleCol && (
@@ -421,7 +421,7 @@ function renderCardsV2( { columns, rows } ) {
 										? renderCellValueV2(
 												titleCol,
 												row[ titleCol.key ]
-										  )
+											)
 										: '' }
 								</div>
 								{ subtitleCol && (

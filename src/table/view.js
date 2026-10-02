@@ -255,7 +255,7 @@
 			try {
 				checkbox.checked =
 					'1' === window.localStorage.getItem( storageKey );
-			} catch ( error ) {
+			} catch {
 				return;
 			}
 
@@ -266,7 +266,7 @@
 					} else {
 						window.localStorage.removeItem( storageKey );
 					}
-				} catch ( error ) {
+				} catch {
 					// Not persisted; see above.
 				}
 			} );
