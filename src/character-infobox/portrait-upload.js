@@ -54,11 +54,11 @@ export default function PortraitUpload( {
 									? __(
 											'Replace Portrait',
 											'gamestuff-blocks'
-									  )
+										)
 									: __(
 											'Select Portrait',
 											'gamestuff-blocks'
-									  ) }
+										) }
 							</Button>
 
 							{ portraitId > 0 && (
