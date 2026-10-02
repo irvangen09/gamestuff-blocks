@@ -15,7 +15,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import TableToolbar from './table-toolbar';
-import { columnAlignStyle, headerAlignStyle } from './utils';
+import { columnAlignStyle, headerAlignStyle, isRecipePreset } from './utils';
 
 const PRESET_OPTIONS = [
 	{ label: __( 'Standard', 'gamestuff-blocks' ), value: 'standard' },
@@ -31,6 +31,10 @@ const PRESET_OPTIONS = [
 	{
 		label: __( 'Recipe Card A', 'gamestuff-blocks' ),
 		value: 'recipe-card-a',
+	},
+	{
+		label: __( 'Recipe Card B', 'gamestuff-blocks' ),
+		value: 'recipe-card-b',
 	},
 ];
 
@@ -68,10 +72,10 @@ export default function Edit( { attributes, setAttributes } ) {
 	const [ pendingColumnCount, setPendingColumnCount ] = useState( '3' );
 	const [ pendingRowCount, setPendingRowCount ] = useState( '3' );
 
-	// The Recipe Card A checklist keys localStorage by row id; rows saved
+	// The Recipe Card checklist keys localStorage by row id; rows saved
 	// before ids existed get one the next time the block is opened here.
 	useEffect( () => {
-		if ( 'recipe-card-a' !== preset ) {
+		if ( ! isRecipePreset( preset ) ) {
 			return;
 		}
 
@@ -301,7 +305,7 @@ export default function Edit( { attributes, setAttributes } ) {
 							setAttributes( { preset: value } )
 						}
 					/>
-					{ 'style-2' !== preset && 'recipe-card-a' !== preset && (
+					{ 'style-2' !== preset && ! isRecipePreset( preset ) && (
 						<ToggleControl
 							label={ __( 'Sortable', 'gamestuff-blocks' ) }
 							checked={ enableSort }
