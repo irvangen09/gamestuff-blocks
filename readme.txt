@@ -4,7 +4,7 @@ Tags: gutenberg, blocks, documentation, wiki, knowledge-base
 Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 1.14.0
+Stable tag: 1.14.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,9 @@ Recipe Card A shows each row as a card built for recipe-style content. Columns a
 Recipe Card B is the same card without the badges: columns are read by position — image, name, then any number of labeled fields — which suits recipe-style content that has no stats or price to show. The checkbox works the same way.
 
 == Changelog ==
+
+= 1.14.1 =
+* Table: in the Recipe Card A and B presets, field labels are now vertically centered next to their value when the value wraps onto several lines.
 
 = 1.14.0 =
 * Table: added a new "Recipe Card B" preset — the Recipe Card A layout without the stat and price badges, for recipe-style content that has no stats to show.
@@ -147,6 +150,9 @@ Recipe Card B is the same card without the badges: columns are read by position 
 * Initial plugin foundation: bootstrap, block registry, and global settings page.
 
 == Upgrade Notice ==
+
+= 1.14.1 =
+Centers field labels vertically in the Table block's Recipe Card A and B presets. No breaking changes.
 
 = 1.14.0 =
 Adds the Recipe Card B preset to the Table block. No breaking changes.

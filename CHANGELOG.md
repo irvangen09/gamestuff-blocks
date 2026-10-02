@@ -5,6 +5,15 @@ All notable changes to GameStuff Blocks are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.14.1] - 2026-10-03
+
+### Changed
+
+- **Table**: in the Recipe Card A and B presets, field labels (such
+  as "Ingredient 2") are now vertically centered next to their value
+  instead of sitting at the top when the value wraps onto several
+  lines.
+
 ## [1.14.0] - 2026-10-02
 
 ### Added
