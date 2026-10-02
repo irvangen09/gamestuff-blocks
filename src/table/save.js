@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { RichText, useBlockProps } from '@wordpress/block-editor';
 
-import { columnAlignStyle, headerAlignStyle } from './utils';
+import { columnAlignStyle, headerAlignStyle, isRecipePreset } from './utils';
 
 // Text cells may contain inline formatting (bold/italic/link) saved
 // by RichText; other cell types are always plain values.
@@ -206,10 +206,13 @@ function renderCards( { columns, rows } ) {
 	);
 }
 
-// Column role is positional: 1 = image, 2 = name, 3 = STA/FAT badge(s),
-// 4 = price badge, 5+ = labeled fields (Ingredients, Utensils, Source, etc).
-function renderRecipeCardA( { columns, rows } ) {
-	const [ imageCol, nameCol, statCol, priceCol, ...fieldCols ] = columns;
+// Column role is positional: 1 = image, 2 = name. With badges (Card A),
+// 3 = STA/FAT chips, 4 = price chip; all remaining columns are labeled fields.
+function renderRecipeCard( { columns, rows, hasBadges } ) {
+	const [ imageCol, nameCol, ...restCols ] = columns;
+	const statCol = hasBadges ? restCols[ 0 ] : undefined;
+	const priceCol = hasBadges ? restCols[ 1 ] : undefined;
+	const fieldCols = hasBadges ? restCols.slice( 2 ) : restCols;
 
 	return (
 		<table className="gs-table__recipes">
@@ -340,14 +343,14 @@ export default function save( { attributes } ) {
 	}
 
 	const isCardLayout = 'style-2' === preset;
-	const isRecipeCardA = 'recipe-card-a' === preset;
+	const isRecipeCard = isRecipePreset( preset );
 
 	const blockProps = useBlockProps.save( {
 		className: 'gs-table',
 		'data-preset': preset,
 		// Sort needs a clickable header, which card layouts don't have.
 		'data-sort':
-			! isCardLayout && ! isRecipeCardA && enableSort
+			! isCardLayout && ! isRecipeCard && enableSort
 				? 'true'
 				: 'false',
 		'data-filter': enableFilter ? 'true' : 'false',
@@ -357,8 +360,12 @@ export default function save( { attributes } ) {
 
 	if ( isCardLayout ) {
 		tableMarkup = renderCards( { columns, rows } );
-	} else if ( isRecipeCardA ) {
-		tableMarkup = renderRecipeCardA( { columns, rows } );
+	} else if ( isRecipeCard ) {
+		tableMarkup = renderRecipeCard( {
+			columns,
+			rows,
+			hasBadges: 'recipe-card-a' === preset,
+		} );
 	} else {
 		tableMarkup = renderTable( { columns, rows, preset } );
 	}
