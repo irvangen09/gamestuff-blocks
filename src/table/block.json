@@ -23,7 +23,7 @@
 	"attributes": {
 		"preset": {
 			"type": "string",
-			"enum": [ "standard", "style-1", "style-2", "plain", "recipe-card-a" ],
+			"enum": [ "standard", "style-1", "style-2", "plain", "recipe-card-a", "recipe-card-b" ],
 			"default": "standard"
 		},
 		"columns": {

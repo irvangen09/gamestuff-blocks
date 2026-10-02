@@ -1,3 +1,8 @@
+// Recipe Card A and B share one markup path and one checklist.
+export function isRecipePreset( preset ) {
+	return 'recipe-card-a' === preset || 'recipe-card-b' === preset;
+}
+
 // Alignment only takes visual effect for the Plain preset — Standard
 // and Style 1 keep their own fixed alignment, Style 2 renders cards,
 // not a header/column grid.
