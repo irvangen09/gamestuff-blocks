@@ -359,6 +359,7 @@
 		// already used between Style 2's heading and detail rows.
 		.gs-table__recipe-field {
 			display: flex;
+			align-items: center;
 			gap: 8px;
 			margin-top: 8px;
 			padding-top: 8px;
@@ -422,7 +423,6 @@
 
 		.gs-table__recipe-field-label {
 			flex: 0 0 66px;
-			padding-top: 1px;
 			color: color-mix(in srgb, currentColor 90%, transparent);
 			font-size: 0.72rem;
 		}
