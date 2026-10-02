@@ -1,4 +1,3 @@
-import { __ } from '@wordpress/i18n';
 import { RichText, useBlockProps } from '@wordpress/block-editor';
 
 import { columnAlignStyle, headerAlignStyle, isRecipePreset } from './utils';
@@ -168,7 +167,7 @@ function renderCards( { columns, rows } ) {
 										? renderCellValue(
 												titleCol,
 												row[ titleCol.key ]
-										  )
+											)
 										: '' }
 								</div>
 								{ subtitleCol && (
@@ -257,10 +256,7 @@ function renderRecipeCard( { columns, rows, hasBadges } ) {
 								<input
 									type="checkbox"
 									className="gs-table__recipe-check"
-									aria-label={ __(
-										'Mark as obtained',
-										'gamestuff-blocks'
-									) }
+									aria-label="Mark as obtained"
 								/>
 								<div className="gs-table__recipe-header">
 									{ image?.url && (
@@ -350,9 +346,7 @@ export default function save( { attributes } ) {
 		'data-preset': preset,
 		// Sort needs a clickable header, which card layouts don't have.
 		'data-sort':
-			! isCardLayout && ! isRecipeCard && enableSort
-				? 'true'
-				: 'false',
+			! isCardLayout && ! isRecipeCard && enableSort ? 'true' : 'false',
 		'data-filter': enableFilter ? 'true' : 'false',
 	} );
 
