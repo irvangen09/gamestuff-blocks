@@ -229,8 +229,9 @@
 		} );
 	}
 
-	// Persists the Recipe Card A checklist per browser. The checkbox is
-	// native, so it works without this file — only saving needs it.
+	// Persists the Recipe Card checklist per browser. The checkbox is
+	// native, so it works without this file — only saving needs it. The
+	// key prefix keeps the Card A name so ticks already saved still apply.
 	const CHECKLIST_KEY_PREFIX = 'gs-recipe-card-a:';
 
 	function initChecklist( recipesEl ) {
@@ -287,7 +288,7 @@
 			return;
 		}
 
-		// Recipe Card A is also a card-style <table>, so it shares the
+		// Recipe cards are also card-style <table>s, so they share the
 		// card search with Style 2.
 		const cardsEl = wrapperEl.querySelector(
 			'.gs-table__cards, .gs-table__recipes'
